@@ -1,6 +1,6 @@
 class TableColumnFactory {
     createColumns = (items, propertyDefinitions) => {
-        if (items.length !== 0) {
+        if (items != null && items.length !== 0) {
             const [jsonObject] = items;
             const propertyNames = Object.keys(jsonObject);
             const columns = propertyNames.map((propertyName) => {

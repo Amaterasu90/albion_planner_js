@@ -15,7 +15,11 @@ const NoDataIndication = () => (
     </div>
 );
 
-class ArtifactComponent extends React.Component {
+const EmptyTable = () => (
+    <p>No data</p>
+);
+
+class CrudComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,29 +29,6 @@ class ArtifactComponent extends React.Component {
             items: [],
             show: false
         };
-    }
-
-    getItems = () => {
-        var requestData = this.props.requestDataFactory.createGet();
-        fetch(requestData.url, requestData.requestOptions)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    let current = this.props.actionFactory.addActions(result, this.props.editFormFields, this.props.deleteRelatedFields, this.getItems);
-                    this.setState({
-                        isLoaded: true,
-                        loading: false,
-                        items: current
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        loading: false,
-                        error
-                    });
-                }
-            )
     }
 
     getPaginableItems = (page, sizePerPage) => {
@@ -78,12 +59,12 @@ class ArtifactComponent extends React.Component {
     }
 
     componentDidMount = () => {
-        this.setState(() => ({ data: [] }));
+        this.setState(() => ({ loading: true }))
         this.getPaginableItems(1, 5);
     }
 
     handleOnTableChange = (type, { page, sizePerPage }) => {
-        this.setState(() => ({ data: [] }));
+        this.setState(() => ({ loading: true }))
         this.getPaginableItems(page, sizePerPage);
     }
 
@@ -97,8 +78,9 @@ class ArtifactComponent extends React.Component {
             return <Container className="d-grid gap-3">
                 <Row className="p-2 m-2">
                     <ApiModalForm
-                        headerTitle="Add new artifact"
-                        btnText="Add artifact"
+                        headerTitle={this.props.createFormatHeaderText}
+                        btnText={this.props.createBtnText}
+                        disabled={this.state.loading}
                         requestData={this.props.requestDataFactory.createPost()}
                         show={this.state.show}
                         submit={this.handleOnTableChange}
@@ -124,12 +106,19 @@ class ArtifactComponent extends React.Component {
                                                 data={data}
                                                 columns={this.props.columnsFactory.createColumns(data, this.props.propertyDefinitions)}
                                                 headerClasses="fs-5 align-middle"
-                                                sort={ { dataField: 'createdOn', order: 'asc' } }
                                                 onTableChange={this.handleOnTableChange}
                                                 rowClasses="fs-6 align-middle" {...paginationTableProps}
-                                                noDataIndication={() => <NoDataIndication />}
-                                                loading={ this.state.loading }
-                                                overlay={ overlayFactory({ spinner: true, styles: { overlay: (base) => ({...base, background: 'rgba(255, 0, 0, 0.5)'}) } }) } />
+                                                noDataIndication={() => <EmptyTable />}
+                                                loading={this.state.loading}
+                                                overlay={overlayFactory({
+                                                    spinner: <NoDataIndication />,
+                                                    styles: {
+                                                        overlay: (base) => (
+                                                            {
+                                                                ...base
+                                                            })
+                                                    }
+                                                })} />
                                         </Col>
                                         <Col md={1} />
                                     </Row>
@@ -142,7 +131,7 @@ class ArtifactComponent extends React.Component {
                                         <Col>
                                             <Row>
                                                 <Col md={{ span: 1, offset: 0 }}>
-                                                    <p className="text-dark text-nowrap fs-6 mt-2">Items per page:</p>
+                                                    <p className="text-dark text-nowrap fs-6 mt-3">Items per page:</p>
                                                 </Col>
                                                 <Col md={{ span: 1, offset: 3 }}>
                                                     <SizePerPageDropdownStandalone btnContextual="btn-light dropdown-toggle" {...paginationProps} />
@@ -161,4 +150,4 @@ class ArtifactComponent extends React.Component {
     }
 }
 
-export default ArtifactComponent;
+export default CrudComponent;

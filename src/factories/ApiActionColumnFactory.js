@@ -2,8 +2,9 @@ import { Row, Container } from "react-bootstrap";
 import ApiActions from "../components/ApiActions";
 
 class ApiActionColumnFactory {
-    constructor(requestDataFactory, tooltipText) {
+    constructor(requestDataFactory, editHeaderText, tooltipText) {
         this.requestDataFactory = requestDataFactory;
+        this.editHeaderText = editHeaderText;
         this.tooltipText = tooltipText;
     }
 
@@ -15,7 +16,7 @@ class ApiActionColumnFactory {
                         <ApiActions
                             item={item}
                             tooltipText={this.tooltipText}
-                            headerTitle="Edit artifact"
+                            headerTitle={this.editHeaderText}
                             editBtnText="Edit"
                             deleteBtnText="Delete"
                             requestData={this.requestDataFactory.createPut()}

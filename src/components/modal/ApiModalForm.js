@@ -30,7 +30,7 @@ class ApiModalForm extends React.Component {
 
     render() {
         return <Col>
-            <Button variant="success" onClick={this.handleOpen}>
+            <Button variant={this.props.disabled ? "secondary" : "success"} onClick={this.handleOpen} disabled={this.props.disabled}>
                 {this.props.btnText}
             </Button>
             <Modal show={this.state.show} onHide={this.handleClose} centered>
@@ -43,7 +43,7 @@ class ApiModalForm extends React.Component {
                         handleClose={this.handleClose}
                         submit={this.props.submit}
                         fieldFactory={new FormFieldsGroupsFactory()}
-                        fields={this.props.fields}                        
+                        fields={this.props.fields}
                         page={this.props.page}
                         sizePerPage={this.props.sizePerPage} />
                 </Modal.Body>
