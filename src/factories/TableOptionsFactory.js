@@ -9,7 +9,7 @@ class TableOptionsFactory {
             custom: true,
             lastPageText: '>>',
             firsPageText: '<<',
-            withFirstAndLast: true,            
+            withFirstAndLast: true,
             totalSize: count,
             disablePageTitle: false,
             sizePerPageList: [{
@@ -22,9 +22,9 @@ class TableOptionsFactory {
                 text: '15', value: 15
             }],
             sizePerPageOptionRenderer: ({ ...args }) => (<ItemCountButton {...args} />),
-            pageListRenderer: ({ ...args }) => (<PageNumberButonList { ...args } />),
-            sizePerPageRenderer: ({ ...args }) => (<ItemCountSelectorButtons { ...args } />),
-            pageButtonRenderer: ({ ...args }) => (<PageNumberButton { ...args } />)
+            pageListRenderer: ({ ...args }) => (<PageNumberButonList {...args} />),
+            sizePerPageRenderer: ({ ...args }) => (<ItemCountSelectorButtons {...args} />),
+            pageButtonRenderer: ({ ...args }) => (<PageNumberButton {...args} />)
         }
     }
 }

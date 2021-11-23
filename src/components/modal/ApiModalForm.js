@@ -43,7 +43,9 @@ class ApiModalForm extends React.Component {
                         handleClose={this.handleClose}
                         submit={this.props.submit}
                         fieldFactory={new FormFieldsGroupsFactory()}
-                        fields={this.props.fields} />
+                        fields={this.props.fields}                        
+                        page={this.props.page}
+                        sizePerPage={this.props.sizePerPage} />
                 </Modal.Body>
             </Modal>
         </Col >

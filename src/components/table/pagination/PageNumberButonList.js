@@ -2,16 +2,24 @@ import React from "react";
 
 class PageNumberButonList extends React.Component {
     render(){
-        const pageWithoutIndication = this.props.pages.filter(p => typeof p.page !== 'string');
-        return (
-            <div className="bg-light">
+        debugger;
+        const pageListRenderer = ({
+            pages,
+            onPageChange
+          }) => {
+            const pageWithoutIndication = pages.filter(p => typeof p.page !== 'string');
+            return (
+              <div>
                 {
-                    pageWithoutIndication.map(p => (
-                        <button className="btn btn-light" onClick={() => this.props.onPageChange(p.page)}>{p.page}</button>
-                    ))
+                  pageWithoutIndication.map(p => (
+                    <button className="btn btn-success" onClick={ () => onPageChange(p.page) }>{ p.page }</button>
+                  ))
                 }
-            </div>
-        );
+              </div>
+            );
+          };
+
+        return pageListRenderer;
     }
 }
 

@@ -13,7 +13,7 @@ class ApiForm extends React.Component {
     }
 
     submitSuccess = (e) => {
-        this.props.submit();
+        this.props.submit(null, { page: this.props.page, sizePerPage: this.props.sizePerPage });
         this.props.handleClose();
     }
 

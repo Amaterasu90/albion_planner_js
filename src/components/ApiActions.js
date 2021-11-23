@@ -27,7 +27,7 @@ class ApiActions extends React.Component {
     }
 
     submitSuccess = (e) => {
-        this.props.submit();
+        this.props.submit(null, { page: this.props.page, sizePerPage: this.props.sizePerPage });
     }
 
     submitFailed = (e) => {
@@ -37,7 +37,7 @@ class ApiActions extends React.Component {
         let group;
         if (this.props.related.properties.some((item) => item !== null)) {
             group = (<OverlayTrigger
-                placement="top"
+                placement="right"
                 delay={{ show: 250, hide: 400 }}
                 overlay={(props) => (<Tooltip id="button-tooltip" {...props}>{this.props.tooltipText}</Tooltip>)}>
                 <ToggleButtonGroup type="checkbox" className="mb-2">
@@ -72,7 +72,9 @@ class ApiActions extends React.Component {
                         handleClose={this.handleClose}
                         submit={this.props.submit}
                         fieldFactory={new FormFieldsGroupsFactory()}
-                        fields={this.props.formFields.fields} />
+                        fields={this.props.formFields.fields}
+                        page={this.props.page}
+                        sizePerPage={this.props.sizePerPage} />
                 </Modal.Body>
             </Modal>
         </Col >

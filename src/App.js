@@ -25,9 +25,10 @@ function App() {
           actionFactory={new ApiActionColumnFactory(artifactRequestDataFactory, "Some products are related with this artifact")}
           requestDataFactory={artifactRequestDataFactory}
           propertyDefinitions={[
-            { name: "externalId", width: "10%", hidden: true },
+            { name: "externalId", width: "0%", hidden: true },
             { name: "name", width: "49%" },
             { name: "tier", width: "1%" },
+            { name: "createdOn", width: "0%", hidden: true },
             { name: "actions", width: "1%" },
             { name: "product", width: "0%", hidden: true }
           ]}
