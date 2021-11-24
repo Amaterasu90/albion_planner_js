@@ -10,8 +10,8 @@ import paginationFactory, {
 import overlayFactory from 'react-bootstrap-table2-overlay';
 
 const NoDataIndication = () => (
-    <div class="d-flex justify-content-center text-dark">
-        <div class="spinner-border" role="status" />
+    <div className="d-flex justify-content-center text-dark">
+        <div className="spinner-border" role="status" />
     </div>
 );
 
@@ -129,11 +129,9 @@ class CrudComponent extends React.Component {
                                             />
                                         </Col>
                                         <Col>
-                                            <Row>
-                                                <Col md={{ span: 1, offset: 0 }}>
-                                                    <p className="text-dark text-nowrap fs-6 mt-3">Items per page:</p>
-                                                </Col>
-                                                <Col md={{ span: 1, offset: 3 }}>
+                                            <Row className="flex-column">
+                                                <Col>
+                                                    <p className="text-dark text-nowrap fs-6 mt-3 d-none d-xl-inline">Items per page: </p>
                                                     <SizePerPageDropdownStandalone btnContextual="btn-light dropdown-toggle" {...paginationProps} />
                                                 </Col>
                                             </Row>

@@ -9,7 +9,7 @@ class ItemCountSelectorButtons extends React.Component {
                         key={option.text + " " + index}
                         type="button"
                         onClick={() => this.props.onSizePerPageChange(option.page)}
-                        className={`btn ${this.props.currSizePerPage === `${option.page}` ? 'btn-primary' : 'btn-light'}`}
+                        className={`btn ${this.props.currSizePerPage === `${option.page}` ? 'btn-primary' : 'btn-light'} d-none d-sm-inline`}
                     >
                         {option.text}
                     </button>
