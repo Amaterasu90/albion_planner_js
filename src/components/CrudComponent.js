@@ -123,18 +123,14 @@ class CrudComponent extends React.Component {
                                         <Col md={1} />
                                     </Row>
                                     <Row>
-                                        <Col md={{ span: 0, offset: 4 }}>
+                                        <Col md={{ span: 3, offset: 4 }}>
                                             <PaginationListStandalone
                                                 {...paginationProps}
                                             />
                                         </Col>
                                         <Col>
-                                            <Row className="flex-column">
-                                                <Col>
-                                                    <p className="text-dark text-nowrap fs-6 mt-3 d-none d-xl-inline">Items per page: </p>
-                                                    <SizePerPageDropdownStandalone btnContextual="btn-light dropdown-toggle" {...paginationProps} />
-                                                </Col>
-                                            </Row>
+                                            <p className="text-dark text-nowrap fs-6 mt-3 d-none d-xl-inline">Items per page: </p>
+                                            <SizePerPageDropdownStandalone btnContextual="btn-light dropdown-toggle" {...paginationProps} />
                                         </Col>
                                     </Row>
                                 </div>

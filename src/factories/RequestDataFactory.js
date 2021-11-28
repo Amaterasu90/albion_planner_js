@@ -27,7 +27,7 @@ class RequestDataFactory {
         }
     }
 
-    createDelete(url, externalId){
+    createDelete(url, externalId) {
         return {
             url: `${url}/${externalId}`,
             requestOptions: {
@@ -41,13 +41,14 @@ class RequestDataFactory {
         }
     }
 
-    createGet(url){
+    createGet(url) {
         return {
             url: url,
             requestOptions: {
                 method: 'get',
                 mode: 'cors',
                 headers: {
+                    'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
                 }
