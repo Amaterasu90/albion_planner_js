@@ -97,9 +97,9 @@ class CrudComponent extends React.Component {
                                 paginationTableProps
                             }) => (
                                 <div>
-                                    <Row>
-                                        <Col md={2} />
-                                        <Col md={9} >
+                                    <Row key="table_row">
+                                        <Col md={2} key="table_col_1"/>
+                                        <Col md={9} key="table_col_2">
                                             <BootstrapTable
                                                 remote
                                                 keyField='externalId'
@@ -120,15 +120,15 @@ class CrudComponent extends React.Component {
                                                     }
                                                 })} />
                                         </Col>
-                                        <Col md={1} />
+                                        <Col md={1} key="table_col_3"/>
                                     </Row>
-                                    <Row>
-                                        <Col md={{ span: 3, offset: 4 }}>
-                                            <PaginationListStandalone
+                                    <Row  key="pagination_row">
+                                        <Col md={{ span: 3, offset: 4 }} key="patination_col_1">
+                                            <PaginationListStandalone key="pagination_list_standalone"
                                                 {...paginationProps}
                                             />
                                         </Col>
-                                        <Col>
+                                        <Col key="pagination_col_2">
                                             <p className="text-dark text-nowrap fs-6 mt-3 d-none d-xl-inline">Items per page: </p>
                                             <SizePerPageDropdownStandalone btnContextual="btn-light dropdown-toggle" {...paginationProps} />
                                         </Col>

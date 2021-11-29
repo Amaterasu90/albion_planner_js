@@ -7,10 +7,8 @@ class PageNumberButton extends React.Component {
             e.preventDefault();
             this.props.onPageChange(this.props.page, this.props.active);
         };
-        
-        return <li key={"pageNumberButton" + this.props.page} className="page-item">
-            <button onClick={handleClick} className={`btn ${this.props.active === true ? "btn-primary" : "btn-light"}`}>{this.props.page}</button>
-        </li>
+
+        return <button key={"pageNumberButton" + this.props.page} onClick={handleClick} className={`btn ${this.props.active === true ? "btn-primary" : "btn-light"}`}>{this.props.page}</button>
     }
 }
 

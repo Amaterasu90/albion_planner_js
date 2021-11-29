@@ -60,7 +60,7 @@ class ApiActions extends React.Component {
                     </ToggleButton>
                 </ToggleButtonGroup>);
         }
-        return <Col>
+        return <Col key={this.props.item.externalId}>
             {group}
             <Modal show={this.state.show} onHide={this.handleClose} centered>
                 <Modal.Header closeButton>

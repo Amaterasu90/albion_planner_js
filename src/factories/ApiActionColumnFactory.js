@@ -11,9 +11,10 @@ class ApiActionColumnFactory {
     addActions = (items, formFields, relatedFields, page, sizePerPage, submit) => {
         return items.map(
             (item) => ({
-                ...item, actions: (<Container fluid>
-                    <Row>
+                ...item, actions: (<Container key={`container_${item.externalId}`} fluid>
+                    <Row key={`row_${item.externalId}`}>
                         <ApiActions
+                            key={`apiAction_${item.externalId}`}
                             item={item}
                             tooltipText={this.tooltipText}
                             headerTitle={this.editHeaderText}
