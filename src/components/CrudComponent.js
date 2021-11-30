@@ -20,56 +20,52 @@ const EmptyTable = () => (
 );
 
 class CrudComponent extends React.Component {
+    _isMounted = false;
+
     constructor(props) {
         super(props);
+        let data = [];
         this.state = {
             error: null,
             isLoaded: false,
             loading: true,
             items: [],
-            show: false
+            show: false,
+            data: data,
+            columns: this.props.columnsFactory.createColumns(data, this.props.propertyDefinitions),
+            page: 1,
+            sizePerPage: 5
         };
     }
 
-    getPaginableItems = (page, sizePerPage) => {
-        var requestData = this.props.requestDataFactory.createGet();
-        fetch(requestData.url, requestData.requestOptions)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    let current = this.props.actionFactory.addActions(result, this.props.editFormFields, this.props.deleteRelatedFields, page, sizePerPage, this.handleOnTableChange);
-                    const currentIndex = (page - 1) * sizePerPage;
-                    this.setState(() => ({
-                        page,
-                        items: current,
-                        data: current.slice(currentIndex, currentIndex + sizePerPage),
-                        sizePerPage,
-                        isLoaded: true,
-                        loading: false,
-                    }));
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        loading: false,
-                        error
-                    });
-                }
-            )
+    componentDidMount = () => {
+        this._isMounted = true;
+        this.loadDefaultData();
     }
 
-    componentDidMount = () => {
-        this.setState(() => ({ loading: true }))
-        this.getPaginableItems(1, 5);
+    componentWillReceiveProps = (prevProps, prevState) => {
+        if (prevProps.requestDataFactory.entityName !== this.props.requestDataFactory.entityName) {
+            this.setState(() => ({ loading: true }));
+            prevProps.provider.getPaginableItems(this, prevProps);
+        }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+      }
+
+    loadDefaultData = () => {
+        this.setState(() => ({ loading: true, page: 1, sizePerPage: 5 }));
+        this.props.provider.getPaginableItems(this, this.props);
     }
 
     handleOnTableChange = (type, { page, sizePerPage }) => {
-        this.setState(() => ({ loading: true }))
-        this.getPaginableItems(page, sizePerPage);
+        this.setState(() => ({ loading: true, page: page, sizePerPage: sizePerPage }));
+        this.props.provider.getPaginableItems(this, this.props);
     }
 
     render() {
-        const { error, isLoaded, items, data } = this.state;
+        const { error, isLoaded, items, data, columns } = this.state;
         if (error) {
             return <div className="fs-6 align-middle text-dark">Błąd: {error.message}</div>;
         } else if (!isLoaded) {
@@ -98,13 +94,14 @@ class CrudComponent extends React.Component {
                             }) => (
                                 <div>
                                     <Row key="table_row">
-                                        <Col md={2} key="table_col_1"/>
+                                        <Col md={2} key="table_col_1" />
                                         <Col md={9} key="table_col_2">
                                             <BootstrapTable
                                                 remote
+                                                componentWillUnmount={this.componentUnmount}
                                                 keyField='externalId'
                                                 data={data}
-                                                columns={this.props.columnsFactory.createColumns(data, this.props.propertyDefinitions)}
+                                                columns={columns}
                                                 headerClasses="fs-5 align-middle"
                                                 onTableChange={this.handleOnTableChange}
                                                 rowClasses="fs-6 align-middle" {...paginationTableProps}
@@ -120,9 +117,9 @@ class CrudComponent extends React.Component {
                                                     }
                                                 })} />
                                         </Col>
-                                        <Col md={1} key="table_col_3"/>
+                                        <Col md={1} key="table_col_3" />
                                     </Row>
-                                    <Row  key="pagination_row">
+                                    <Row key="pagination_row">
                                         <Col md={{ span: 3, offset: 4 }} key="patination_col_1">
                                             <PaginationListStandalone key="pagination_list_standalone"
                                                 {...paginationProps}
