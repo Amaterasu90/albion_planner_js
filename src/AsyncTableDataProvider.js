@@ -5,6 +5,14 @@ class AsyncTableDataProvider {
             .then(res => res.json())
             .then(
                 (result) => {
+                    result = result.map((item) => {
+                        const keys = Object.keys(item);
+                        for (const key of keys) {
+                            item[key] = item[key] !== null && item[key] !== 'undefined' && typeof item[key] === 'object' && !Array.isArray(item[key]) ? JSON.stringify(item[key]) : item[key];
+                        }
+
+                        return item;
+                    });
                     let current = props.actionFactory.addActions(result, props.editFormFields, props.deleteRelatedFields, context.state.page, context.state.sizePerPage, context.handleOnTableChange);
                     const currentIndex = (context.state.page - 1) * context.state.sizePerPage;
                     if (context._isMounted) {

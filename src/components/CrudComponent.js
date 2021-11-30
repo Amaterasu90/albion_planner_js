@@ -1,6 +1,6 @@
 import React from "react";
 import ApiModalForm from './modal/ApiModalForm'
-import { Col, Container, Row } from "react-bootstrap";
+import { Col,  Row } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory, {
     PaginationProvider,
@@ -52,7 +52,7 @@ class CrudComponent extends React.Component {
 
     componentWillUnmount() {
         this._isMounted = false;
-      }
+    }
 
     loadDefaultData = () => {
         this.setState(() => ({ loading: true, page: 1, sizePerPage: 5 }));
@@ -71,8 +71,8 @@ class CrudComponent extends React.Component {
         } else if (!isLoaded) {
             return <NoDataIndication />;
         } else {
-            return <Container className="d-grid gap-3">
-                <Row className="p-2 m-2">
+            return <>
+                <Row className="pb-2">
                     <ApiModalForm
                         headerTitle={this.props.createFormatHeaderText}
                         btnText={this.props.createBtnText}
@@ -83,9 +83,8 @@ class CrudComponent extends React.Component {
                         page={this.state.page}
                         sizePerPage={this.state.sizePerPage}
                         fields={this.props.createFormFields} />
-                    <Col md={7} />
                 </Row>
-                <Row className="p-2">
+                <Row>
                     <PaginationProvider pagination={paginationFactory(this.props.optionsFactory.createOptions(items.length))}>
                         {
                             ({
@@ -94,10 +93,10 @@ class CrudComponent extends React.Component {
                             }) => (
                                 <div>
                                     <Row key="table_row">
-                                        <Col md={2} key="table_col_1" />
-                                        <Col md={9} key="table_col_2">
+                                        <Col md={12} key="table_col_2">
                                             <BootstrapTable
                                                 remote
+                                                condensed={true}
                                                 componentWillUnmount={this.componentUnmount}
                                                 keyField='externalId'
                                                 data={data}
@@ -117,16 +116,14 @@ class CrudComponent extends React.Component {
                                                     }
                                                 })} />
                                         </Col>
-                                        <Col md={1} key="table_col_3" />
                                     </Row>
                                     <Row key="pagination_row">
-                                        <Col md={{ span: 3, offset: 4 }} key="patination_col_1">
+                                        <Col md={10} key="patination_col_1" className="d-flex justify-content-center">
                                             <PaginationListStandalone key="pagination_list_standalone"
                                                 {...paginationProps}
                                             />
                                         </Col>
-                                        <Col key="pagination_col_2">
-                                            <p className="text-dark text-nowrap fs-6 mt-3 d-none d-xl-inline">Items per page: </p>
+                                        <Col md={2} key="pagination_col_2" className="d-flex justify-content-end">
                                             <SizePerPageDropdownStandalone btnContextual="btn-light dropdown-toggle" {...paginationProps} />
                                         </Col>
                                     </Row>
@@ -135,8 +132,7 @@ class CrudComponent extends React.Component {
                         }
                     </PaginationProvider>
                 </Row>
-            </Container >
-
+            </>
         }
     }
 }

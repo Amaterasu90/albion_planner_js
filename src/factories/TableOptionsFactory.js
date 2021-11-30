@@ -1,7 +1,5 @@
-import ItemCountButton from "../components/table/pagination/ItemCountButton";
 import ItemCountSelectorButtons from "../components/table/pagination/ItemCountSelectorButtons";
 import PageNumberButton from "../components/table/pagination/PageNumberButton";
-import PageNumberButonList from "../components/table/pagination/PageNumberButonList";
 
 class TableOptionsFactory {
     createOptions = (count) => {
@@ -21,8 +19,7 @@ class TableOptionsFactory {
             {
                 text: '15', value: 15
             }],
-            sizePerPageOptionRenderer: ({ ...args }) => (<ItemCountButton {...args} />),
-            pageListRenderer: ({ ...args }) => (<PageNumberButonList {...args} />),
+            
             sizePerPageRenderer: ({ ...args }) => (<ItemCountSelectorButtons {...args} />),
             pageButtonRenderer: ({ ...args }) => (<PageNumberButton {...args} />)
         }

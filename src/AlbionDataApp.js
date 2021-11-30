@@ -17,9 +17,11 @@ class AlbionDataApp extends React.Component {
             requestDataFactory);
         this.itemTypeRequestDataFactory = new CrudRequestDataFactory("item/type",
             requestDataFactory);
-        this.journalTypeRequestDataFactory = new CrudRequestDataFactory("journal",
+        this.journalRequestDataFactory = new CrudRequestDataFactory("journal",
             requestDataFactory);
-        this.resourceTypeRequestDataFactory = new CrudRequestDataFactory("resource",
+        this.resourceRequestDataFactory = new CrudRequestDataFactory("resource",
+            requestDataFactory);
+        this.productRequestDataFactory = new CrudRequestDataFactory("product",
             requestDataFactory);
         this.state = {
             component: "artifact"
@@ -50,6 +52,12 @@ class AlbionDataApp extends React.Component {
         });
     }
 
+    onProductSelected = (e) => {
+        this.setState({
+            component: "product"
+        });
+    }
+
     showComponent = (component) => {
         switch (component) {
             case "artifact":
@@ -61,23 +69,23 @@ class AlbionDataApp extends React.Component {
                     requestDataFactory: this.artifactRequestDataFactory,
                     propertyDefinitions:
                         [
-                            { name: "externalId", width: "0%", hidden: true },
-                            { name: "name", width: "49%" },
-                            { name: "tier", width: "1%" },
-                            { name: "actions", width: "1%" },
-                            { name: "product", width: "0%", hidden: true }
+                            { id: "externalId", name: "External Id", width: "0%", hidden: true },
+                            { id: "name", name: "Name", width: "49%" },
+                            { id: "tier", name: "Tier", width: "1%" },
+                            { id: "actions", name: "Actions", width: "1%" },
+                            { id: "product", name: "Product", width: "0%", hidden: true }
                         ],
                     createFormFields:
                         [
-                            { id: "name", name: "name", type: "text", placeholder: "Name" },
-                            { id: "tier", name: "tier", type: "range", placeholder: "Tier", defaultValue: 4, min: 1, max: 8, step: 1 }
+                            { id: "name", name: "Name", type: "text", placeholder: "Name" },
+                            { id: "tier", name: "Tier", type: "range", placeholder: "Tier", defaultValue: 4, min: 1, max: 8, step: 1 }
                         ],
                     editFormFields: (item) => {
                         return {
                             fields: [
-                                { id: "name", name: "name", type: "text", placeholder: "Name", defaultValue: item.name },
-                                { id: "tier", name: "tier", type: "range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
-                                { id: "externalId", name: "externalId", type: "hidden", placeholder: "externalId", defaultValue: item.externalId }
+                                { id: "name", name: "Name", type: "text", placeholder: "Name", defaultValue: item.name },
+                                { id: "tier", name: "Tier", type: "range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
+                                { id: "externalId", name: "External Id", type: "hidden", placeholder: "External Id", defaultValue: item.externalId }
                             ]
                         }
                     },
@@ -97,28 +105,27 @@ class AlbionDataApp extends React.Component {
                     actionFactory: new ApiActionColumnFactory(this.itemTypeRequestDataFactory, "Edit item type", "Some products or refine product are related with this item type"),
                     requestDataFactory: this.itemTypeRequestDataFactory,
                     propertyDefinitions: [
-                        { name: "externalId", width: "0%", hidden: true },
-                        { name: "name", width: "49%" },
-                        { name: "actions", width: "1%" },
-                        { name: "product", width: "0%", hidden: true },
-                        { name: "refineProduct", width: "0%", hidden: true }
+                        { id: "externalId", name: "External Id", width: "0%", hidden: true },
+                        { id: "name", name: "Name", width: "49%" },
+                        { id: "actions", name: "Actions", width: "1%" },
+                        { id: "product", name: "Product", width: "0%", hidden: true },
+                        { id: "refineProduct", name: "Refine Product", width: "0%", hidden: true }
                     ],
                     createFormFields:
                         [
-                            { id: "name", name: "name", type: "text", placeholder: "Name" }
+                            { id: "name", name: "Name", type: "text", placeholder: "Name" }
                         ],
                     editFormFields: (item) => {
                         return {
                             fields: [
-                                { id: "name", name: "name", type: "text", placeholder: "Name", defaultValue: item.name },
-                                { id: "externalId", name: "externalId", type: "hidden", placeholder: "externalId", defaultValue: item.externalId }
+                                { id: "name", name: "Name", type: "text", placeholder: "Name", defaultValue: item.name },
+                                { id: "externalId", name: "External Id", type: "hidden", placeholder: "External Id", defaultValue: item.externalId }
                             ]
                         }
                     },
                     deleteRelatedFields: (item) => {
                         return {
                             properties: [item.product, item.refineProduct]
-                            ,
                         }
                     },
                     createBtnText: "Add item type",
@@ -129,21 +136,21 @@ class AlbionDataApp extends React.Component {
                     provider: this.props.provider,
                     optionsFactory: new TableOptionsFactory(),
                     columnsFactory: new TableColumnFactory(),
-                    actionFactory: new ApiActionColumnFactory(this.journalTypeRequestDataFactory, "Edit journal", "Some products are related with this item type"),
-                    requestDataFactory: this.journalTypeRequestDataFactory,
+                    actionFactory: new ApiActionColumnFactory(this.journalRequestDataFactory, "Edit journal", "Some products are related with this item type"),
+                    requestDataFactory: this.journalRequestDataFactory,
                     propertyDefinitions:
                         [
-                            { name: "externalId", width: "0%", hidden: true },
-                            { name: "name", width: "49%" },
-                            { name: "tier", width: "1%" },
-                            { name: "fameCapacity", width: "5%" },
-                            { name: "actions", width: "1%" },
-                            { name: "product", width: "0%", hidden: true }
+                            { id: "externalId", name: "External Id", width: "0%", hidden: true },
+                            { id: "name", name: "Name", width: "49%" },
+                            { id: "tier", name: "Tier", width: "1%" },
+                            { id: "fameCapacity", name: "Fame Capacity", width: "5%" },
+                            { id: "actions", name: "Actions", width: "1%" },
+                            { id: "product", name: "Product", width: "0%", hidden: true }
                         ],
                     createFormFields:
                         [
-                            { id: "name", name: "name", type: "text", placeholder: "Name"},
-                            { id: "fameCapacity", name: "fameCapacity", type: "range", placeholder: "Fame Capacity", defaultValue: 1200, min: 800, max: 50000, step: 100 },
+                            { id: "name", name: "name", type: "text", placeholder: "Name" },
+                            { id: "fameCapacity", name: "Fame Capacity", type: "range", placeholder: "Fame Capacity", defaultValue: 1200, min: 800, max: 50000, step: 100 },
                             { id: "tier", name: "tier", type: "range", placeholder: "Tier", defaultValue: 4, min: 1, max: 8, step: 1 }
                         ],
                     editFormFields: (item) => {
@@ -151,8 +158,8 @@ class AlbionDataApp extends React.Component {
                             fields: [
                                 { id: "name", name: "name", type: "text", placeholder: "Name", defaultValue: item.name },
                                 { id: "tier", name: "tier", type: "range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
-                                { id: "fameCapacity", name: "fameCapacity", type: "range", placeholder: "Fame Capacity", defaultValue: item.fameCapacity, min: 800, max: 50000, step: 100 },
-                                { id: "externalId", name: "externalId", type: "hidden", placeholder: "externalId", defaultValue: item.externalId }
+                                { id: "fameCapacity", name: "Fame Capacity", type: "range", placeholder: "Fame Capacity", defaultValue: item.fameCapacity, min: 800, max: 50000, step: 100 },
+                                { id: "externalId", name: "External Id", type: "hidden", placeholder: "externalId", defaultValue: item.externalId }
                             ]
                         }
                     },
@@ -169,16 +176,16 @@ class AlbionDataApp extends React.Component {
                     provider: this.props.provider,
                     optionsFactory: new TableOptionsFactory(),
                     columnsFactory: new TableColumnFactory(),
-                    actionFactory: new ApiActionColumnFactory(this.resourceTypeRequestDataFactory, "Edit resource", "Some product resources are related with this item type"),
-                    requestDataFactory: this.resourceTypeRequestDataFactory,
+                    actionFactory: new ApiActionColumnFactory(this.resourceRequestDataFactory, "Edit resource", "Some product resources are related with this item type"),
+                    requestDataFactory: this.resourceRequestDataFactory,
                     propertyDefinitions:
                         [
-                            { name: "externalId", width: "0%", hidden: true },
-                            { name: "name", width: "49%" },
-                            { name: "tier", width: "1%" },
-                            { name: "enhancement", width: "5%" },
-                            { name: "actions", width: "1%" },
-                            { name: "productResources", width: "0%", hidden: true }
+                            { id: "externalId", name: "External Id", width: "0%", hidden: true },
+                            { id: "name", name: "Name", width: "49%" },
+                            { id: "tier", name: "Tier", width: "1%" },
+                            { id: "enhancement", name: "Enhancement", width: "5%" },
+                            { id: "actions", name: "Actions", width: "1%" },
+                            { id: "productResources", name: "Product Resources", width: "0%", hidden: true }
                         ],
                     createFormFields:
                         [
@@ -189,10 +196,10 @@ class AlbionDataApp extends React.Component {
                     editFormFields: (item) => {
                         return {
                             fields: [
-                                { id: "name", name: "name", type: "text", placeholder: "Name", defaultValue: item.name},
-                                { id: "tier", name: "tier", type: "range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1},
-                                { id: "enhancement", name: "enhancement", type: "range", placeholder: "Enhancement", defaultValue: 0, min: 0, max: 3, step: 1},
-                                { id: "externalId", name: "externalId", type: "hidden", placeholder: "externalId", defaultValue: item.externalId}
+                                { id: "name", name: "name", type: "text", placeholder: "Name", defaultValue: item.name },
+                                { id: "tier", name: "tier", type: "range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
+                                { id: "enhancement", name: "enhancement", type: "range", placeholder: "Enhancement", defaultValue: item.enhancement, min: 0, max: 3, step: 1 },
+                                { id: "externalId", name: "External Id", type: "hidden", placeholder: "External Id", defaultValue: item.externalId }
                             ]
                         }
                     },
@@ -203,6 +210,59 @@ class AlbionDataApp extends React.Component {
                     },
                     createBtnText: "Add resource",
                     createFormatHeaderText: "Add new resource"
+                }
+            case "product":
+                return {
+                    provider: this.props.provider,
+                    optionsFactory: new TableOptionsFactory(),
+                    columnsFactory: new TableColumnFactory(),
+                    actionFactory: new ApiActionColumnFactory(this.productRequestDataFactory, "Edit product", "Some product resources are related with this item type"),
+                    requestDataFactory: this.productRequestDataFactory,
+                    propertyDefinitions:
+                        [
+                            { id: "externalId", name: "ExternalId", width: "0%", hidden: true },
+                            { id: "name", name: "Name", width: "49%" },
+                            { id: "artifact", name: "Artifact", width: "1%" },
+                            { id: "journal", name: "Journal", width: "5%" },
+                            { id: "type", name: "Type", width: "1%" },
+                            { id: "tier", name: "Tier", width: "1%" },
+                            { id: "enhancement", name: "Enhancement", width: "1%" },
+                            { id: "craftFame", name: "Craft Fame", width: "10%" },
+                            { id: "productResources", name: "Product Resources", width: "1%" },
+                            { id: "actions", name: "Actions", width: "1%" },
+                        ],
+                    createFormFields:
+                        [
+                            { id: "artifactExternalId", name: "Artifact External Id", type: "text", placeholder: "ArtifactExternalId" },
+                            { id: "journalExternalId", name: "Journal ExternalId", type: "text", placeholder: "JournalExternalId" },
+                            { id: "itemTypeExternalId", name: "Item Type ExternalId", type: "text", placeholder: "ItemTypeExternalId" },
+                            { id: "name", name: "Name", type: "text", placeholder: "Name" },
+                            { id: "tier", name: "Tier", type: "range", placeholder: "Tier", defaultValue: 4, min: 1, max: 8, step: 1 },
+                            { id: "enhancement", name: "Enhancement", type: "range", placeholder: "Enhancement", defaultValue: 0, min: 0, max: 3, step: 1 },
+                            { id: "craftFame", name: "Craft Fame", type: "range", placeholder: "Fame", defaultValue: 1200, min: 800, max: 50000, step: 100 },
+                            { id: "productResources", name: "Product Resources", type: "list", placeholder: "ProductResource" }
+                        ],
+                    editFormFields: (item) => {
+                        return {
+                            fields: [
+                                { id: "artifactExternalId", name: "Artifact ExternalId", type: "text", placeholder: "ArtifactExternalId", defaultValue: item.artifactExternalId },
+                                { id: "journalExternalId", name: "Journal External Id", type: "text", placeholder: "JournalExternalId", defaultValue: item.journalExternalId },
+                                { id: "itemTypeExternalId", name: "Item Type ExternalId", type: "text", placeholder: "ItemTypeExternalId", defaultValue: item.itemTypeExternalId },
+                                { id: "name", name: "name", type: "Text", placeholder: "Name", defaultValue: item.name },
+                                { id: "tier", name: "tier", type: "Range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
+                                { id: "enhancement", name: "Enhancement", type: "range", placeholder: "Enhancement", defaultValue: item.enhancement, min: 0, max: 3, step: 1 },
+                                { id: "craftFame", name: "Craft Fame", type: "range", placeholder: "Fame", defaultValue: item.enhancement, min: 800, max: 50000, step: 100 },
+                                { id: "productResources", name: "Product Resources", type: "list", placeholder: "ProductResource", defaultValue: item.productResources }
+                            ]
+                        }
+                    },
+                    deleteRelatedFields: (item) => {
+                        return {
+                            properties: []
+                        }
+                    },
+                    createBtnText: "Add product",
+                    createFormatHeaderText: "Add new product"
                 }
             default:
                 return {
@@ -247,17 +307,18 @@ class AlbionDataApp extends React.Component {
     render() {
         const { component } = this.state;
         return <Container fluid>
-            < Row className="flex-nowrap" >
-                <Col md={3} xl={2} className="col-auto px-sm-2 px-0 bg-dark">
-                    <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+            <Row className="flex-nowrap">
+                <Col className="col-auto bg-dark">
+                    <div className="d-flex flex-column align-items-center px-3 pt-2 text-white min-vh-100">
                         <NavbarComponent
-                            openArtifactCrud={this.onArtifactSelected}
-                            openItemTypeCrud={this.onItemTypeSelected}
-                            openJournalCrud={this.onJournalSelected}
-                            openResourcesCrud={this.onResourceSelected} />
+                            openArtifactsCrud={this.onArtifactSelected}
+                            openItemTypesCrud={this.onItemTypeSelected}
+                            openJournalsCrud={this.onJournalSelected}
+                            openResourcesCrud={this.onResourceSelected}
+                            openProductsCrud={this.onProductSelected} />
                     </div>
                 </Col>
-                <Col md={9} xl={10}>
+                <Col className="align-self-center">
                     <CrudComponent {... this.showComponent(component)} />
                 </Col>
             </Row >

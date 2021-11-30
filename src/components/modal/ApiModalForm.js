@@ -29,8 +29,8 @@ class ApiModalForm extends React.Component {
     }
 
     render() {
-        return <Col>
-            <Button variant={this.props.disabled ? "secondary" : "success"} onClick={this.handleOpen} disabled={this.props.disabled}>
+        return <Col md={1} className="d-flex float-left">
+            <Button variant={this.props.disabled ? "secondary" : "success"} onClick={this.handleOpen} disabled={this.props.disabled} className="text-nowrap">
                 {this.props.btnText}
             </Button>
             <Modal show={this.state.show} onHide={this.handleClose} centered>
