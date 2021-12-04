@@ -19,6 +19,10 @@ class CrudRequestDataFactory {
     createGet() {
         return this.requestDataFactory.createGet(`https://localhost:44348/${this.entityName}/list`);
     }
+
+    createGetDetails(externalId) {
+        return this.requestDataFactory.createGet(`https://localhost:44348/${this.entityName}/details/${externalId}`);
+    }
 }
 
 export default CrudRequestDataFactory;

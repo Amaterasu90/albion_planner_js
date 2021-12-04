@@ -1,14 +1,18 @@
 import React from "react";
 import { Form, Row, Button, Col } from "react-bootstrap";
+import NestedListDecorator from "./services/NestedListDecorator";
 
 class ApiForm extends React.Component {
     submit = (e) => {
         e.preventDefault();
         const data = new FormData(e.target);
         const body = Object.fromEntries(data.entries());
-        var options = this.props.requestData.requestOptions;
+        let entries = Object.entries(body);
+        const retriever = new NestedListDecorator(body, entries, ".list.", "_", '.');
+        retriever.addNestedList();
+        const options = this.props.requestData.requestOptions;
         options.body = JSON.stringify(body);
-        var response = fetch(this.props.requestData.url, options);
+        const response = fetch(this.props.requestData.url, options);
         response.then(this.submitSuccess, this.submitFailed);
     }
 

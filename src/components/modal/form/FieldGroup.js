@@ -1,51 +1,36 @@
 import React from "react";
-import { Row, Col } from "react-bootstrap";
-import { FormLabel } from "react-bootstrap";
-import { Form } from "react-bootstrap";
 import { FormGroup, FormControl } from "react-bootstrap";
+import FormRange from "./FormRange";
+import RelatedAsyncSelect from "./RelatedAsyncSelect";
+import { Row, Col } from "react-bootstrap";
+import MultiInputFormGroup from "./MultiInputFormGroup";
 
 class FieldGroup extends React.Component {
     constructor(props) {
-        super(props)
-        this.state = {
-            current: props.defaultValue
+        super(props);
+        
+        this.columnFullSize = 12;
+    }    
+
+    getInputs = (props, addRow, countEmelentsInLine) => {
+        let input;
+        let size = this.columnFullSize / countEmelentsInLine;
+        if (props.type === "range") {
+            input = (<FormRange {...props} />)
+        } else if (props.type === "asyncRelatedDropdown") {
+            input = (<RelatedAsyncSelect size={size} {...props} />)
+        } else if (props.type === "relatedMany") {
+            input = (<MultiInputFormGroup getInputs={this.getInputs} {...props} />)
+        } else {
+            input = (<Col md={size}><FormControl {...props} /></Col>)
         }
-    }
 
-
-    changeValue = (e) => {
-        this.setState({ current: e.target.value });
+        return addRow === true ? <Row className="pb-2 d-flex justify-content-center" > {input} </Row > : input;
     }
 
     render() {
-        let input;
-        if (this.props.type === "range") {
-            input = (<div><Row className="pb-2">
-                <Col md={1} />
-                <Col md={10}>
-                    <FormLabel>{this.props.placeholder} {this.state.current}</FormLabel>
-                </Col>
-                <Col md={1} />
-            </Row>
-                <Row>
-                    <Col md={1} />
-                    <Col md={10}>
-                        <Form.Range {...this.props} defaultValue={this.state.current} onChange={this.changeValue} />
-                    </Col>
-                    <Col md={1} />
-                </Row>
-            </div >)
-        } else {
-            input = (<Row className="pb-2">
-                <Col md={1} />
-                <Col md={10}>
-                    <FormControl {...this.props} />
-                </Col>
-                <Col md={1} />
-            </Row>)
-        }
         return <FormGroup>
-            {input}
+            {this.getInputs(this.props, true, 1)}
         </FormGroup>
     }
 }

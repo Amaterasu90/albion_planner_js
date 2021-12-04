@@ -73,7 +73,7 @@ class AlbionDataApp extends React.Component {
                             { id: "name", name: "Name", width: "49%" },
                             { id: "tier", name: "Tier", width: "1%" },
                             { id: "actions", name: "Actions", width: "1%" },
-                            { id: "product", name: "Product", width: "0%", hidden: true }
+                            { id: "products", name: "Product", width: "0%", hidden: true }
                         ],
                     createFormFields:
                         [
@@ -85,13 +85,13 @@ class AlbionDataApp extends React.Component {
                             fields: [
                                 { id: "name", name: "Name", type: "text", placeholder: "Name", defaultValue: item.name },
                                 { id: "tier", name: "Tier", type: "range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
-                                { id: "externalId", name: "External Id", type: "hidden", placeholder: "External Id", defaultValue: item.externalId }
+                                { id: "externalId", name: "ExternalId", type: "hidden", placeholder: "External Id", defaultValue: item.externalId }
                             ]
                         }
                     },
                     deleteRelatedFields: (item) => {
                         return {
-                            properties: [item.product]
+                            properties: [item.products]
                         }
                     },
                     createBtnText: "Add artifact",
@@ -108,7 +108,7 @@ class AlbionDataApp extends React.Component {
                         { id: "externalId", name: "External Id", width: "0%", hidden: true },
                         { id: "name", name: "Name", width: "49%" },
                         { id: "actions", name: "Actions", width: "1%" },
-                        { id: "product", name: "Product", width: "0%", hidden: true },
+                        { id: "products", name: "Product", width: "0%", hidden: true },
                         { id: "refineProduct", name: "Refine Product", width: "0%", hidden: true }
                     ],
                     createFormFields:
@@ -119,13 +119,13 @@ class AlbionDataApp extends React.Component {
                         return {
                             fields: [
                                 { id: "name", name: "Name", type: "text", placeholder: "Name", defaultValue: item.name },
-                                { id: "externalId", name: "External Id", type: "hidden", placeholder: "External Id", defaultValue: item.externalId }
+                                { id: "externalId", name: "ExternalId", type: "hidden", placeholder: "External Id", defaultValue: item.externalId }
                             ]
                         }
                     },
                     deleteRelatedFields: (item) => {
                         return {
-                            properties: [item.product, item.refineProduct]
+                            properties: [item.products, item.refineProduct]
                         }
                     },
                     createBtnText: "Add item type",
@@ -145,12 +145,12 @@ class AlbionDataApp extends React.Component {
                             { id: "tier", name: "Tier", width: "1%" },
                             { id: "fameCapacity", name: "Fame Capacity", width: "5%" },
                             { id: "actions", name: "Actions", width: "1%" },
-                            { id: "product", name: "Product", width: "0%", hidden: true }
+                            { id: "products", name: "Product", width: "0%", hidden: true }
                         ],
                     createFormFields:
                         [
                             { id: "name", name: "name", type: "text", placeholder: "Name" },
-                            { id: "fameCapacity", name: "Fame Capacity", type: "range", placeholder: "Fame Capacity", defaultValue: 1200, min: 800, max: 50000, step: 100 },
+                            { id: "fameCapacity", name: "FameCapacity", type: "range", placeholder: "Fame Capacity", defaultValue: 1200, min: 800, max: 50000, step: 100 },
                             { id: "tier", name: "tier", type: "range", placeholder: "Tier", defaultValue: 4, min: 1, max: 8, step: 1 }
                         ],
                     editFormFields: (item) => {
@@ -159,13 +159,13 @@ class AlbionDataApp extends React.Component {
                                 { id: "name", name: "name", type: "text", placeholder: "Name", defaultValue: item.name },
                                 { id: "tier", name: "tier", type: "range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
                                 { id: "fameCapacity", name: "Fame Capacity", type: "range", placeholder: "Fame Capacity", defaultValue: item.fameCapacity, min: 800, max: 50000, step: 100 },
-                                { id: "externalId", name: "External Id", type: "hidden", placeholder: "externalId", defaultValue: item.externalId }
+                                { id: "externalId", name: "ExternalId", type: "hidden", placeholder: "External Id", defaultValue: item.externalId }
                             ]
                         }
                     },
                     deleteRelatedFields: (item) => {
                         return {
-                            properties: [item.product]
+                            properties: [item.products]
                         }
                     },
                     createBtnText: "Add journal",
@@ -180,7 +180,7 @@ class AlbionDataApp extends React.Component {
                     requestDataFactory: this.resourceRequestDataFactory,
                     propertyDefinitions:
                         [
-                            { id: "externalId", name: "External Id", width: "0%", hidden: true },
+                            { id: "externalId", name: "ExternalId", width: "0%", hidden: true },
                             { id: "name", name: "Name", width: "49%" },
                             { id: "tier", name: "Tier", width: "1%" },
                             { id: "enhancement", name: "Enhancement", width: "5%" },
@@ -199,7 +199,7 @@ class AlbionDataApp extends React.Component {
                                 { id: "name", name: "name", type: "text", placeholder: "Name", defaultValue: item.name },
                                 { id: "tier", name: "tier", type: "range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
                                 { id: "enhancement", name: "enhancement", type: "range", placeholder: "Enhancement", defaultValue: item.enhancement, min: 0, max: 3, step: 1 },
-                                { id: "externalId", name: "External Id", type: "hidden", placeholder: "External Id", defaultValue: item.externalId }
+                                { id: "externalId", name: "ExternalId", type: "hidden", placeholder: "External Id", defaultValue: item.externalId }
                             ]
                         }
                     },
@@ -220,7 +220,7 @@ class AlbionDataApp extends React.Component {
                     requestDataFactory: this.productRequestDataFactory,
                     propertyDefinitions:
                         [
-                            { id: "externalId", name: "ExternalId", width: "0%", hidden: true },
+                            { id: "externalId", name: "External Id", width: "0%", hidden: true },
                             { id: "name", name: "Name", width: "49%" },
                             { id: "artifact", name: "Artifact", width: "1%" },
                             { id: "journal", name: "Journal", width: "5%" },
@@ -233,26 +233,46 @@ class AlbionDataApp extends React.Component {
                         ],
                     createFormFields:
                         [
-                            { id: "artifactExternalId", name: "Artifact External Id", type: "text", placeholder: "ArtifactExternalId" },
-                            { id: "journalExternalId", name: "Journal ExternalId", type: "text", placeholder: "JournalExternalId" },
-                            { id: "itemTypeExternalId", name: "Item Type ExternalId", type: "text", placeholder: "ItemTypeExternalId" },
                             { id: "name", name: "Name", type: "text", placeholder: "Name" },
                             { id: "tier", name: "Tier", type: "range", placeholder: "Tier", defaultValue: 4, min: 1, max: 8, step: 1 },
                             { id: "enhancement", name: "Enhancement", type: "range", placeholder: "Enhancement", defaultValue: 0, min: 0, max: 3, step: 1 },
-                            { id: "craftFame", name: "Craft Fame", type: "range", placeholder: "Fame", defaultValue: 1200, min: 800, max: 50000, step: 100 },
-                            { id: "productResources", name: "Product Resources", type: "list", placeholder: "ProductResource" }
+                            { id: "craftFame", name: "CraftFame", type: "range", placeholder: "Fame", defaultValue: 1200, min: 800, max: 50000, step: 100 },
+                            { id: "artifactExternalId", name: "ArtifactExternalId", type: "asyncRelatedDropdown", placeholder: "Artifact", dataFactory: this.artifactRequestDataFactory },
+                            { id: "journalExternalId", name: "JournalExternalId", type: "asyncRelatedDropdown", placeholder: "Journal", dataFactory: this.journalRequestDataFactory },
+                            { id: "itemTypeExternalId", name: "ItemTypeExternalId", type: "asyncRelatedDropdown", placeholder: "Item Type", dataFactory: this.itemTypeRequestDataFactory },
+                            {
+                                id: "productResources",
+                                name: "ProductResources",
+                                sub_entries: [
+                                    { id: "ProductResources_resource_externalId", name: "ResourceExternalId", type: "asyncRelatedDropdown", placeholder: "Resource", dataFactory: this.resourceRequestDataFactory },
+                                    { id: "ProductResources_count", name: "Count", type: "text", placeholder: "Count" }
+                                ],
+                                type: "relatedMany",
+                                placeholder: "Resources"
+                            }
                         ],
                     editFormFields: (item) => {
                         return {
                             fields: [
-                                { id: "artifactExternalId", name: "Artifact ExternalId", type: "text", placeholder: "ArtifactExternalId", defaultValue: item.artifactExternalId },
-                                { id: "journalExternalId", name: "Journal External Id", type: "text", placeholder: "JournalExternalId", defaultValue: item.journalExternalId },
-                                { id: "itemTypeExternalId", name: "Item Type ExternalId", type: "text", placeholder: "ItemTypeExternalId", defaultValue: item.itemTypeExternalId },
+                                { id: "externalId", name: "ExternalId", type: "hidden", placeholder: "External Id", defaultValue: item.externalId },
                                 { id: "name", name: "name", type: "Text", placeholder: "Name", defaultValue: item.name },
-                                { id: "tier", name: "tier", type: "Range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
+                                { id: "tier", name: "tier", type: "range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
                                 { id: "enhancement", name: "Enhancement", type: "range", placeholder: "Enhancement", defaultValue: item.enhancement, min: 0, max: 3, step: 1 },
-                                { id: "craftFame", name: "Craft Fame", type: "range", placeholder: "Fame", defaultValue: item.enhancement, min: 800, max: 50000, step: 100 },
-                                { id: "productResources", name: "Product Resources", type: "list", placeholder: "ProductResource", defaultValue: item.productResources }
+                                { id: "craftFame", name: "CraftFame", type: "range", placeholder: "Fame", defaultValue: item.craftFame, min: 800, max: 50000, step: 100 },
+                                { id: "artifactExternalId", name: "ArtifactExternalId", type: "asyncRelatedDropdown", placeholder: "Artifact", dataFactory: this.artifactRequestDataFactory, defaultValue: item.artifact },
+                                { id: "journalExternalId", name: "JournalExternalId", type: "asyncRelatedDropdown", placeholder: "Journal", dataFactory: this.journalRequestDataFactory, defaultValue: item.journal },
+                                { id: "itemTypeExternalId", name: "ItemTypeExternalId", type: "asyncRelatedDropdown", placeholder: "Item Type", dataFactory: this.itemTypeRequestDataFactory, defaultValue: item.type },
+                                {
+                                    id: "productResources",
+                                    name: "ProductResources",
+                                    sub_entries: [
+                                        { id: "ProductResources_resource_externalId", name: "ResourceExternalId", type: "asyncRelatedDropdown", placeholder: "Resource", dataFactory: this.resourceRequestDataFactory },
+                                        { id: "ProductResources_count", name: "Count", type: "text", placeholder: "Count" }
+                                    ],
+                                    defaultValue: item.productResources,
+                                    type: "relatedMany",
+                                    placeholder: "Resources"
+                                }
                             ]
                         }
                     },
