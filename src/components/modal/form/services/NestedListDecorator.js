@@ -30,7 +30,7 @@ class NestedListRetriever {
                 });
 
                 if (foundedElement) {
-                    const [foundedKey, foundedValues] = foundedElement;
+                    const [, foundedValues] = foundedElement;
                     foundedValues.push([nested, value])
                 }
                 else {
@@ -57,7 +57,7 @@ class NestedListRetriever {
                 });
 
                 if (foundedElement) {
-                    const [foundedKey, foundedValues] = foundedElement;
+                    const [, foundedValues] = foundedElement;
                     foundedValues.push([key, value])
                 }
                 else {
@@ -69,13 +69,13 @@ class NestedListRetriever {
 
 
             const list = nestesdRawList.map((item, index, array) => {
-                const [key, object] = array[index];
+                const [, object] = array[index];
                 return Object.fromEntries(object)
             });
             this.body[key] = list;
 
             nestedEntries.forEach((item) => {                
-                const [key, value] = item;
+                const [key, ] = item;
                 delete this.body[key];
             });
         }

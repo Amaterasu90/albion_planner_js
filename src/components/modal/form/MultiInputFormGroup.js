@@ -28,7 +28,7 @@ class MultiInputFormGroup extends React.Component {
             let currrent = Object.assign({}, input);
             if (defaultValue) {
                 const entity = input.id.split('_');
-                const [listName, entityName, entityField] = entity;
+                const [, entityName, entityField] = entity;
                 if (!entityField) {
                     const entityField = entityName;
                     const value = defaultValue[entityField];
