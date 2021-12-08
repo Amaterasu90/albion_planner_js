@@ -24,7 +24,7 @@ class MultiInputFormGroup extends React.Component {
     addEntry = (entry, defaultValue) => {
         let currentEntry = entry;
         let currentEntries = this.state.entries;
-        currentEntry = currentEntry.map((input) => {
+        currentEntry = currentEntry.map((input, index) => {
             let currrent = Object.assign({}, input);
             if (defaultValue) {
                 const entity = input.id.split('_');
@@ -44,6 +44,7 @@ class MultiInputFormGroup extends React.Component {
             }
             currrent.id = `${this.props.name}.list.${currrent.id}_${currentEntries.length}`
             currrent.name = `${this.props.name}.list.${currrent.name}_${currentEntries.length}`
+            currrent.key = `${this.props.name}_${index}`
             return currrent;
         })
         currentEntries.push(currentEntry);
@@ -57,22 +58,22 @@ class MultiInputFormGroup extends React.Component {
     }
 
     render() {
-        var inputs = this.state.entries.map((entry) => <Row className="pb-2">{entry.map((input) => {
-            return this.props.getInputs(input, false, entry.length)
+        var inputs = this.state.entries.map((entry, index) => <Row key={`input_set_${index}`} className="pb-2">{entry.map((input, index_1) => {
+            return this.props.getInputs(input, false, entry.length, index, index_1)
         })}</Row>);
-        let button = inputs.length >= 1 ? <Button variant="secondary" className="btn-lg btn-block" style={{ "width": "100%" }} disabled>Delete</Button> : <Button variant="danger" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => this.removeEntry()}>Delete</Button>
+        let button = inputs.length <= 1 ? <Button key={"button_secondary"} variant="secondary" className="btn-lg btn-block" style={{ "width": "100%" }} disabled>Delete</Button> : <Button key={"button_danger"} variant="danger" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => this.removeEntry()}>Delete</Button>
         return <>
             <Row>
-                <FormLabel>{this.props.placeholder}</FormLabel>
+                <FormLabel key={"label_for_multiple"}>{this.props.placeholder}</FormLabel>
             </Row>
-            <Row className="pb-2 d-flex justify-content-center">
+            <Row key={"container_inputs"} className="pb-2 d-flex justify-content-center">
                 {inputs}
             </Row>
-            <Row className="d-flex justify-content-center">
+            <Row key={"container_inputs_more"} className="d-flex justify-content-center">
                 <Col md={6}>
-                    <Button variant="success" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => this.addEntry([...this.props.sub_entries])} >Add</Button>
+                    <Button key={"button_more"} variant="success" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => this.addEntry([...this.props.sub_entries])} >Add</Button>
                 </Col>
-                <Col md={6}>
+                <Col key={"button_actions_container"} md={6}>
                     {button}
                 </Col>
             </Row>
