@@ -60,7 +60,7 @@ class MultiInputFormGroup extends React.Component {
         var inputs = this.state.entries.map((entry) => <Row className="pb-2">{entry.map((input) => {
             return this.props.getInputs(input, false, entry.length)
         })}</Row>);
-        let button = inputs.length === 1 ? <Button variant="secondary" className="btn-lg btn-block" style={{ "width": "100%" }} disabled>Delete</Button> : <Button variant="danger" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => this.removeEntry()}>Delete</Button>
+        let button = inputs.length >= 1 ? <Button variant="secondary" className="btn-lg btn-block" style={{ "width": "100%" }} disabled>Delete</Button> : <Button variant="danger" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => this.removeEntry()}>Delete</Button>
         return <>
             <Row>
                 <FormLabel>{this.props.placeholder}</FormLabel>
