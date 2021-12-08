@@ -35,7 +35,7 @@ class ApiActions extends React.Component {
 
     render() {
         let group;
-        if (this.props.related.properties.some((item) => (item != null && Array.isArray(item) && item.length >= 1) || (item != null && !Array.isArray(item) && item !== '[]'))) {
+        if (this.props.related.containsRelatedElements) {
             group = (<OverlayTrigger
                 placement="right"
                 delay={{ show: 250, hide: 400 }}
