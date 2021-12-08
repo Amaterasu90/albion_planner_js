@@ -28,7 +28,7 @@ class ApiActionColumnFactory {
                             show={false}
                             formFields={formFields(item)}
                             related={relatedFields(item)}
-                            submit={submit} />
+                            submit={submit}/>
                     </Row>
                 </Container>)
             }));

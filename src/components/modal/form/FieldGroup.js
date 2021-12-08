@@ -12,17 +12,17 @@ class FieldGroup extends React.Component {
         this.columnFullSize = 12;
     }    
 
-    getInputs = (props, addRow, countEmelentsInLine) => {
+    getInputs = (props, addRow, countEmelentsInLine, index, index_1) => {
         let input;
         let size = this.columnFullSize / countEmelentsInLine;
         if (props.type === "range") {
-            input = (<FormRange {...props} />)
+            input = (<FormRange key={`${props.id}_${index}_${index_1}`} {...props} />)
         } else if (props.type === "asyncRelatedDropdown") {
-            input = (<RelatedAsyncSelect size={size} {...props} />)
+            input = (<RelatedAsyncSelect key={`${props.id}_${index}_${index_1}`} size={size} {...props} />)
         } else if (props.type === "relatedMany") {
-            input = (<MultiInputFormGroup getInputs={this.getInputs} {...props} />)
+            input = (<MultiInputFormGroup key={`${props.id}_${index}_${index_1}`} getInputs={this.getInputs} {...props} />)
         } else {
-            input = (<Col md={size}><FormControl {...props} /></Col>)
+            input = (<Col md={size}><FormControl key={`${props.id}_${index}_${index_1}`} {...props} /></Col>)
         }
 
         return addRow === true ? <Row className="pb-2 d-flex justify-content-center" > {input} </Row > : input;
@@ -30,7 +30,7 @@ class FieldGroup extends React.Component {
 
     render() {
         return <FormGroup>
-            {this.getInputs(this.props, true, 1)}
+            {this.getInputs(this.props, true, 1, 0, 0)}
         </FormGroup>
     }
 }

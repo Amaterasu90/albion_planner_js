@@ -10,8 +10,8 @@ import paginationFactory, {
 import overlayFactory from 'react-bootstrap-table2-overlay';
 
 const NoDataIndication = () => (
-    <div className="d-flex justify-content-center text-dark">
-        <div className="spinner-border" role="status" />
+    <div className="d-flex justify-content-center text-dark" key={"spinner_container"}>
+        <div className="spinner-border" role="status" key={"spinner"} />
     </div>
 );
 
@@ -20,8 +20,6 @@ const EmptyTable = () => (
 );
 
 class CrudComponent extends React.Component {
-    _isMounted = false;
-
     constructor(props) {
         super(props);
         let data = [];
@@ -34,12 +32,13 @@ class CrudComponent extends React.Component {
             data: data,
             columns: this.props.columnsFactory.createColumns(data, this.props.propertyDefinitions),
             page: 1,
-            sizePerPage: 5
+            sizePerPage: 5,
+            isMounted: false
         };
     }
 
     componentDidMount = () => {
-        this._isMounted = true;
+        this.setState({isMounted: true});
         this.loadDefaultData();
     }
 
@@ -51,7 +50,7 @@ class CrudComponent extends React.Component {
     }
 
     componentWillUnmount() {
-        this._isMounted = false;
+        this.setState({isMounted: false});
     }
 
     loadDefaultData = () => {

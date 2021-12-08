@@ -18,12 +18,13 @@ class RelatedAsyncSelect extends React.Component {
     };
 
     mapOptionsToValues = (entities) => {
-        return entities.map((entity) => this.mapOptionToValue(entity));
+        return entities.map((entity,index) => this.mapOptionToValue(entity, index));
     };
 
-    mapOptionToValue = (entity) => ({
+    mapOptionToValue = (entity, index) => ({
         value: entity.externalId,
-        label: entity.name
+        label: entity.name,
+        key: index
     });
 
     getOptions = (inputValue, callback) => {

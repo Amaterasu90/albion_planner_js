@@ -39,35 +39,36 @@ class ApiActions extends React.Component {
             group = (<OverlayTrigger
                 placement="right"
                 delay={{ show: 250, hide: 400 }}
-                overlay={(props) => (<Tooltip id="button-tooltip" {...props}>{this.props.tooltipText}</Tooltip>)}>
-                <ToggleButtonGroup type="checkbox" className="mb-2">
-                    <ToggleButton id="tbg-check-1" className="btn-success" onClick={this.handleOpen}>
+                overlay={(props) => (<Tooltip key={"button-tooltip"} id="button-tooltip" {...props}>{this.props.tooltipText}</Tooltip>)}>
+                <ToggleButtonGroup key={"checkbox"} type="checkbox" className="mb-2">
+                    <ToggleButton key={"tbg-check-1"} id="tbg-check-1" className="btn-success" onClick={this.handleOpen}>
                         {this.props.editBtnText}
                     </ToggleButton>
-                    <ToggleButton id="tbg-check-2" className="btn-secondary" disabled>
+                    <ToggleButton key={"tbg-check-2"} id="tbg-check-2" className="btn-secondary" disabled>
                         {this.props.deleteBtnText}
                     </ToggleButton>
                 </ToggleButtonGroup>
             </OverlayTrigger>);
         } else {
             group = (
-                <ToggleButtonGroup type="checkbox" className="mb-2">
-                    <ToggleButton id="tbg-check-1" className="btn-success" onClick={this.handleOpen}>
+                <ToggleButtonGroup key={"checkbox"} type="checkbox" className="mb-2">
+                    <ToggleButton key={"tbg-check-1"} id="tbg-check-1" className="btn-success" onClick={this.handleOpen}>
                         {this.props.editBtnText}
                     </ToggleButton>
-                    <ToggleButton id="tbg-check-2" className="btn-danger" onClick={this.delete}>
+                    <ToggleButton key={"tbg-check-2"} id="tbg-check-2" className="btn-danger" onClick={this.delete}>
                         {this.props.deleteBtnText}
                     </ToggleButton>
                 </ToggleButtonGroup>);
         }
-        return <Col key={this.props.item.externalId}>
+        return <Col>
             {group}
-            <Modal show={this.state.show} onHide={this.handleClose} centered>
+            <Modal key={"modal_window"} show={this.state.show} onHide={this.handleClose} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>{this.props.headerTitle}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <ApiForm
+                        key={this.props.item.externalId}
                         requestData={this.props.requestData}
                         handleClose={this.handleClose}
                         submit={this.props.submit}
