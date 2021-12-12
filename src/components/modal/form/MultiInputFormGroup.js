@@ -16,7 +16,7 @@ class MultiInputFormGroup extends React.Component {
             defaultValues = JSON.parse(defaultValuesJson);
             defaultValues.forEach((defaultValue) => this.addEntry([...this.props.sub_entries], defaultValue));
         }
-        else {
+        else if(!this.props.optional){
             this.addEntry([...this.props.sub_entries]);
         }
     }

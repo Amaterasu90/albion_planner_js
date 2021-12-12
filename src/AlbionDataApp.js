@@ -19,6 +19,8 @@ class AlbionDataApp extends React.Component {
             requestDataFactory);
         this.productTypeRequestDataFactory = new CrudRequestDataFactory("product/type",
             requestDataFactory);
+        this.productRequestDataFactory = new CrudRequestDataFactory("product",
+            requestDataFactory);
         this.resourceTypeRequestDataFactory = new CrudRequestDataFactory("resource/type",
             requestDataFactory);
         this.resourceRequestDataFactory = new CrudRequestDataFactory("resource",
@@ -378,14 +380,16 @@ class AlbionDataApp extends React.Component {
                     propertyDefinitions:
                         [
                             { id: "externalId", name: "External Id", width: "0%", hidden: true },
-                            { id: "name", name: "Name", width: "49%" },
+                            { id: "name", name: "Name", width: "1%" },
                             { id: "artifact", name: "Artifact", width: "1%" },
-                            { id: "journal", name: "Journal", width: "5%" },
+                            { id: "journal", name: "Journal", width: "1%" },
                             { id: "type", name: "Type", width: "1%" },
                             { id: "tier", name: "Tier", width: "1%" },
                             { id: "enhancement", name: "Enhancement", width: "1%" },
-                            { id: "craftFame", name: "Craft Fame", width: "10%" },
+                            { id: "craftFame", name: "Craft Fame", width: "1%" },
                             { id: "productMaterials", name: "Product Materials", width: "1%" },
+                            { id: "productResources", name: "Product Resources", width: "1%" },
+                            { id: "subProduct", name: "Sub Product", width: "1%" },
                             { id: "actions", name: "Actions", width: "1%" },
                         ],
                     createFormFields:
@@ -394,9 +398,10 @@ class AlbionDataApp extends React.Component {
                             { id: "tier", name: "Tier", type: "range", placeholder: "Tier", defaultValue: 4, min: 1, max: 8, step: 1 },
                             { id: "enhancement", name: "Enhancement", type: "range", placeholder: "Enhancement", defaultValue: 0, min: 0, max: 3, step: 1 },
                             { id: "craftFame", name: "CraftFame", type: "range", placeholder: "Fame", defaultValue: 1200, min: 800, max: 50000, step: 100 },
-                            { id: "artifactExternalId", name: "ArtifactExternalId", type: "asyncRelatedDropdown", placeholder: "Artifact", dataFactory: this.artifactRequestDataFactory },
                             { id: "journalExternalId", name: "JournalExternalId", type: "asyncRelatedDropdown", placeholder: "Journal", dataFactory: this.journalRequestDataFactory },
-                            { id: "productTypeExternalId", name: "ProductTypeExternalId", type: "asyncRelatedDropdown", placeholder: "Product Type", dataFactory: this.productTypeRequestDataFactory },
+                            { id: "productTypeExternalId", name: "ProductTypeExternalId", type: "asyncRelatedDropdown", placeholder: "Product Type", dataFactory: this.productTypeRequestDataFactory },                            
+                            { id: "artifactExternalId", name: "ArtifactExternalId", type: "asyncRelatedDropdown", placeholder: "Artifact", dataFactory: this.artifactRequestDataFactory, optional: true },
+                            { id: "subProductExternalId", name: "SubProductExternalId", type: "asyncRelatedDropdown", placeholder: "Sub Product", dataFactory: this.productRequestDataFactory, optional: true },
                             {
                                 id: "productMaterials",
                                 name: "ProductMaterials",
@@ -405,7 +410,19 @@ class AlbionDataApp extends React.Component {
                                     { id: "ProductMaterials_count", name: "Count", type: "text", placeholder: "Count" }
                                 ],
                                 type: "relatedMany",
-                                placeholder: "Materials"
+                                placeholder: "Materials",
+                                optional: true
+                            },
+                            {
+                                id: "productResources",
+                                name: "ProductResources",
+                                sub_entries: [
+                                    { id: "ProductResources_resource_externalId", name: "ResourceExternalId", type: "asyncRelatedDropdown", placeholder: "Resource", dataFactory: this.resourceRequestDataFactory },
+                                    { id: "ProductResources_count", name: "Count", type: "text", placeholder: "Count" }
+                                ],
+                                type: "relatedMany",
+                                placeholder: "Resources",
+                                optional: true
                             }
                         ],
                     editFormFields: (item) => {
@@ -416,9 +433,10 @@ class AlbionDataApp extends React.Component {
                                 { id: "tier", name: "tier", type: "range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
                                 { id: "enhancement", name: "Enhancement", type: "range", placeholder: "Enhancement", defaultValue: item.enhancement, min: 0, max: 3, step: 1 },
                                 { id: "craftFame", name: "CraftFame", type: "range", placeholder: "Fame", defaultValue: item.craftFame, min: 800, max: 50000, step: 100 },
-                                { id: "artifactExternalId", name: "ArtifactExternalId", type: "asyncRelatedDropdown", placeholder: "Artifact", dataFactory: this.artifactRequestDataFactory, defaultValue: item.artifact },
                                 { id: "journalExternalId", name: "JournalExternalId", type: "asyncRelatedDropdown", placeholder: "Journal", dataFactory: this.journalRequestDataFactory, defaultValue: item.journal },
-                                { id: "productTypeExternalId", name: "ProductTypeExternalId", type: "asyncRelatedDropdown", placeholder: "Product Type", dataFactory: this.productTypeRequestDataFactory, defaultValue: item.type },
+                                { id: "productTypeExternalId", name: "ProductTypeExternalId", type: "asyncRelatedDropdown", placeholder: "Product Type", dataFactory: this.productTypeRequestDataFactory, defaultValue: item.type },                                
+                                { id: "artifactExternalId", name: "ArtifactExternalId", type: "asyncRelatedDropdown", placeholder: "Artifact", dataFactory: this.artifactRequestDataFactory, defaultValue: item.artifact, optional: true },
+                                { id: "subProductExternalId", name: "SubProductExternalId", type: "asyncRelatedDropdown", placeholder: "Sub Product", dataFactory: this.productRequestDataFactory, defaultValue: item.subProduct, optional: true  },                                
                                 {
                                     id: "productMaterials",
                                     name: "ProductMaterials",
@@ -428,7 +446,20 @@ class AlbionDataApp extends React.Component {
                                     ],
                                     defaultValue: item.productMaterials,
                                     type: "relatedMany",
-                                    placeholder: "Materials"
+                                    placeholder: "Materials",
+                                    optional: true
+                                },
+                                {
+                                    id: "productResources",
+                                    name: "ProductResources",
+                                    sub_entries: [
+                                        { id: "ProductResources_resource_externalId", name: "ResourceExternalId", type: "asyncRelatedDropdown", placeholder: "Resource", dataFactory: this.resourceRequestDataFactory },
+                                        { id: "ProductResources_count", name: "Count", type: "text", placeholder: "Count" }
+                                    ],
+                                    defaultValue: item.productResources,
+                                    type: "relatedMany",
+                                    placeholder: "Resources",
+                                    optional: true
                                 }
                             ]
                         }

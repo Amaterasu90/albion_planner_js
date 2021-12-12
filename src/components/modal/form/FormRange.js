@@ -25,7 +25,6 @@ class FormRange extends React.Component {
                         <Form.Range {...this.props} defaultValue={this.state.current} onChange={this.changeValue} />
                     </Col>
                 </Row>
-
         </>;
     }
 }

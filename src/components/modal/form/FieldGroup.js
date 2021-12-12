@@ -4,13 +4,14 @@ import FormRange from "./FormRange";
 import RelatedAsyncSelect from "./RelatedAsyncSelect";
 import { Row, Col } from "react-bootstrap";
 import MultiInputFormGroup from "./MultiInputFormGroup";
+import { Accordion } from "react-bootstrap";
 
 class FieldGroup extends React.Component {
     constructor(props) {
         super(props);
-        
+
         this.columnFullSize = 12;
-    }    
+    }
 
     getInputs = (props, addRow, countEmelentsInLine, index, index_1) => {
         let input;
@@ -29,9 +30,22 @@ class FieldGroup extends React.Component {
     }
 
     render() {
-        return <FormGroup>
-            {this.getInputs(this.props, true, 1, 0, 0)}
-        </FormGroup>
+        if (this.props.optional) {
+            return <Accordion defaultActiveKey="0" flush>
+                <Accordion.Item eventKey={this.props.placeholder}>
+                    <Accordion.Header>{`${this.props.placeholder} (optional)`}</Accordion.Header>
+                    <Accordion.Body className="px-0">
+                        <FormGroup>
+                            {this.getInputs(this.props, true, 1, 0, 0)}
+                        </FormGroup>
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion>
+        } else {
+            return <FormGroup>
+                {this.getInputs(this.props, true, 1, 0, 0)}
+            </FormGroup>
+        }
     }
 }
 
