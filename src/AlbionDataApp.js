@@ -6,11 +6,8 @@ import ApiActionColumnFactory from './factories/ApiActionColumnFactory';
 import RequestDataFactory from './factories/RequestDataFactory';
 import CrudRequestDataFactory from './factories/CrudRequestDataFactory';
 import NavbarComponent from './components/navigation/NavbarComponent';
-import { Col, Row, Button } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
-import { Accordion } from 'react-bootstrap';
-import { Card } from 'react-bootstrap';
-import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 
 class AlbionDataApp extends React.Component {
     constructor(props) {
