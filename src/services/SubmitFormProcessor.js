@@ -10,8 +10,7 @@ class SubmitFormProcessor {
         this.failedCallback = failedCallback;
     }
 
-    process = (submitContext) => {  
-        debugger;      
+    process = (submitContext) => {
         const data = new FormData(submitContext.target);
         const body = Object.fromEntries(data.entries());
         let entries = Object.entries(body);

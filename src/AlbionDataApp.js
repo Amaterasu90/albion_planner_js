@@ -6,8 +6,11 @@ import ApiActionColumnFactory from './factories/ApiActionColumnFactory';
 import RequestDataFactory from './factories/RequestDataFactory';
 import CrudRequestDataFactory from './factories/CrudRequestDataFactory';
 import NavbarComponent from './components/navigation/NavbarComponent';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Button } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
+import { Accordion } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
+import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 
 class AlbionDataApp extends React.Component {
     constructor(props) {
@@ -399,7 +402,7 @@ class AlbionDataApp extends React.Component {
                             { id: "enhancement", name: "Enhancement", type: "range", placeholder: "Enhancement", defaultValue: 0, min: 0, max: 3, step: 1 },
                             { id: "craftFame", name: "CraftFame", type: "range", placeholder: "Fame", defaultValue: 1200, min: 800, max: 50000, step: 100 },
                             { id: "journalExternalId", name: "JournalExternalId", type: "asyncRelatedDropdown", placeholder: "Journal", dataFactory: this.journalRequestDataFactory },
-                            { id: "productTypeExternalId", name: "ProductTypeExternalId", type: "asyncRelatedDropdown", placeholder: "Product Type", dataFactory: this.productTypeRequestDataFactory },                            
+                            { id: "productTypeExternalId", name: "ProductTypeExternalId", type: "asyncRelatedDropdown", placeholder: "Product Type", dataFactory: this.productTypeRequestDataFactory },
                             { id: "artifactExternalId", name: "ArtifactExternalId", type: "asyncRelatedDropdown", placeholder: "Artifact", dataFactory: this.artifactRequestDataFactory, optional: true },
                             { id: "subProductExternalId", name: "SubProductExternalId", type: "asyncRelatedDropdown", placeholder: "Sub Product", dataFactory: this.productRequestDataFactory, optional: true },
                             {
@@ -434,9 +437,9 @@ class AlbionDataApp extends React.Component {
                                 { id: "enhancement", name: "Enhancement", type: "range", placeholder: "Enhancement", defaultValue: item.enhancement, min: 0, max: 3, step: 1 },
                                 { id: "craftFame", name: "CraftFame", type: "range", placeholder: "Fame", defaultValue: item.craftFame, min: 800, max: 50000, step: 100 },
                                 { id: "journalExternalId", name: "JournalExternalId", type: "asyncRelatedDropdown", placeholder: "Journal", dataFactory: this.journalRequestDataFactory, defaultValue: item.journal },
-                                { id: "productTypeExternalId", name: "ProductTypeExternalId", type: "asyncRelatedDropdown", placeholder: "Product Type", dataFactory: this.productTypeRequestDataFactory, defaultValue: item.type },                                
+                                { id: "productTypeExternalId", name: "ProductTypeExternalId", type: "asyncRelatedDropdown", placeholder: "Product Type", dataFactory: this.productTypeRequestDataFactory, defaultValue: item.type },
                                 { id: "artifactExternalId", name: "ArtifactExternalId", type: "asyncRelatedDropdown", placeholder: "Artifact", dataFactory: this.artifactRequestDataFactory, defaultValue: item.artifact, optional: true },
-                                { id: "subProductExternalId", name: "SubProductExternalId", type: "asyncRelatedDropdown", placeholder: "Sub Product", dataFactory: this.productRequestDataFactory, defaultValue: item.subProduct, optional: true  },                                
+                                { id: "subProductExternalId", name: "SubProductExternalId", type: "asyncRelatedDropdown", placeholder: "Sub Product", dataFactory: this.productRequestDataFactory, defaultValue: item.subProduct, optional: true },
                                 {
                                     id: "productMaterials",
                                     name: "ProductMaterials",
@@ -510,7 +513,7 @@ class AlbionDataApp extends React.Component {
                     createFormatHeaderText: "Add new artifact"
                 };
         }
-    }
+    };
 
     render() {
         const { component } = this.state;
@@ -526,7 +529,7 @@ class AlbionDataApp extends React.Component {
                             openJournalsCrud={this.onJournalSelected}
                             openMaterialsCrud={this.onMaterialSelected}
                             openProductsCrud={this.onProductSelected}
-                            openResourcesCrud={this.onResourceSelected} />
+                            openResourcesCrud={this.onResourceSelected} />                        
                     </div>
                 </Col>
                 <Col className="align-self-center">

@@ -8,7 +8,6 @@ class NestedListRetriever {
     }
 
     addNestedList = () => {
-        debugger;
         var nestedEntries = this.entries.filter((entry) => {
             const [name] = entry;
             const condition = name.includes(this.objectTag);
@@ -41,7 +40,7 @@ class NestedListRetriever {
                 return previousValue;
             }, [])
 
-            nested.map((subElement) => {
+            nested.forEach((subElement) => {
                 var [key, values] = subElement;
                 var nestesdRawList = values.reduce((previousValue, currentValue) => {
                     const [name, value] = currentValue;
