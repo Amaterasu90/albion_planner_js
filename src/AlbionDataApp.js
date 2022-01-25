@@ -99,11 +99,13 @@ class AlbionDataApp extends React.Component {
                             { id: "name", name: "Name", width: "49%" },
                             { id: "tier", name: "Tier", width: "1%" },
                             { id: "actions", name: "Actions", width: "1%" },
+                            { id: "artifactType", name: "Type", with: "1%" },
                             { id: "containsRelatedElements", name: "ContainsRelatedElements", width: "0%", hidden: true }
                         ],
                     createFormFields:
                         [
                             { id: "name", name: "Name", type: "text", placeholder: "Name" },
+                            { id: "artifactType", name: "ArtifactType", type: "dropdown", placeholder: "Artifact Type", defaultValue: 1, options: [{ value: 1, text: "Rune" }, { value: 2, text: "Soul" }, { value: 3, text: "Relict" }, { value: 4, text: "Avalonian" }] },
                             { id: "tier", name: "Tier", type: "range", placeholder: "Tier", defaultValue: 4, min: 1, max: 8, step: 1 }
                         ],
                     editFormFields: (item) => {
@@ -111,6 +113,7 @@ class AlbionDataApp extends React.Component {
                             fields: [
                                 { id: "name", name: "Name", type: "text", placeholder: "Name", defaultValue: item.name },
                                 { id: "tier", name: "Tier", type: "range", placeholder: "Tier", defaultValue: item.tier, min: 1, max: 8, step: 1 },
+                                { id: "artifactType", name: "ArtifactType", type: "dropdown", placeholder: "Artifact Type", defaultValue: item.artifactType, options: [{ value: 1, text: "Rune" }, { value: 2, text: "Soul" }, { value: 3, text: "Relict" }, { value: 4, text: "Avalonian" }] },
                                 { id: "externalId", name: "ExternalId", type: "hidden", placeholder: "External Id", defaultValue: item.externalId }
                             ]
                         }
@@ -390,6 +393,8 @@ class AlbionDataApp extends React.Component {
                             { id: "productMaterials", name: "Product Materials", width: "1%" },
                             { id: "productResources", name: "Product Resources", width: "1%" },
                             { id: "subProduct", name: "Sub Product", width: "1%" },
+                            { id: "createdOn", name: "Created On", width: "1%" },
+                            { id: "modifiedOn", name: "Modified On", width: "1%" },
                             { id: "actions", name: "Actions", width: "1%" },
                         ],
                     createFormFields:
@@ -526,7 +531,7 @@ class AlbionDataApp extends React.Component {
                             openJournalsCrud={this.onJournalSelected}
                             openMaterialsCrud={this.onMaterialSelected}
                             openProductsCrud={this.onProductSelected}
-                            openResourcesCrud={this.onResourceSelected} />                        
+                            openResourcesCrud={this.onResourceSelected} />
                     </div>
                 </Col>
                 <Col className="align-self-center">

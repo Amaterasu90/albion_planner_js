@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, FormControl } from "react-bootstrap";
+import { FormGroup, FormControl, FormLabel, FormSelect } from "react-bootstrap";
 import FormRange from "./FormRange";
 import RelatedAsyncSelect from "./RelatedAsyncSelect";
 import { Row, Col } from "react-bootstrap";
@@ -9,15 +9,29 @@ import { Accordion } from "react-bootstrap";
 class FieldGroup extends React.Component {
     constructor(props) {
         super(props);
-
         this.columnFullSize = 12;
+        this.state = {value: props.defaultValue};
+    }
+
+    change = (event) => {
+        this.setState({value: event.target.value})
     }
 
     getInputs = (props, addRow, countEmelentsInLine, index, index_1) => {
         let input;
         let size = this.columnFullSize / countEmelentsInLine;
+
         if (props.type === "range") {
             input = (<FormRange key={`${props.id}_${index}_${index_1}`} {...props} />)
+        } else if (props.type === "dropdown") {
+            input = (<Col md={size}>
+                <FormLabel>{this.props.placeholder}</FormLabel>
+                <FormSelect name={props.name} as="select" id={props.id} key={`${props.id}_dropdown`} value={this.state.value} onChange={this.change}>
+                    {props.options.map((x) => {
+                        return (<option key={`${x.text}_${x.value}`} value={`${x.value}`}>{x.text}</option>);
+                    })}
+                </FormSelect>
+            </Col>)
         } else if (props.type === "asyncRelatedDropdown") {
             input = (<RelatedAsyncSelect key={`${props.id}_${index}_${index_1}`} size={size} {...props} />)
         } else if (props.type === "relatedMany") {
@@ -30,6 +44,7 @@ class FieldGroup extends React.Component {
     }
 
     render() {
+
         if (this.props.optional) {
             return <Accordion defaultActiveKey="0" flush>
                 <Accordion.Item eventKey={this.props.placeholder}>
