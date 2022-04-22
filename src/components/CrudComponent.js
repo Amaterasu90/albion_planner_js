@@ -16,7 +16,7 @@ const NoDataIndication = () => (
 );
 
 const EmptyTable = () => (
-    <p>No data</p>
+    <span>No data</span>
 );
 
 class CrudComponent extends React.Component {

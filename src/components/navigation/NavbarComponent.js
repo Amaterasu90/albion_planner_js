@@ -11,7 +11,7 @@ function CustomToggle({ children, eventKey, callback }) {
     const decoratedOnClick = useAccordionButton(eventKey, () => callback && callback(eventKey));
 
     return (
-        <p className={`nav-link text-light fs-3 p-0 b-0`} style={{ "cursor": "pointer" }} onClick={decoratedOnClick}>{children}</p>
+        <span className={`nav-link text-light fs-3 p-0 b-0`} style={{ "cursor": "pointer" }} onClick={decoratedOnClick}>{children}</span>
     );
 }
 
@@ -70,20 +70,20 @@ class NavbarComponent extends React.Component {
                     <Card className="bg-dark text-white p-0 m-0 border-0">
                         <Card.Header className="bg-dark text-white px-0 m-0 border-0 d-flex flex-column align-items-baseline">
                             <CustomToggle eventKey="menu" nodes={this.state.nodes} className="bg-dark text-white p-0">
-                                <p className={`nav-link text-light fs-3 p-0 b-0`} style={{ "cursor": "pointer" }}>
+                                <span className={`nav-link text-light fs-3 p-0 b-0`} style={{ "cursor": "pointer" }}>
                                     <FontAwesomeIcon icon={faPuzzlePiece} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Items</span>
-                                </p>
+                                </span>
                             </CustomToggle>
                         </Card.Header>
                         <Accordion.Collapse eventKey="menu" className="bg-dark text-white">
                             <Card.Body className="bg-dark d-flex flex-column align-items-baseline p-0">
                                 <Nav className="mb-sm-auto flex-column align-items-baseline">
-                                    <Nav.Item>
-                                        <p className={`nav-link ${this.getColor("0", nodes, "text-success", "text-light")} fs-3 p-0 b-0`} eventKey="0" style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("0", this.props.openArtifactsCrud)}> <FontAwesomeIcon icon={faBookOpen} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Artifacts</span></p>
+                                    {/* <Nav.Item>
+                                        <span className={`nav-link ${this.getColor("0", nodes, "text-success", "text-light")} fs-3 p-0 b-0`} eventKey="0" style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("0", this.props.openArtifactsCrud)}> <FontAwesomeIcon icon={faBookOpen} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Artifacts</span></span>
                                     </Nav.Item>
                                     <Nav.Item>
-                                        <p className={`nav-link ${this.getColor("1", nodes, "text-success", "text-light")} fs-3 p-0 b-0`} eventKey="1" style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("1", this.props.openJournalsCrud)}> <FontAwesomeIcon icon={faBook} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Journals</span></p>
-                                    </Nav.Item>
+                                        <span className={`nav-link ${this.getColor("1", nodes, "text-success", "text-light")} fs-3 p-0 b-0`} eventKey="1" style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("1", this.props.openJournalsCrud)}> <FontAwesomeIcon icon={faBook} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Journals</span></span>
+                                    </Nav.Item> */}
                                     <Nav.Item>
                                         <Accordion className="bg-dark" flush>
                                             <Card className="bg-dark text-white p-0 m-0 border-0">
@@ -94,8 +94,8 @@ class NavbarComponent extends React.Component {
                                                 </Card.Header>
                                                 <Accordion.Collapse eventKey="2" className="bg-dark text-white">
                                                     <Card.Body className="bg-dark d-flex flex-column align-items-baseline p-0">
-                                                        <p className={`nav-link ${this.getColor("2_0", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("2_0", this.props.openResourcesCrud)}> <FontAwesomeIcon icon={faLeaf} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Resources</span></p>
-                                                        <p className={`nav-link ${this.getColor("2_1", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("2_1", this.props.openGatherResourceTypesCrud)}> <FontAwesomeIcon icon={faListAlt} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Types</span></p>
+                                                        <span className={`nav-link ${this.getColor("2_0", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("2_0", this.props.openResourcesCrud)}> <FontAwesomeIcon icon={faLeaf} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Resources</span></span>
+                                                        <span className={`nav-link ${this.getColor("2_1", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("2_1", this.props.openGatherResourceTypesCrud)}> <FontAwesomeIcon icon={faListAlt} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Types</span></span>
                                                     </Card.Body>
                                                 </Accordion.Collapse>
                                                 <Card.Header className="bg-dark text-white px-0 m-0 border-0 d-flex flex-column align-items-baseline">
@@ -105,21 +105,21 @@ class NavbarComponent extends React.Component {
                                                 </Card.Header>
                                                 <Accordion.Collapse eventKey="3" className="bg-dark text-white">
                                                     <Card.Body className="bg-dark d-flex flex-column align-items-baseline p-0">
-                                                        <p className={`nav-link ${this.getColor("3_0", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("3_0", this.props.openMaterialsCrud)}> <FontAwesomeIcon icon={faVial} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Materials</span></p>
-                                                        <p className={`nav-link ${this.getColor("3_1", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("3_1", this.props.openMaterialTypesCrud)}> <FontAwesomeIcon icon={faListAlt} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Types</span></p>
+                                                        <span className={`nav-link ${this.getColor("3_0", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("3_0", this.props.openMaterialsCrud)}> <FontAwesomeIcon icon={faVial} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Materials</span></span>
+                                                        <span className={`nav-link ${this.getColor("3_1", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("3_1", this.props.openMaterialTypesCrud)}> <FontAwesomeIcon icon={faListAlt} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Types</span></span>
                                                     </Card.Body>
                                                 </Accordion.Collapse>
-                                                <Card.Header className="bg-dark text-white px-0 m-0 border-0 d-flex flex-column align-items-baseline">
+                                                {/* <Card.Header className="bg-dark text-white px-0 m-0 border-0 d-flex flex-column align-items-baseline">
                                                     <CustomToggle eventKey="4" nodes={this.state.nodes} className="bg-dark text-white p-0">
                                                         <FontAwesomeIcon icon={faGem} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Products</span>
                                                     </CustomToggle>
-                                                </Card.Header>
-                                                <Accordion.Collapse eventKey="4" className="bg-dark text-white">
+                                                </Card.Header> */}
+                                                {/* <Accordion.Collapse eventKey="4" className="bg-dark text-white">
                                                     <Card.Body className="bg-dark d-flex flex-column align-items-baseline p-0">
-                                                        <p className={`nav-link ${this.getColor("4_0", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("4_0", this.props.openProductsCrud)}> <FontAwesomeIcon icon={faVial} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Products</span></p>
-                                                        <p className={`nav-link ${this.getColor("4_1", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("4_1", this.props.openProductTypesCrud)}> <FontAwesomeIcon icon={faListAlt} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Types</span></p>
+                                                        <span className={`nav-link ${this.getColor("4_0", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("4_0", this.props.openProductsCrud)}> <FontAwesomeIcon icon={faVial} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Products</span></span>
+                                                        <span className={`nav-link ${this.getColor("4_1", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("4_1", this.props.openProductTypesCrud)}> <FontAwesomeIcon icon={faListAlt} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Types</span></span>
                                                     </Card.Body>
-                                                </Accordion.Collapse>
+                                                </Accordion.Collapse> */}
                                             </Card>
                                         </Accordion>
                                     </Nav.Item>

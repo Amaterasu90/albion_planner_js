@@ -13,10 +13,11 @@ class AsyncTableDataProvider {
                     const currentIndex = (context.state.page - 1) * context.state.sizePerPage;
                     if (context.state.isMounted) {
                         var sliceData = current.slice(currentIndex, currentIndex + context.state.sizePerPage);
+                        var columns = props.columnsFactory.createColumns(sliceData, props.propertyDefinitions)
                         context.setState(() => ({
                             items: current,
                             data: sliceData,
-                            columns: props.columnsFactory.createColumns(sliceData, props.propertyDefinitions),
+                            columns: columns,
                             isLoaded: true,
                             loading: false,
                         }));
