@@ -6,15 +6,15 @@ import { Row, Col } from "react-bootstrap";
 import MultiInputFormGroup from "./MultiInputFormGroup";
 import { Accordion } from "react-bootstrap";
 
-class FieldGroup extends React.Component {
+class DetailsFieldGroup extends React.Component {
     constructor(props) {
         super(props);
         this.columnFullSize = 12;
-        this.state = {value: props.defaultValue};
+        this.state = { value: props.defaultValue };
     }
 
     change = (event) => {
-        this.setState({value: event.target.value})
+        this.setState({ value: event.target.value })
     }
 
     getInputs = (props, addRow, countEmelentsInLine, index, index_1) => {
@@ -33,11 +33,16 @@ class FieldGroup extends React.Component {
                 </FormSelect>
             </Col>)
         } else if (props.type === "asyncRelatedDropdown") {
-            input = (<RelatedAsyncSelect key={`${props.id}_${index}_${index_1}`} size={size} {...props} />)
+            input = (<RelatedAsyncSelect key={`${props.id}_${index}_${index_1}_related`} size={size} {...props} />)
+        } else if (props.type === "asyncRelatedDropdownLabeled") {
+            input = (<Col md={size}>
+                <FormLabel>{this.props.placeholder}</FormLabel>
+                <RelatedAsyncSelect key={`${props.id}_${index}_${index_1}_related`} size={size} {...props} />
+            </Col>)
         } else if (props.type === "relatedMany") {
-            input = (<MultiInputFormGroup key={`${props.id}_${index}_${index_1}`} getInputs={this.getInputs} {...props} />)
+            input = (<MultiInputFormGroup key={`${props.id}_${index}_${index_1}_group`} getInputs={this.getInputs} {...props} disableButtons={true} />)
         } else {
-            input = (<Col md={size}><FormControl key={`${props.id}_${index}_${index_1}`} {...props} /></Col>)
+            input = (<Col md={size}><FormControl key={`${props.id}_${index}_${index_1}_form`} {...props} /></Col>)
         }
 
         return addRow === true ? <Row className="pb-2 d-flex justify-content-center" > {input} </Row > : input;
@@ -64,4 +69,4 @@ class FieldGroup extends React.Component {
     }
 }
 
-export default FieldGroup;
+export default DetailsFieldGroup;

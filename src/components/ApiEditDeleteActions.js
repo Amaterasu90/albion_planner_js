@@ -3,7 +3,7 @@ import { Col, ToggleButtonGroup, ToggleButton, Modal, Tooltip, OverlayTrigger } 
 import ApiForm from "./modal/form/ApiForm";
 import FormFieldsGroupsFactory from "../factories/FormFieldsGroupsFactory";
 
-class ApiActions extends React.Component {
+class ApiEditDeleteActions extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -73,7 +73,7 @@ class ApiActions extends React.Component {
                         handleClose={this.handleClose}
                         submit={this.props.submit}
                         fieldFactory={new FormFieldsGroupsFactory()}
-                        fields={this.props.formFields.fields}
+                        fields={this.props.editFormFields.fields}
                         page={this.props.page}
                         sizePerPage={this.props.sizePerPage} />
                 </Modal.Body>
@@ -82,4 +82,4 @@ class ApiActions extends React.Component {
     }
 }
 
-export default ApiActions;
+export default ApiEditDeleteActions;

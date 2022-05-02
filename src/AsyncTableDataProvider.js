@@ -8,12 +8,12 @@ class AsyncTableDataProvider {
             .then(
                 (result) => {
                     var decorator = new VisualisationDecorator(result);
-                    decorator.addAllowShowComplexData();
-                    let current = props.actionFactory.addActions(result, props.editFormFields, props.deleteRelatedFields, context.state.page, context.state.sizePerPage, context.handleOnTableChange);
+                    decorator.addAllowShowComplexData(props.propertyDefinitions);
+                    let current = props.actionFactory.addActionsWithContent(result, props.actionsContent);
                     const currentIndex = (context.state.page - 1) * context.state.sizePerPage;
                     if (context.state.isMounted) {
                         var sliceData = current.slice(currentIndex, currentIndex + context.state.sizePerPage);
-                        var columns = props.columnsFactory.createColumns(sliceData, props.propertyDefinitions)
+                        var columns = props.columnsFactory.createColumns(props.propertyDefinitions)
                         context.setState(() => ({
                             items: current,
                             data: sliceData,

@@ -4,8 +4,8 @@ import SubmitFormProcessor from "../../../services/SubmitFormProcessor";
 
 class ApiForm extends React.Component {
     submit = (e) => {
-        e.preventDefault();        
-        const processor = new SubmitFormProcessor(".list.", "_", '.', this.props, this.submitSuccess, this.submitFailed);
+        e.preventDefault();
+        const processor = new SubmitFormProcessor(".list.", "_", '.', this.props, this.submitSuccess, this.submitFailed, '.');
         processor.process(e);
     }
 

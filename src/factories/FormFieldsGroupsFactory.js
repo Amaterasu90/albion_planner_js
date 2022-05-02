@@ -1,8 +1,8 @@
-import FieldGroup from "../components/modal/form/FieldGroup"
+import FormFieldGroup from "../components/modal/form/FormFieldGroup"
 
 class FormFieldsGroupsFactory {
     create(list){
-        return list.map(({...field},index) => (<FieldGroup key={index} {...field}/>));
+        return list.map(({...field},index) => (<FormFieldGroup key={index} {...field}/>));
     }
 }
 

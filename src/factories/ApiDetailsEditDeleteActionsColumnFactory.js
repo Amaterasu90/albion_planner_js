@@ -1,32 +1,37 @@
 import { Row, Container } from "react-bootstrap";
-import ApiActions from "../components/ApiActions";
+import ApiDetailsEditDeleteActions from "../components/ApiDetailsEditDeleteActions";
 
-class ApiActionColumnFactory {
-    constructor(requestDataFactory, editHeaderText, tooltipText) {
+class ApiDetailsEditDeleteActionsColumnFactory {
+    constructor(requestDataFactory, editHeaderText, detailsHeaderText, tooltipText) {
         this.requestDataFactory = requestDataFactory;
         this.editHeaderText = editHeaderText;
+        this.detailsHeaderText = detailsHeaderText;
         this.tooltipText = tooltipText;
     }
 
-    addActions = (items, formFields, relatedFields, page, sizePerPage, submit) => {
+    addActions = (items, editFormFields, detailsFormFields, relatedFields, page, sizePerPage, submit) => {
         return items.map(
             (item) => ({
                 ...item, actions: (<Container key={`container_${item.externalId}`} fluid>
                     <Row key={`row_${item.externalId}`}>
-                        <ApiActions
+                        <ApiDetailsEditDeleteActions
                             key={`apiAction_${item.externalId}`}
                             item={item}
                             tooltipText={this.tooltipText}
-                            headerTitle={this.editHeaderText}
+                            editHeaderTitle={this.editHeaderText}
+                            detailsHeaderTitle={this.detailsHeaderText}
                             editBtnText="Edit"
                             deleteBtnText="Delete"
-                            requestData={this.requestDataFactory.createPut()}
+                            detailsBtnText="Details"
+                            updateRequestData={this.requestDataFactory.createPut()}
+                            detailsRequestData={this.requestDataFactory.createGetDetails(item.externalId)}
                             deleteRequestData={this.requestDataFactory.createDelete(item.externalId)}
                             externalId={item.externalId}
                             page={page}
                             sizePerPage={sizePerPage}
                             show={false}
-                            formFields={formFields(item)}
+                            editFormFields={editFormFields(item)}
+                            detailsFormFields={detailsFormFields(item)}
                             related={relatedFields(item)}
                             submit={submit}/>
                     </Row>
@@ -35,4 +40,4 @@ class ApiActionColumnFactory {
     }
 }
 
-export default ApiActionColumnFactory;
+export default ApiDetailsEditDeleteActionsColumnFactory;

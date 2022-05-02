@@ -1,13 +1,22 @@
 class VisualisationDecorator {
-    constructor(data){
+    constructor(data) {
         this.data = data;
     }
 
-    addAllowShowComplexData(){
+    addAllowShowComplexData(definitions) {
         this.data = this.data.map((item) => {
-            const keys = Object.keys(item);
-            for (const key of keys) {
-                item[key] = item[key] !== null && item[key] !== 'undefined' && (typeof item[key] === 'object' || Array.isArray(item[key])) ? JSON.stringify(item[key]) : item[key];
+            for (const definition of definitions) {
+                item[definition.id] = item[definition.id] !== null && item[definition.id] !== 'undefined' && (typeof item[definition.id] === 'object' || Array.isArray(item[definition.id]))
+                    ? JSON.stringify(item[definition.id])
+                    : item[definition.id];
+
+                if (definition.selectDescriptor != null) {
+                    item[definition.id] = definition.selectDescriptor(JSON.parse(item[definition.id]));
+                }
+
+                if (definition.combineDescriptor != null) {
+                    item[definition.id] = definition.combineDescriptor(item);
+                }
             }
 
             return item;

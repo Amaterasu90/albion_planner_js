@@ -4,11 +4,10 @@ import AlbionDataApp from './AlbionDataApp';
 import AsyncTableDataProvider from './AsyncTableDataProvider';
 
 function App() {
-  const provider = new AsyncTableDataProvider();
   return (
     <div className="App">
       <header className="App-header">
-        <AlbionDataApp provider={provider} />
+        <AlbionDataApp />
       </header >
     </div >
   );

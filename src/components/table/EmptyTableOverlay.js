@@ -38,7 +38,7 @@ class EmptyTableOverlay extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    let current = this.props.actionFactory.addActions(result, this.props.editFormFields, this.props.deleteRelatedFields, this.getPaginableItems);
+                    let current = this.props.actionFactory.addActions(result, this.props.editFormFields, this.props.detailsFormFields, this.props.deleteRelatedFields, this.getPaginableItems);
 
                     const currentIndex = (page - 1) * sizePerPage;
                     this.setState(() => ({

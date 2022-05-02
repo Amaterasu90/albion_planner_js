@@ -18,7 +18,7 @@ class RelatedAsyncSelect extends React.Component {
     };
 
     mapOptionsToValues = (entities) => {
-        return entities.map((entity,index) => this.mapOptionToValue(entity, index));
+        return entities.map((entity, index) => this.mapOptionToValue(entity, index));
     };
 
     mapOptionToValue = (entity, index) => ({
@@ -42,20 +42,21 @@ class RelatedAsyncSelect extends React.Component {
     }
 
     handleChange = (option) => {
+        if (this.props.onChangeCustom) {
+            this.props.onChangeCustom(option.value);
+        }
         this.setState({ selectedOption: option });
     }
 
     render() {
-        const defaultValueJson = this.props.defaultValue;
         let input;
-        if (defaultValueJson) {
-            const defaultValue = JSON.parse(defaultValueJson);
-            const { name, externalId } = defaultValue;
+        if (this.props.defaultValue) {
+            const { name, externalId } = this.props.defaultValue;
             input = (<AsyncSelect
                 cacheOptions
                 loadOptions={this.getOptions}
                 defaultOptions
-                value={this.state.selectedOption == null ? { label: name, value: externalId } : this.state.selectedOption}
+                value={this.state.selectedOption == null && name && externalId ? { label: name, value: externalId } : this.state.selectedOption}
                 onInputChange={this.handleInputChange}
                 onChange={this.handleChange}
                 {...this.props}
@@ -66,6 +67,7 @@ class RelatedAsyncSelect extends React.Component {
                 loadOptions={this.getOptions}
                 defaultOptions
                 onInputChange={this.handleInputChange}
+                onChange={this.handleChange}
                 {...this.props}
             />)
         }
