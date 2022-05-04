@@ -9,11 +9,12 @@ import NavbarComponent from './components/navigation/NavbarComponent';
 import { Col, Row } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
 import ApiDetailsEditDeleteActionsColumnFactory from './factories/ApiDetailsEditDeleteActionsColumnFactory'
-import Recipe from './views/material/Recipe';
-import Material from './views/material/Material';
-import MaterialType from './views/material/MaterialType';
-import Resource from './views/resource/Resource';
-import ResourceType from './views/resource/ResourceType';
+import Recipe from './views/items/material/Recipe';
+import Material from './views/items/material/Material';
+import MaterialType from './views/items/material/MaterialType';
+import Resource from './views/items/resource/Resource';
+import ResourceType from './views/items/resource/ResourceType';
+import Refine from './views/deals/Refine';
 
 class AlbionDataApp extends React.Component {
     constructor(props) {
@@ -95,6 +96,12 @@ class AlbionDataApp extends React.Component {
     onRefineRecipeSelected = (e) => {
         this.setState({
             component: "refineRecipe"
+        });
+    }
+
+    openRefineDealSelected = (e) => {
+        this.setState({
+            component: "refineDeal"
         });
     }
 
@@ -386,8 +393,10 @@ class AlbionDataApp extends React.Component {
                 return <Resource />
             case "resourceType":
                 return <ResourceType />;
+            case "refineDeal":
+                return <Refine />
             default:
-                return <p className="text-dark" > Welcome in Albion Planner</p>;
+                return <p className="text-dark">Welcome in Albion Planner</p>;
         }
     }
 
@@ -402,7 +411,8 @@ class AlbionDataApp extends React.Component {
                             openMaterialTypesCrud={this.onMaterialTypeSelected}
                             openMaterialsCrud={this.onMaterialSelected}
                             openResourcesCrud={this.onResourceSelected}
-                            openRecipesCrud={this.onRefineRecipeSelected} />
+                            openRecipesCrud={this.onRefineRecipeSelected}
+                            openRefineDeal={this.openRefineDealSelected} />
                     </div>
                 </Col>
                 <Col className="align-self-center">

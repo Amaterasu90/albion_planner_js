@@ -1,26 +1,33 @@
 import React from "react";
-import FormRange from "../../components/modal/form/FormRange";
-import CrudRequestDataFactory from "../../factories/CrudRequestDataFactory";
-import RequestDataFactory from "../../factories/RequestDataFactory";
-import RelatedAsyncSelect from "../../components/modal/form/RelatedAsyncSelect";
-import ModalFrom from "../../components/modal/form/ModalForm";
+import FormRange from "../../../components/modal/form/FormRange";
+import CrudRequestDataFactory from "../../../factories/CrudRequestDataFactory";
+import RequestDataFactory from "../../../factories/RequestDataFactory";
+import RelatedAsyncSelect from "../../../components/modal/form/RelatedAsyncSelect";
+import ModalFrom from "../../../components/modal/form/ModalForm";
 import { Row, Col, Button, FormControl, Form, Modal, FormLabel } from "react-bootstrap";
-import TableEditDeleteComponent from "../../components/TableEditDeleteComponent";
-import TableColumnFactory from "../../factories/TableColumnFactory";
-import TableOptionsFactory from "../../factories/TableOptionsFactory";
-import AsyncTableDataProvider from "../../AsyncTableDataProvider";
-import ApiEditDeleteActionsColumnFactory from "../../factories/ApiEditDeleteActionsColumnFactory";
-import ActionEditDeleteGroup from "../../components/ActionEditDeleteGroup";
+import TableEditDeleteComponent from "../../../components/TableEditDeleteComponent";
+import TableColumnFactory from "../../../factories/TableColumnFactory";
+import TableOptionsFactory from "../../../factories/TableOptionsFactory";
+import AsyncTableDataProvider from "../../../AsyncTableDataProvider";
+import ApiEditDeleteActionsColumnFactory from "../../../factories/ApiEditDeleteActionsColumnFactory";
+import ActionEditDeleteGroup from "../../../components/ActionEditDeleteGroup";
 
-class MaterialType extends React.Component {
+class Resource extends React.Component {
     constructor(props) {
         super(props);
 
         this.defaultModelCreate = {
+            enhancement: 0,
+            tier: 4,
+            resourceTypeId: "",
             name: ""
         }
 
         this.defaultModelEdit = {
+            externalId: "",
+            enhancement: 0,
+            tier: 0,
+            type: { externalId: "" },
             name: ""
         }
 
@@ -32,16 +39,20 @@ class MaterialType extends React.Component {
             modelEdit: JSON.parse(JSON.stringify(this.defaultModelEdit))
         }
 
-        this.materialTypeDataFactory = new CrudRequestDataFactory("material/type", new RequestDataFactory());
+        this.resourceDataFactory = new CrudRequestDataFactory("resource", new RequestDataFactory());
+        this.resourceTypeDataFactory = new CrudRequestDataFactory("resource/type", new RequestDataFactory());
 
         this.createModalForm = React.createRef();
         this.table = React.createRef();
 
         this.propertyDefinitions = [
-            { id: "externalId", name: "External Id", width: "0%", hidden: true },
-            { id: "name", name: "Name", width: "49%" },
-            { id: "actions", name: "Actions", width: "1%" },
-            { id: "containsRelatedElements", name: "ContainsRelatedElements", width: "0%", hidden: true }
+            { id: "externalId", name: "ExternalId", headerStyle: { width: "0%" }, hidden: true },
+            { id: "name", name: "Name", headerStyle: { width: "49%" } },
+            { id: "tier", name: "Tier", headerStyle: { width: "1%" } },
+            { id: "enhancement", name: "Enhancement", headerStyle: { width: "5%" } },
+            { id: "type", name: "Type", headerStyle: { width: "1%" }, selectDescriptor: (item) => item.name },
+            { id: "actions", name: "Actions", headerStyle: { width: "1%" } },
+            { id: "containsRelatedElements", name: "ContainsRelatedElements", headerStyle: { width: "0%" }, hidden: true }
         ];
         this.columnsFactory = new TableColumnFactory();
         this.optionsFactory = new TableOptionsFactory();
@@ -55,7 +66,7 @@ class MaterialType extends React.Component {
 
     createSubmit = (e) => {
         e.preventDefault();
-        var requestData = this.materialTypeDataFactory.createPost();
+        var requestData = this.resourceDataFactory.createPost();
         const options = requestData.requestOptions;
         options.body = JSON.stringify(this.state.modelCreate);
         const response = fetch(requestData.url, options);
@@ -65,7 +76,7 @@ class MaterialType extends React.Component {
     editSubmit = (e) => {
         e.preventDefault();
         var model = this.state.modelEdit;
-        var requestData = this.materialTypeDataFactory.createPut(model.externalId);
+        var requestData = this.resourceDataFactory.createPut(model.externalId);
         const options = requestData.requestOptions;
         options.body = JSON.stringify(model);
         const response = fetch(requestData.url, options);
@@ -102,7 +113,7 @@ class MaterialType extends React.Component {
     }
 
     openEditForm = (externalId) => {
-        var requestData = this.materialTypeDataFactory.createGetDetails(externalId);
+        var requestData = this.resourceDataFactory.createGetDetails(externalId);
         fetch(requestData.url, requestData.requestOptions)
             .then(res => res.json())
             .then(
@@ -118,7 +129,7 @@ class MaterialType extends React.Component {
 
 
     handleDelete = (externalId) => {
-        var requestData = this.materialTypeDataFactory.createDelete(externalId);
+        var requestData = this.resourceDataFactory.createDelete(externalId);
         const options = requestData.requestOptions;
         const response = fetch(requestData.url, options);
         response.then(this.deleteSubmitSuccess, this.deleteSubmitFailed);
@@ -136,6 +147,25 @@ class MaterialType extends React.Component {
         return <Form method={this.props.method} onSubmit={this.editSubmit}>
             <Row className="text-center pb-2" >
                 <Row className="pb-2 d-flex justify-content-center" >
+                    <FormRange
+                        id="enhancement"
+                        type="range"
+                        placeholder="Enhancement"
+                        defaultValue={modelEdit.enhancement}
+                        min={0}
+                        max={3}
+                        step={1}
+                        onChange={(value) => { modelEdit.enhancement = value; this.setState({ modelEdit: modelEdit }); }} />
+                </Row>
+                <Row className="pb-2 d-flex justify-content-center" >
+                    <FormRange
+                        id="tier"
+                        type="range"
+                        placeholder="Tier"
+                        defaultValue={modelEdit.tier} min={0} max={8} step={1}
+                        onChange={(value) => { modelEdit.tier = value; this.setState({ modelEdit: modelEdit }); }} />
+                </Row>
+                <Row className="pb-2 d-flex justify-content-center" >
                     <Col md={11}>
                         <FormControl
                             id="name"
@@ -144,6 +174,15 @@ class MaterialType extends React.Component {
                             defaultValue={modelEdit.name}
                             onChange={(e) => { modelEdit.name = e.target.value; this.setState({ modelEdit: modelEdit }); }} />
                     </Col>
+                </Row>
+                <Row className="pb-2 d-flex justify-content-center" >
+                    <RelatedAsyncSelect
+                        id="resourceTypeId"
+                        placeholder="Material Type"
+                        dataFactory={this.resourceTypeDataFactory}
+                        defaultValue={modelEdit.type}
+                        size={11}
+                        onChangeCustom={(value) => { modelEdit.type.externalId = value; this.setState({ modelEdit: modelEdit }); }} />
                 </Row>
             </Row>
             <Row className="pb-2">
@@ -159,7 +198,7 @@ class MaterialType extends React.Component {
     getEditModal = (modelEdit) => {
         return <Modal show={this.state.show} onHide={this.handleClose} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Edit material type</Modal.Title>
+                <Modal.Title>Edit resource</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {this.getEditForm(modelEdit)}
@@ -172,9 +211,31 @@ class MaterialType extends React.Component {
 
         return <Col className="align-self-center">
             <Row className="pb-2">
-                <ModalFrom btnText="Add material type" headerTitle="Add new material type" ref={this.createModalForm} content={
+                <ModalFrom btnText="Add resource" headerTitle="Add new resource" ref={this.createModalForm} content={
                     <Form method={this.props.method} onSubmit={this.createSubmit}>
                         <Row className="text-center pb-2" >
+                            <Row className="pb-2 d-flex justify-content-center" >
+                                <FormRange
+                                    id="enhancement"
+                                    type="range"
+                                    placeholder="Enhancement"
+                                    defaultValue={modelCreate.enhancement}
+                                    min={0}
+                                    max={3}
+                                    step={1}
+                                    onChange={(value) => { modelCreate.enhancement = value; this.setState({ modelCreate: modelCreate }); }} />
+                            </Row>
+                            <Row className="pb-2 d-flex justify-content-center" >
+                                <FormRange
+                                    id="tier"
+                                    type="range"
+                                    placeholder="tier"
+                                    defaultValue={modelCreate.tier}
+                                    min={0}
+                                    max={8}
+                                    step={1}
+                                    onChange={(value) => { modelCreate.tier = value; this.setState({ modelCreate: modelCreate }); }} />
+                            </Row>
                             <Row className="pb-2 d-flex justify-content-center" >
                                 <Col md={11}>
                                     <FormControl
@@ -183,6 +244,14 @@ class MaterialType extends React.Component {
                                         placeholder="Name"
                                         onChange={(e) => { modelCreate.name = e.target.value; this.setState({ modelCreate: modelCreate }); }} />
                                 </Col>
+                            </Row>
+                            <Row className="pb-2 d-flex justify-content-center" >
+                                <RelatedAsyncSelect
+                                    id="resourceId"
+                                    placeholder="ResourceType"
+                                    dataFactory={this.resourceTypeDataFactory}
+                                    size={11}
+                                    onChangeCustom={(value) => { modelCreate.resourceTypeId = value; this.setState({ modelCreate: modelCreate }); }} />
                             </Row>
                         </Row>
                         <Row className="pb-2">
@@ -197,7 +266,7 @@ class MaterialType extends React.Component {
             <TableEditDeleteComponent
                 ref={this.table}
                 optionsFactory={this.optionsFactory}
-                requestDataFactory={this.materialTypeDataFactory}
+                requestDataFactory={this.resourceDataFactory}
                 columnsFactory={this.columnsFactory}
                 propertyDefinitions={this.propertyDefinitions}
                 provider={this.provider}
@@ -211,11 +280,11 @@ class MaterialType extends React.Component {
                         externalId={item.externalId}
                         handleDelete={this.handleDelete}
                         actual={item.containsRelatedElements}
-                        headerTitle="Edit material types" />
+                        headerTitle="Edit resources" />
                 } />
             {this.getEditModal(modelEdit)}
         </Col>
     }
 }
 
-export default MaterialType;
+export default Resource;

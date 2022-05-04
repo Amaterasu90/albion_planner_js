@@ -1,16 +1,16 @@
 import React from "react";
-import FormRange from "./../../components/modal/form/FormRange";
-import CrudRequestDataFactory from "../../factories/CrudRequestDataFactory";
-import RequestDataFactory from "../../factories/RequestDataFactory";
-import RelatedAsyncSelect from "../../components/modal/form/RelatedAsyncSelect";
-import ModalFrom from "../../components/modal/form/ModalForm";
+import FormRange from "../../../components/modal/form/FormRange";
+import CrudRequestDataFactory from "../../../factories/CrudRequestDataFactory";
+import RequestDataFactory from "../../../factories/RequestDataFactory";
+import RelatedAsyncSelect from "../../../components/modal/form/RelatedAsyncSelect";
+import ModalFrom from "../../../components/modal/form/ModalForm";
 import { Row, Col, Button, FormControl, Form, Modal, FormLabel, Container } from "react-bootstrap";
-import TableEditDeleteComponent from "../../components/TableEditDeleteComponent";
-import TableColumnFactory from "../../factories/TableColumnFactory";
-import TableOptionsFactory from "../../factories/TableOptionsFactory";
-import AsyncTableDataProvider from "../../AsyncTableDataProvider";
-import ApiEditDeleteActionsColumnFactory from "../../factories/ApiEditDeleteActionsColumnFactory";
-import ActionEditDeleteGroup from "../../components/ActionEditDeleteGroup";
+import TableEditDeleteComponent from "../../../components/TableEditDeleteComponent";
+import TableColumnFactory from "../../../factories/TableColumnFactory";
+import TableOptionsFactory from "../../../factories/TableOptionsFactory";
+import AsyncTableDataProvider from "../../../AsyncTableDataProvider";
+import ApiEditDeleteActionsColumnFactory from "../../../factories/ApiEditDeleteActionsColumnFactory";
+import ActionEditDeleteGroup from "../../../components/ActionEditDeleteGroup";
 
 class Recipe extends React.Component {
     constructor(props) {
@@ -48,38 +48,42 @@ class Recipe extends React.Component {
         this.createModalForm = React.createRef();
         this.table = React.createRef();
         this.propertyDefinitions = [
-            { id: "externalId", name: "External Id", width: "5%", hidden: true },
-            { id: "name", name: "Name", width: "10%" },
-            { id: "material", name: "Material", width: "10%", hidden: true },
-            { id: "enhancement", name: "Enhancement", width: "5%" },
-            { id: "tier", name: "Tier", width: "5%" },
+            { id: "externalId", name: "External Id", headerStyle: { width: "5%" }, hidden: true },
+            { id: "name", name: "Name", headerStyle: { width: "15%" } },
+            { id: "material", name: "Material", headerStyle: { width: "0%" }, hidden: true },
+            { id: "enhancement", name: "Enhancement", headerStyle: { width: "1%" } },
+            { id: "tier", name: "Tier", headerStyle: { width: "1%" } },
             {
-                id: "requirements", name: "Requiremnets", width: "10%", combineDescriptor: (item) => {
+                id: "requirements", name: "Requiremnets", headerStyle: { width: "5%" }, combineDescriptor: (item) => {
                     return <Container fluid>
-                        <Row className="pb-2 d-flex justify-content-center" >
-                            <Col>
+                        <Row className="pb-2 d-flex align-self-center" >
+                            <Col className="pb-2 d-flex align-self-center">
                                 {item.materialStacks.map((item) => {
-                                    return <>
-                                        <Row className="pb-2" >
-                                            Material: {item.material.name}
-                                        </Row>
-                                        <Row className="pb-2" >
-                                            Count: {item.count}
-                                        </Row>
-                                    </>
+                                    return <Row className="pb-2 d-flex align-self-center">
+                                        <Col>
+                                            <Row>
+                                                Material: {item.material.name}
+                                            </Row>
+                                            <Row>
+                                                Count: {item.count}
+                                            </Row>
+                                        </Col>
+                                    </Row>
                                 })
                                 }
                             </Col>
                             <Col>
                                 {item.resourceStacks.map((item) => {
-                                    return <>
-                                        <Row className="pb-2" >
-                                            Resource: {item.resource.name}
-                                        </Row>
-                                        <Row className="pb-2" >
-                                            Count: {item.count}
-                                        </Row>
-                                    </>
+                                    return <Row className="pb-2 d-flex align-self-center">
+                                        <Col>
+                                            <Row>
+                                                Resource: {item.resource.name}
+                                            </Row>
+                                            <Row>
+                                                Count: {item.count}
+                                            </Row>
+                                        </Col>
+                                    </Row>
                                 })
                                 }
                             </Col>
@@ -87,8 +91,8 @@ class Recipe extends React.Component {
                     </Container>;
                 }
             },
-            { id: "actions", name: "Actions", width: "1%" },
-            { id: "containsRelatedElements", width: "5%", name: "ContainsRelatedElements", hidden: true }
+            { id: "actions", name: "Actions", headerStyle: { width: "1%" } },
+            { id: "containsRelatedElements", headerStyle: { width: "0%" }, name: "ContainsRelatedElements", hidden: true }
         ];
         this.columnsFactory = new TableColumnFactory();
         this.optionsFactory = new TableOptionsFactory();
@@ -233,18 +237,18 @@ class Recipe extends React.Component {
                             )
                         }
 
-                        <Row key={`container_inputs_more_matetial_stack`} className="d-flex justify-content-center">
+                        <Row key={`container_inputs_more_recipe_stack`} className="d-flex justify-content-center">
                             <Col md={6}>
                                 <Button
-                                    key={`button_more_matetial_stack`}
+                                    key={`button_more_recipe_stack`}
                                     variant="success"
                                     className="btn-lg btn-block"
                                     style={{ "width": "100%" }} onClick={() => { modelEdit.materialStacks.push({ count: null, material: { externalId: null } }); this.setState({ modelEdit: modelEdit }); }} >Add</Button>
                             </Col>
-                            <Col key={"button_actions_container_matetial_stack"} md={6}>
+                            <Col key={"button_actions_container_recipe_stack"} md={6}>
                                 {modelEdit.materialStacks.length <= 1 ?
                                     <Button
-                                        key={`button_secondary_matetial_stack`}
+                                        key={`button_secondary_recipe_stack`}
                                         variant="secondary" className="btn-lg btn-block"
                                         style={{ "width": "100%" }} disabled>Delete</Button> :
                                     <Button
@@ -364,12 +368,12 @@ class Recipe extends React.Component {
                                         )
                                     }
 
-                                    <Row key={`container_inputs_more_matetial_stack`} className="d-flex justify-content-center">
+                                    <Row key={`container_inputs_more_recipe_stack`} className="d-flex justify-content-center">
                                         <Col md={6}>
-                                            <Button key={`button_more_matetial_stack`} variant="success" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => { modelCreate.materialStacks.push({ count: 0, materialId: "" }); this.setState({ modelCreate: modelCreate }); }} >Add</Button>
+                                            <Button key={`button_more_recipe_stack`} variant="success" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => { modelCreate.materialStacks.push({ count: 0, materialId: "" }); this.setState({ modelCreate: modelCreate }); }} >Add</Button>
                                         </Col>
-                                        <Col key={"button_actions_container_matetial_stack"} md={6}>
-                                            {modelCreate.materialStacks.length <= 1 ? <Button key={`button_secondary_matetial_stack`} variant="secondary" className="btn-lg btn-block" style={{ "width": "100%" }} disabled>Delete</Button> : <Button key={`button_danger`} variant="danger" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => { modelCreate.materialStacks.pop(); this.setState({ modelCreate: modelCreate }); }}>Delete</Button>}
+                                        <Col key={"button_actions_container_recipe_stack"} md={6}>
+                                            {modelCreate.materialStacks.length <= 1 ? <Button key={`button_secondary_recipe_stack`} variant="secondary" className="btn-lg btn-block" style={{ "width": "100%" }} disabled>Delete</Button> : <Button key={`button_danger`} variant="danger" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => { modelCreate.materialStacks.pop(); this.setState({ modelCreate: modelCreate }); }}>Delete</Button>}
                                         </Col>
                                     </Row>
                                 </>
