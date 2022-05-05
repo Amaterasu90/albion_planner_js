@@ -1,10 +1,8 @@
 import React from "react";
-import FormRange from "../../../components/modal/form/FormRange";
 import CrudRequestDataFactory from "../../../factories/CrudRequestDataFactory";
 import RequestDataFactory from "../../../factories/RequestDataFactory";
-import RelatedAsyncSelect from "../../../components/modal/form/RelatedAsyncSelect";
 import ModalFrom from "../../../components/modal/form/ModalForm";
-import { Row, Col, Button, FormControl, Form, Modal, FormLabel } from "react-bootstrap";
+import { Row, Col, Button, FormControl, Form, Modal } from "react-bootstrap";
 import TableEditDeleteComponent from "../../../components/TableEditDeleteComponent";
 import TableColumnFactory from "../../../factories/TableColumnFactory";
 import TableOptionsFactory from "../../../factories/TableOptionsFactory";
@@ -40,6 +38,13 @@ class ResourceType extends React.Component {
         this.propertyDefinitions = [
             { id: "externalId", name: "External Id", headerStyle: { width: "0%" }, hidden: true },
             { id: "name", name: "Name", headerStyle: { width: "49%" } },
+            {
+                id: "isAffectedByReturnRate", name: "Used In Return Rate", headerStyle: { width: "1%" }, combineDescriptor: (item) => {
+                    return <Form.Check type="checkbox"
+                        checked={item.isAffectedByReturnRate}
+                        disabled />
+                }
+            },
             { id: "actions", name: "Actions", headerStyle: { width: "1%" } },
             { id: "containsRelatedElements", name: "ContainsRelatedElements", headerStyle: { width: "0%" }, hidden: true }
         ];
@@ -145,6 +150,16 @@ class ResourceType extends React.Component {
                             onChange={(e) => { modelEdit.name = e.target.value; this.setState({ modelEdit: modelEdit }); }} />
                     </Col>
                 </Row>
+                <Row className="pb-2 d-flex justify-content-center" >
+                    <Col md={6}>
+                        <Form.Check
+                            id="isAffectedByReturnRate"
+                            type="checkbox"
+                            label="Used in return rate"
+                            checked={modelEdit.isAffectedByReturnRate}
+                            onChange={(e) => { modelEdit.isAffectedByReturnRate = e.target.checked; this.setState({ modelEdit: modelEdit }); }} />
+                    </Col>
+                </Row>
             </Row>
             <Row className="pb-2">
                 <Col md={{ span: 1, offset: 5 }}>
@@ -182,6 +197,15 @@ class ResourceType extends React.Component {
                                         type="text"
                                         placeholder="Name"
                                         onChange={(e) => { modelCreate.name = e.target.value; this.setState({ modelCreate: modelCreate }); }} />
+                                </Col>
+                            </Row><Row className="pb-2 d-flex justify-content-center" >
+                                <Col md={6}>
+                                    <Form.Check
+                                        id="isAffectedByReturnRate"
+                                        type="checkbox"
+                                        label="Used in return rate"
+                                        checked={modelCreate.isAffectedByReturnRate}
+                                        onChange={(e) => { modelCreate.isAffectedByReturnRate = e.target.checked; this.setState({ modelCreate: modelCreate }); }} />
                                 </Col>
                             </Row>
                         </Row>

@@ -4,7 +4,7 @@ import CrudRequestDataFactory from "../../../factories/CrudRequestDataFactory";
 import RequestDataFactory from "../../../factories/RequestDataFactory";
 import RelatedAsyncSelect from "../../../components/modal/form/RelatedAsyncSelect";
 import ModalFrom from "../../../components/modal/form/ModalForm";
-import { Row, Col, Button, FormControl, Form, Modal, FormLabel } from "react-bootstrap";
+import { Row, Col, Button, FormControl, Form, Modal } from "react-bootstrap";
 import TableEditDeleteComponent from "../../../components/TableEditDeleteComponent";
 import TableColumnFactory from "../../../factories/TableColumnFactory";
 import TableOptionsFactory from "../../../factories/TableOptionsFactory";
