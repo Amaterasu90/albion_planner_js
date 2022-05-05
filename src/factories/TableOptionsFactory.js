@@ -20,8 +20,8 @@ class TableOptionsFactory {
                 text: '15', value: 15
             }],
             
-            sizePerPageRenderer: ({ ...args }) => (<ItemCountSelectorButtons {...args} />),
-            pageButtonRenderer: ({ ...args }) => (<PageNumberButton {...args} />)
+            sizePerPageRenderer: ({ ...args }) => (<ItemCountSelectorButtons key={"item_count_selector_buttons"} {...args} />),
+            pageButtonRenderer: ({ ...args }) => (<PageNumberButton key={"page_number_button"} {...args} />)
         }
     }
 }

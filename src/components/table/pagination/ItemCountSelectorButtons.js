@@ -8,7 +8,7 @@ class ItemCountSelectorButtons extends React.Component {
                 {
                     this.props.options.map((option, index) => {
                         return <button
-                            key={option.text + " " + index}
+                            key={`${option.text}_${index}`}
                             type="button"
                             onClick={() => this.props.onSizePerPageChange(option.page)}
                             className={`btn ${this.props.currSizePerPage === `${option.page}` ? 'btn-primary' : 'btn-light'} d-none d-lg-inline`}>

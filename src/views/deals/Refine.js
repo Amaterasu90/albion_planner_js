@@ -35,21 +35,6 @@ class Refine extends React.Component {
         this.refineRecipeDataFactory = new CrudRequestDataFactory("refine", new RequestDataFactory());
     }
 
-    componentDidMount = () => {
-        var requestData = this.refineRecipeDataFactory.createGet();
-        fetch(requestData.url, requestData.requestOptions)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    const { containsRelatedElements, ...data } = result;
-                    var model = JSON.parse(JSON.stringify(this.state.model));
-                    this.setState({ model: model });
-                },
-                (error) => {
-                }
-            );
-    }
-
     getRecipe = (externalId) => {
         var requestData = this.refineRecipeDataFactory.createGetDetails(externalId);
         fetch(requestData.url, requestData.requestOptions)
@@ -66,7 +51,7 @@ class Refine extends React.Component {
             );
     }
 
-    addRecipe = (e) => {
+    addRecipe = () => {
         var model = JSON.parse(JSON.stringify(this.state.model));
         var recipes = model.recipes;
 
@@ -272,7 +257,7 @@ class Refine extends React.Component {
         }
 
         var allCosts = this.getAllCosts(returnRate, recipe, costPer100, tax);
-        var returnRate = (profit / allCosts) * 100;
+        var profitRateFactor = (profit / allCosts) * 100;
         var profitRateInPercentage = profitRate;
 
         return <OverlayTrigger
@@ -282,7 +267,7 @@ class Refine extends React.Component {
                 <Tooltip key={"price-tooltip"} id="price-tooltip" {...props}>
                     {this.getToalProfit(returnRate, recipe, costPer100, tax)}
                 </Tooltip>)}>
-            <p className={`m-0 p-0 ${parseInt(returnRate) === profitRateInPercentage ? "text-dark" : parseInt(returnRate) > profitRateInPercentage ? "text-success" : "text-danger"}`}>{numberformat.format(profit, { suffixes: ['', ' k', ' m', ' b', ' t'] })} ({parseInt(returnRate)} %)</p>
+            <p className={`m-0 p-0 ${parseInt(profitRateFactor) === profitRateInPercentage ? "text-dark" : parseInt(profitRateFactor) > profitRateInPercentage ? "text-success" : "text-danger"}`}>{numberformat.format(profit, { suffixes: ['', ' k', ' m', ' b', ' t'] })} ({parseInt(profitRateFactor)} %)</p>
         </OverlayTrigger>;
     }
 
