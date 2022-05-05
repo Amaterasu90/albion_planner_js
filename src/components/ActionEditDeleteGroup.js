@@ -1,11 +1,7 @@
 import React from "react";
-import { Col, ToggleButtonGroup, ToggleButton, Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Col, ToggleButtonGroup, ToggleButton, Tooltip, OverlayTrigger } from "react-bootstrap";
 
 class ActionEditDeleteGroup extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     handleDelete = () => {
         if (this.props.handleDelete) {
             this.props.handleDelete(this.props.externalId);

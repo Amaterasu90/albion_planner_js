@@ -69,6 +69,8 @@ class ApiDetailsEditDeleteActions extends React.Component {
                     fields={this.props.detailsFormFields.fields}
                     page={this.props.page}
                     sizePerPage={this.props.sizePerPage} />);
+            default:
+                return null;
         }
     }
 

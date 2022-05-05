@@ -1,7 +1,7 @@
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLeaf, faListAlt, faBookOpen, faVial, faPuzzlePiece } from '@fortawesome/fontawesome-free-solid'
+import { faLeaf, faListAlt, faBookOpen, faVial, faFire, faDollarSign, faGem, faBoxOpen } from '@fortawesome/fontawesome-free-solid'
 import { Accordion } from "react-bootstrap";
 import { Card } from "react-bootstrap";
 import { useAccordionButton } from "react-bootstrap";
@@ -66,12 +66,12 @@ class NavbarComponent extends React.Component {
         const { nodes } = this.state;
         return <>
             <Navbar>
-                <Accordion defaultActiveKey="items" className="bg-dark" flush>
+                <Accordion className="bg-dark" flush>
                     <Card className="bg-dark text-white p-0 m-0 border-0">
                         <Card.Header className="bg-dark text-white px-0 m-0 border-0 d-flex flex-column align-items-baseline">
                             <CustomToggle eventKey="items" nodes={this.state.nodes} className="bg-dark text-white p-0">
                                 <span className={`nav-link text-light fs-3 p-0 b-0`} style={{ "cursor": "pointer" }}>
-                                    <FontAwesomeIcon icon={faPuzzlePiece} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Items</span>
+                                    <FontAwesomeIcon icon={faBoxOpen} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Items</span>
                                 </span>
                             </CustomToggle>
                         </Card.Header>
@@ -94,7 +94,7 @@ class NavbarComponent extends React.Component {
                                                 </Accordion.Collapse>
                                                 <Card.Header className="bg-dark text-white px-0 m-0 border-0 d-flex flex-column align-items-baseline">
                                                     <CustomToggle eventKey="4" nodes={this.state.nodes} className="bg-dark text-white p-0">
-                                                        <FontAwesomeIcon icon={faVial} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Materials</span>
+                                                        <FontAwesomeIcon icon={faGem} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Materials</span>
                                                     </CustomToggle>
                                                 </Card.Header>
                                                 <Accordion.Collapse eventKey="4" className="bg-dark text-white">
@@ -113,7 +113,7 @@ class NavbarComponent extends React.Component {
                         <Card.Header className="bg-dark text-white px-0 m-0 border-0 d-flex flex-column align-items-baseline">
                             <CustomToggle eventKey="deals" nodes={this.state.nodes} className="bg-dark text-white p-0">
                                 <span className={`nav-link text-light fs-3 p-0 b-0`} style={{ "cursor": "pointer" }}>
-                                    <FontAwesomeIcon icon={faPuzzlePiece} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Deals</span>
+                                    <FontAwesomeIcon icon={faDollarSign} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Deals</span>
                                 </span>
                             </CustomToggle>
                         </Card.Header>
@@ -125,7 +125,7 @@ class NavbarComponent extends React.Component {
                                             <Card className="bg-dark text-white p-0 m-0 border-0">
                                                 <Card.Header className="bg-dark text-white px-0 m-0 border-0 d-flex flex-column align-items-baseline">
                                                     <CustomToggle eventKey="5" nodes={this.state.nodes} className="bg-dark text-white p-0">
-                                                        <span className={`nav-link ${this.getColor("5_0", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("5_0", this.props.openRefineDeal)}> <FontAwesomeIcon icon={faBookOpen} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Refine</span></span>
+                                                        <span className={`nav-link ${this.getColor("5_0", nodes, "text-success", "text-warning")} fs-3 px-0`} style={{ "cursor": "pointer" }} onClick={() => this.onNavigationClicked("5_0", this.props.openRefineDeal)}> <FontAwesomeIcon icon={faFire} /> <span className="d-none d-sm-none d-md-none d-lg-none d-xl-none d-xxl-inline">Refine</span></span>
                                                     </CustomToggle>
                                                 </Card.Header>
                                             </Card>

@@ -1,7 +1,5 @@
 import './App.css';
-import React from 'react';
 import AlbionDataApp from './AlbionDataApp';
-import AsyncTableDataProvider from './AsyncTableDataProvider';
 
 function App() {
   return (

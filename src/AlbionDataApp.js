@@ -1,14 +1,9 @@
 import React from 'react';
-import CrudComponent from './components/CrudComponent'
-import TableOptionsFactory from './factories/TableOptionsFactory';
-import TableColumnFactory from './factories/TableColumnFactory';
-import ApiEditDeleteActionsColumnFactory from './factories/ApiEditDeleteActionsColumnFactory';
 import RequestDataFactory from './factories/RequestDataFactory';
 import CrudRequestDataFactory from './factories/CrudRequestDataFactory';
 import NavbarComponent from './components/navigation/NavbarComponent';
 import { Col, Row } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
-import ApiDetailsEditDeleteActionsColumnFactory from './factories/ApiDetailsEditDeleteActionsColumnFactory'
 import Recipe from './views/items/material/Recipe';
 import Material from './views/items/material/Material';
 import MaterialType from './views/items/material/MaterialType';
@@ -384,19 +379,33 @@ class AlbionDataApp extends React.Component {
 
         switch (component) {
             case "refineRecipe":
-                return <Recipe />;
+                return <Col md={11} className="align-self-center ms-2">
+                    <Recipe />
+                </Col>;
             case "material":
-                return <Material />;
+                return <Col md={11} className="align-self-center ms-2">
+                    <Material />
+                </Col>;
             case "materialType":
-                return <MaterialType />;
+                return <Col md={11} className="align-self-center ms-2">
+                    <MaterialType />
+                </Col>;
             case "resource":
-                return <Resource />
+                return <Col md={11} className="align-self-center ms-2">
+                    <Resource />
+                </Col>
             case "resourceType":
-                return <ResourceType />;
+                return <Col md={11} className="align-self-center ms-2">
+                    <ResourceType />
+                </Col>;
             case "refineDeal":
-                return <Refine />
+                return <Col md={11} className="m-0 p-0 ms-2 mt-3">
+                    <Refine />
+                </Col>
             default:
-                return <p className="text-dark">Welcome in Albion Planner</p>;
+                return <Col md={11} className="align-self-center ms-2">
+                    <p className="text-dark">Welcome in Albion Planner</p>
+                </Col>;
         }
     }
 
@@ -404,7 +413,7 @@ class AlbionDataApp extends React.Component {
         const { component } = this.state;
         return <Container fluid>
             <Row className="flex-nowrap">
-                <Col className="col-auto bg-dark">
+                <Col className="col-auto bg-dark p-0">
                     <div className="d-flex flex-column align-items-center px-3 pt-2 text-white min-vh-100">
                         <NavbarComponent
                             openGatherResourceTypesCrud={this.onGatherResourcesTypeSelected}
@@ -415,9 +424,7 @@ class AlbionDataApp extends React.Component {
                             openRefineDeal={this.openRefineDealSelected} />
                     </div>
                 </Col>
-                <Col className="align-self-center">
-                    {this.showComponent(component)}
-                </Col>
+                {this.showComponent(component)}
             </Row >
         </Container >
     }
