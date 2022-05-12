@@ -24,7 +24,7 @@ class FormFieldGroup extends React.Component {
         if (props.type === "range") {
             input = (<FormRange key={`${props.id}_${index}_${index_1}`} {...props} />)
         } else if (props.type === "dropdown") {
-            input = (<Col md={size}>
+            input = (<Col md={size} xxl={size}>
                 <FormLabel>{this.props.placeholder}</FormLabel>
                 <FormSelect name={props.name} as="select" id={props.id} key={`${props.id}_dropdown`} value={this.state.value} onChange={this.change}>
                     {props.options.map((x) => {
@@ -33,18 +33,18 @@ class FormFieldGroup extends React.Component {
                 </FormSelect>
             </Col>)
         } else if (props.type === "asyncRelatedDropdown") {
-            input = (<RelatedAsyncSelect key={`${props.id}_${index}_${index_1}_related`} size={size} {...props} />)
+            input = (<RelatedAsyncSelect key={`${props.id}_${index}_${index_1}_related`} md={size} xxl={size} {...props} />)
         } else if (props.type === "relatedHidden") {
-            input = (<RelatedAsyncSelect key={`${props.id}_${index}_${index_1}_related`} size={size} {...props} />)
+            input = (<RelatedAsyncSelect key={`${props.id}_${index}_${index_1}_related`} md={size} xxl={size} {...props} />)
         } else if (props.type === "asyncRelatedDropdownLabeled") {
-            input = (<Col md={size}>
+            input = (<Col md={size} xxl={size}>
                 <FormLabel>{this.props.placeholder}</FormLabel>
-                <RelatedAsyncSelect key={`${props.id}_${index}_${index_1}_related`} size={size} {...props} />
+                <RelatedAsyncSelect key={`${props.id}_${index}_${index_1}_related`} md={size} xxl={size} {...props} />
             </Col>)
         } else if (props.type === "relatedMany") {
             input = (<MultiInputFormGroup key={`${props.id}_${index}_${index_1}_group`} getInputs={this.getInputs} {...props} disableButtons={false}/>)
         } else {
-            input = (<Col md={size}><FormControl key={`${props.id}_${index}_${index_1}_form`} {...props} /></Col>)
+            input = (<Col md={size} xxl={size}><FormControl key={`${props.id}_${index}_${index_1}_form`} {...props} /></Col>)
         }
 
         return addRow === true ? <Row className="pb-2 d-flex justify-content-center" > {input} </Row > : input;

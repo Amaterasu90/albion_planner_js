@@ -181,7 +181,7 @@ class Material extends React.Component {
                         placeholder="Material Type"
                         dataFactory={this.materialTypeDataFactory}
                         defaultValue={modelEdit.type}
-                        size={11}
+                        md={11}
                         onChangeCustom={(value) => { modelEdit.type.externalId = value; this.setState({ modelEdit: modelEdit }); }} />
                 </Row>
             </Row>
@@ -250,7 +250,7 @@ class Material extends React.Component {
                                     id="materialId"
                                     placeholder="Material Type"
                                     dataFactory={this.materialTypeDataFactory}
-                                    size={11}
+                                    md={11}
                                     onChangeCustom={(value) => { modelCreate.materialTypeId = value; this.setState({ modelCreate: modelCreate }); }} />
                             </Row>
                         </Row>

@@ -1,62 +1,154 @@
 import React from "react";
-import {Row, Col} from "react-bootstrap";
+import { Row, Col, Image, Tooltip, OverlayTrigger } from "react-bootstrap";
 import Calculator from "../utils/Calculator";
 
 class RecipeRequirements extends React.Component {
+
+    getGrid = (returnRate, recipe) => {
+        var components = [];
+        this.getResourceStacks(returnRate, recipe).forEach((item) => components.push(item));
+        this.getMaterialStacks(returnRate, recipe).forEach((item) => components.push(item));
+
+        var componentsCount = components.length;
+        var rows = componentsCount / 4;
+        var rest = componentsCount % 4;
+
+        var result = [];
+
+        if (rows > 1) {
+            for (var i = 0; i < Math.floor(rows); i++) {
+                result.push(this.getLine(components.slice(i * 4, (i+1) * 4)));
+            }
+        }
+
+        if (rest !== 0) {
+            result.push(this.getLine(components.slice(components.length - rest, components.length), 4 - rest));
+        }
+
+        return result;
+    }
+
+    getLine = (columns, count) => {
+        var emptySpaces = [];
+        for (var i = 0; i < count; i++) {
+            emptySpaces.push(<Col md="auto" className="m-0 p-0" style={{"width":"64px", "height":"64px"}}/>);
+        }
+        return <Row className="m-0 p-0 d-flex justify-content-center">{columns}{emptySpaces}</Row>
+    }
+
+    getRequirements = (returnRate, recipe) => {
+        return !recipe || !recipe.materialStacks.length || !recipe.count ? null : <Row className="m-0 p-0">
+            {this.getGrid(returnRate, recipe)}
+        </Row>
+    }
+
+    getMaterialRequirement = (materialStackIndex, itemImageIdentifier, materialName, count) => {
+        return <Col md="auto" className="m-0 p-0 d-flex align-items-start">
+            <OverlayTrigger
+                placement="top"
+                delay={{ show: 250, hide: 400 }}
+                overlay={(props) => (
+                    <Tooltip key={`material-name-tooltip_${materialStackIndex}`} id={`material-name-tooltip_${materialStackIndex}`} {...props}>
+                        {materialName}
+                    </Tooltip>)}>
+                <figure className="position-relative m-0 p-0 ">
+                    <Image src={this.props.imageRetriever ? this.props.imageRetriever.get("thumbnails/small", itemImageIdentifier) : null} style={{ cursor: "pointer" }} onClick={(e) => { console.log(`clicked: ${e}`) }} />
+                    <figcaption className="text-warning text-center" style={{ "font-size": "0.55rem" }}>
+                        {count}
+                    </figcaption>
+                </figure>
+            </OverlayTrigger>
+        </Col>
+    }
+
+    getMaterialStacks = (returnRate, recipe) => {
+        var baseCount = Calculator.calculateFinalCount(returnRate, recipe.count);
+        var stacks = [];
+
+        recipe.materialStacks.map((stack, materialStackIndex) => {
+            var count = (stack.material.type.isAffectedByReturnRate ? baseCount : recipe.count) * stack.count;
+            const maxStackCount = 999;
+            count = isNaN(count) ? 0 : count;
+
+            for (var i = 0; i < Math.floor(count / maxStackCount); i++) {
+                stacks.push(this.getMaterialRequirement(materialStackIndex, stack.material.itemImageIdentifier, stack.material.name, maxStackCount));
+            }
+
+            if (count % maxStackCount !== 0) {
+                stacks.push(this.getMaterialRequirement(materialStackIndex, stack.material.itemImageIdentifier, stack.material.name, count % maxStackCount));
+            }
+        });
+
+        return stacks;
+    }
+
+    getResourceStacks = (returnRate, recipe) => {
+        var baseCount = Calculator.calculateFinalCount(returnRate, recipe.count);
+        var stacks = [];
+        recipe.resourceStacks.map((stack, resourceStackIndex) => {
+            var count = (stack.resource.type.isAffectedByReturnRate ? baseCount : recipe.count) * stack.count;
+            const maxStackCount = 999;
+            count = isNaN(count) ? 0 : count;
+
+            for (var i = 0; i < Math.floor(count / maxStackCount); i++) {
+                stacks.push(this.getResourceRequirement(resourceStackIndex, stack.resource.itemImageIdentifier, stack.resource.name, maxStackCount));
+            }
+
+            if (count % maxStackCount !== 0) {
+                stacks.push(this.getResourceRequirement(resourceStackIndex, stack.resource.itemImageIdentifier, stack.resource.name, count % maxStackCount));
+            }
+        });
+
+        return stacks;
+    }
+
+    getResourceRequirement = (resourceStackIndex, itemImageIdentifier, resourceName, count) => {
+        return <Col md="auto" className="m-0 p-0 d-flex align-items-start">
+            <OverlayTrigger
+                placement="top"
+                delay={{ show: 250, hide: 400 }}
+                overlay={(props) => (
+                    <Tooltip key={`resource-name-tooltip_${resourceStackIndex}`} id={`resource-name-tooltip_${resourceStackIndex}`} {...props}>
+                        {resourceName}
+                    </Tooltip>)}>
+                <figure className="position-relative m-0 p-0 ">
+                    <Image src={this.props.imageRetriever ? this.props.imageRetriever.get("thumbnails/small", itemImageIdentifier) : null} style={{ cursor: "pointer" }} onClick={(e) => { console.log(`clicked: ${e}`) }} />
+                    <figcaption className="text-warning text-center" style={{ "font-size": "0.55rem" }}>
+                        {count}
+                    </figcaption>
+                </figure>
+            </OverlayTrigger>
+        </Col>
+    }
+
     getResourceRequirements = (returnRate, recipe) => {
         var baseCount = Calculator.calculateFinalCount(returnRate, recipe.count);
-        return recipe.resourceStacks.map((stack) => {
+        return recipe.resourceStacks.map((stack, resourceStackIndex) => {
             var count = (stack.resource.type.isAffectedByReturnRate ? baseCount : recipe.count) * stack.count;
+            const maxStackCount = 999;
             count = isNaN(count) ? 0 : count;
-            return <Row className="m-0 p-0 d-flex" key={`resource_requirement_${recipe.externalId}_${stack.externalId}`}>
-                <Row className="m-0 p-0 align-self-center">
-                    <Col className="m-0 p-0">{stack.resource.name} {count}</Col>
-                </Row>
-            </Row>
+
+            var components = [];
+
+            for (var i = 0; i < Math.floor(count / maxStackCount); i++) {
+                components.push(this.getResourceRequirement(resourceStackIndex, stack.resource.itemImageIdentifier, stack.resource.name, maxStackCount));
+            }
+
+            if (count % maxStackCount !== 0) {
+                components.push(this.getResourceRequirement(resourceStackIndex, stack.resource.itemImageIdentifier, stack.resource.name, count % maxStackCount))
+            }
+
+            return components;
         });
-    }
-
-    getMaterialRequirements = (returnRate, recipe) => {
-        var baseCount = Calculator.calculateFinalCount(returnRate, recipe.count);
-        return recipe.materialStacks.map((stack) => {
-            var count = (stack.material.type.isAffectedByReturnRate ? baseCount : recipe.count) * stack.count;
-            count = isNaN(count) ? 0 : count;
-            return <Row className="m-0 p-0 d-flex" key={`material_requirement_${recipe.externalId}_${stack.externalId}`}>
-                <Row className="m-0 p-0 align-self-center">
-                    <Col className="m-0 p-0">{stack.material.name} {count}</Col>
-                </Row>
-            </Row>
-        });
-    }
-
-    getMaterialRequirementsPart = (returnRate, recipe) => {
-        return !recipe || !recipe.materialStacks.length ? null : <Row className="p-0 m-0">
-            <Row className="p-0 m-0">
-                Materials:
-            </Row>
-            <Row className="p-0 m-0 d-flex">
-                <Col className="p-0 m-0 align-self-center">{this.getMaterialRequirements(returnRate, recipe)}</Col>
-            </Row>
-        </Row>
-    }
-
-    getResourceRequirementsPart = (returnRate, recipe) => {
-        return !recipe || !recipe.resourceStacks.length ? null : <Row className="p-0 m-0">
-            <Row className="p-0 m-0">
-                Resources:
-            </Row>
-            <Row className="p-0 m-0 d-flex">
-                <Col className="p-0 m-0 align-self-center">{this.getResourceRequirements(returnRate, recipe)}</Col>
-            </Row>
-        </Row>
     }
 
     render() {
         var { recipe, retrunRate } = this.props;
-        return <Col md={11} className="text-left p-0 m-0 fs-6">
-            {this.getMaterialRequirementsPart(retrunRate, recipe)}
-            {this.getResourceRequirementsPart(retrunRate, recipe)}
-        </Col>
+        return <Row className="fs-6 p-0 pt-2 m-0 d-flex justify-content-center">
+            <Col className="m-0 p-0 d-flex justify-content-center">
+                {this.getRequirements(retrunRate, recipe)}
+            </Col>
+        </Row>
     }
 }
 

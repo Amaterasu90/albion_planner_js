@@ -208,7 +208,7 @@ class Recipe extends React.Component {
                         placeholder="Material"
                         defaultValue={modelEdit.material}
                         dataFactory={this.materialDataFactory}
-                        size={11} onChangeCustom={(value) => { modelEdit.materialId = value; this.setState({ modelEdit: modelEdit }); }} />
+                        md={11} onChangeCustom={(value) => { modelEdit.materialId = value; this.setState({ modelEdit: modelEdit }); }} />
                 </Row>
                 <Row className="pb-2 d-flex justify-content-center">
                     <FormLabel>Material Stacks</FormLabel>
@@ -222,7 +222,7 @@ class Recipe extends React.Component {
                                             key={`MaterialStacks_${index}`}
                                             defaultValue={materialStack.material}
                                             placeholder="Material"
-                                            dataFactory={this.materialDataFactory} size={12} onChangeCustom={(value) => { modelEdit.materialStacks[index].material.externalId = value; this.setState({ modelEdit: modelEdit }); }} />
+                                            dataFactory={this.materialDataFactory} md={12} onChangeCustom={(value) => { modelEdit.materialStacks[index].material.externalId = value; this.setState({ modelEdit: modelEdit }); }} />
                                     </Col>
                                     <Col md={6}>
                                         <FormControl
@@ -274,7 +274,7 @@ class Recipe extends React.Component {
                                             placeholder="Resource"
                                             defaultValue={resourceStack.resource}
                                             dataFactory={this.resourceDataFactory}
-                                            size={12} onChangeCustom={(value) => { modelEdit.resourceStacks[index].resource.externalId = value; this.setState({ modelEdit: modelEdit }); }} />
+                                            md={12} onChangeCustom={(value) => { modelEdit.resourceStacks[index].resource.externalId = value; this.setState({ modelEdit: modelEdit }); }} />
                                     </Col>
                                     <Col md={6}>
                                         <FormControl
@@ -351,7 +351,7 @@ class Recipe extends React.Component {
                                 <FormRange id="tier" type="range" placeholder="Tier" defaultValue={modelCreate.tier} min={0} max={8} step={1} onChange={(value) => { modelCreate.tier = value; this.setState({ modelCreate: modelCreate }); }} />
                             </Row>
                             <Row className="pb-2 d-flex justify-content-center" >
-                                <RelatedAsyncSelect id="materialId" placeholder="Material" dataFactory={this.materialDataFactory} size={11} onChangeCustom={(value) => { modelCreate.materialId = value; this.setState({ modelCreate: modelCreate }); }} />
+                                <RelatedAsyncSelect id="materialId" placeholder="Material" dataFactory={this.materialDataFactory} md={11} onChangeCustom={(value) => { modelCreate.materialId = value; this.setState({ modelCreate: modelCreate }); }} />
                             </Row>
                             <Row className="pb-2 d-flex justify-content-center">
                                 <>
@@ -359,7 +359,7 @@ class Recipe extends React.Component {
                                         modelCreate.materialStacks.map((materialStack, index) =>
                                             <Row className="pb-2">
                                                 <Col md={6}>
-                                                    <RelatedAsyncSelect id={`MaterialStacks_${index}`} key={`MaterialStacks_${index}`} placeholder="Material" dataFactory={this.materialDataFactory} size={12} onChangeCustom={(value) => { materialStack.materialId = value; this.setState({ modelCreate: modelCreate }); }} />
+                                                    <RelatedAsyncSelect id={`MaterialStacks_${index}`} key={`MaterialStacks_${index}`} placeholder="Material" dataFactory={this.materialDataFactory} md={12} onChangeCustom={(value) => { materialStack.materialId = value; this.setState({ modelCreate: modelCreate }); }} />
                                                 </Col>
                                                 <Col md={6}>
                                                     <FormControl id={`MaterialStacks_count_${index}`} key={`MaterialStacks_count${index}`} type="text" placeholder="Count" onChange={(event) => { materialStack.count = event.target.value; this.setState({ modelCreate: modelCreate }); }} />
@@ -384,7 +384,7 @@ class Recipe extends React.Component {
                                         modelCreate.resourceStacks.map((resourceStack, index) =>
                                             <Row className="pb-2">
                                                 <Col md={6}>
-                                                    <RelatedAsyncSelect id={`ResourceStacks_${index}`} key={`ResourceStacks_${index}`} placeholder="Resource" dataFactory={this.resourceDataFactory} size={12} onChangeCustom={(value) => { resourceStack.resourceId = value; this.setState({ modelCreate: modelCreate }); }} />
+                                                    <RelatedAsyncSelect id={`ResourceStacks_${index}`} key={`ResourceStacks_${index}`} placeholder="Resource" dataFactory={this.resourceDataFactory} md={12} onChangeCustom={(value) => { resourceStack.resourceId = value; this.setState({ modelCreate: modelCreate }); }} />
                                                 </Col>
                                                 <Col md={6}>
                                                     <FormControl id={`ResourceStacks_count_${index}`} key={`ResourceStacks_count${index}`} type="text" placeholder="Count" onChange={(event) => { resourceStack.count = event.target.value; this.setState({ modelCreate: modelCreate }); this.setState({ modelCreate: modelCreate }); }} />

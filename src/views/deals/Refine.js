@@ -2,11 +2,12 @@ import CrudRequestDataFactory from "../../factories/CrudRequestDataFactory";
 import RequestDataFactory from "../../factories/RequestDataFactory";
 import RelatedAsyncSelect from "../../components/modal/form/RelatedAsyncSelect";
 import React from "react";
-import { Col, Row, Button, FormControl, FormLabel, OverlayTrigger, Tooltip, Form, ToggleButton, ButtonGroup } from "react-bootstrap"
+import { Col, Row, Button, FormControl, FormLabel, OverlayTrigger, Tooltip, Form, ToggleButton, ButtonGroup, Image, Container } from "react-bootstrap"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faClipboardList } from '@fortawesome/fontawesome-free-solid'
 import RecipeRequirementsModal from "./modal/RecipeRequirementsModal";
 import Calculator from "./utils/Calculator";
+import './css/custom.css'
 
 const numberformat = require('swarm-numberformat')
 
@@ -34,6 +35,8 @@ class Refine extends React.Component {
 
         this.refineRecipeDataFactory = new CrudRequestDataFactory("refine", new RequestDataFactory());
     }
+
+
 
     getRecipe = (externalId) => {
         var requestData = this.refineRecipeDataFactory.createGetDetails(externalId);
@@ -88,7 +91,7 @@ class Refine extends React.Component {
                     <Tooltip key={"delete-action-tooltip"} id="delete-action-tooltip" {...props}>
                         Delete
                     </Tooltip>)}>
-                <ToggleButton variant="danger" className="btn-block" onClick={() => { this.removeRecipe(recipeIndex); }}>
+                <ToggleButton variant="danger" size="lg" className="btn-block" onClick={() => { this.removeRecipe(recipeIndex); }}>
                     <FontAwesomeIcon icon={faTrash} />
                 </ToggleButton>
             </OverlayTrigger>
@@ -112,7 +115,7 @@ class Refine extends React.Component {
     }
 
     getActionButtons = (model, recipeIndex, view) => {
-        return <ButtonGroup className="mb-2">
+        return <ButtonGroup>
             {this.getDeleteButtons(model, recipeIndex)}
             {this.getRequirementsButtons(model, recipeIndex, view)}
         </ButtonGroup>
@@ -126,7 +129,7 @@ class Refine extends React.Component {
                 <Tooltip key={"requirements-action-tooltip"} id="requirements-action-tooltip" {...props}>
                     Requirements
                 </Tooltip>)}>
-            <ToggleButton variant="outline-info" className="btn-block" onClick={() => { this.openRequirements(view, model.recipes[recipeIndex], model.returnRate); }}>
+            <ToggleButton variant="outline-info" size="lg" className="btn-block" onClick={() => { this.openRequirements(view, model.recipes[recipeIndex], model.returnRate); }}>
                 <FontAwesomeIcon icon={faClipboardList} />
             </ToggleButton>
         </OverlayTrigger>
@@ -240,7 +243,8 @@ class Refine extends React.Component {
 
     setTax = (model, e) => {
         var currentModel = JSON.parse(JSON.stringify(model))
-        currentModel.tax = parseInt(e.currentTarget.value, 10);
+        currentModel.tax = e.currentTarget.value;
+        
         this.setState({ model: currentModel });
     }
 
@@ -293,23 +297,35 @@ class Refine extends React.Component {
 
     getListData = (model, view) => {
         return model.recipes.length === 0 ? <Col md={12} className="fs-2 p-0 pt-2 m-0 d-flex justify-content-center">Add recipe to compare</Col> : model.recipes.map((recipe, recipeIndex) => {
-            return <Row className="fs-6 p-0 pt-2 m-0 d-flex" key={`recipe_${recipe.externalId}_${recipeIndex}`}>
-                <Col className="p-0 m-0 mt-3 text-left align-self-start">{recipe.material.name}</Col>
+            return <Row className="fs-6 p-0 pt-2 m-0 d-flex align-items-start" key={`recipe_${recipe.externalId}_${recipeIndex}`}>
+                <Col className="p-0 m-0">
+                    <OverlayTrigger
+                        placement="top"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={(props) => (
+                            <Tooltip key={"material-name-tooltip"} id="material-name-tooltip" {...props}>
+                                {recipe.material.name}
+                            </Tooltip>)}>
+                        <Image src={this.props.imageRetriever ? this.props.imageRetriever.get("thumbnails/small", recipe.material.itemImageIdentifier) : null} style={{ cursor: "pointer" }} onClick={(e) => { console.log(`clicked: ${e}`) }} />
+                    </OverlayTrigger>
+                </Col>
                 <Col className="p-0 m-0 text-left">
                     {recipe.materialStacks.map((stack, materialStackIndex) => {
                         return <Row className="p-0 m-0 text-nowrap" key={`stack_material_name_${stack.externalId}`}>
                             <Row className="p-0 m-0 d-flex">
-                                <Col className="p-0 m-0 mt-3 text-left align-self-center">{stack.material.name}</Col>
-                            </Row>
-                        </Row>;
-                    })}
-                </Col>
-                <Col className="p-0 m-0 text-left">
-                    {recipe.materialStacks.map((stack, materialStackIndex) => {
-                        return <Row className="p-0 m-0 text-nowrap" key={`stack_material_cost_${stack.externalId}`}>
-                            <Row className="p-0 m-0 d-flex">
-                                <Col className="p-0 m-0 mt-2 text-left align-self-center">
-                                    <FormControl placeholder="Price" value={model.recipes[recipeIndex].materialStacks[materialStackIndex].unitCost} onChange={(e) => { this.setMaterialStackCost(model, recipeIndex, materialStackIndex, e); }} />
+                                <Col className="p-0 m-0 text-left align-self-center">
+                                    <OverlayTrigger
+                                        placement="top"
+                                        delay={{ show: 250, hide: 400 }}
+                                        overlay={(props) => (
+                                            <Tooltip key={`material-name-tooltip_${materialStackIndex}`} id={`material-name-tooltip_${materialStackIndex}`} {...props}>
+                                                {stack.material.name}
+                                            </Tooltip>)}>
+                                        <Image src={this.props.imageRetriever ? this.props.imageRetriever.get("thumbnails/small", stack.material.itemImageIdentifier) : null} style={{ cursor: "pointer" }} onClick={(e) => { console.log(`clicked: ${e}`) }} />
+                                    </OverlayTrigger>
+                                </Col>
+                                <Col className="p-0 m-0 text-left align-self-center">
+                                    <FormControl size="lg" placeholder="Price" value={model.recipes[recipeIndex].materialStacks[materialStackIndex].unitCost} onChange={(e) => { this.setMaterialStackCost(model, recipeIndex, materialStackIndex, e); }} />
                                 </Col>
                             </Row>
                         </Row>;
@@ -319,46 +335,48 @@ class Refine extends React.Component {
                     {recipe.resourceStacks.map((stack, resourceStackIndex) => {
                         return <Row className="p-0 m-0 text-nowrap" key={`stack_resource_name_${stack.externalId}`}>
                             <Row className="p-0 m-0 d-flex">
-                                <Col className="p-0 m-0 mt-3 text-left align-self-center">{stack.resource.name}</Col>
-                            </Row>
-                        </Row>;
-                    })}
-                </Col>
-                <Col className="text-left p-0 m-0 px-1">
-                    {recipe.resourceStacks.map((stack, resourceStackIndex) => {
-                        return <Row className="p-0 m-0 text-nowrap" key={`stack_resource_cost_${stack.externalId}`}>
-                            <Row className="p-0 m-0 d-flex">
-                                <Col className="p-0 m-0 mt-2 text-left align-self-center">
-                                    <FormControl placeholder="Price" value={model.recipes[recipeIndex].resourceStacks[resourceStackIndex].unitCost} onChange={(e) => { this.setResourceStackCost(model, recipeIndex, resourceStackIndex, e); }} />
+                                <Col className="p-0 m-0 text-left align-self-center">
+                                    <OverlayTrigger
+                                        placement="top"
+                                        delay={{ show: 250, hide: 400 }}
+                                        overlay={(props) => (
+                                            <Tooltip key={`resource-name-tooltip_${resourceStackIndex}`} id={`resource-name-tooltip_${resourceStackIndex}`} {...props}>
+                                                {stack.resource.name}
+                                            </Tooltip>)}>
+                                        <Image src={this.props.imageRetriever ? this.props.imageRetriever.get("thumbnails/small", stack.resource.itemImageIdentifier) : null} style={{ cursor: "pointer" }} onClick={(e) => { console.log(`clicked: ${e}`) }} />
+                                    </OverlayTrigger>
+                                </Col>
+                                <Col className="p-0 m-0 text-left align-self-center">
+                                    <FormControl size="lg" placeholder="Price" value={model.recipes[recipeIndex].resourceStacks[resourceStackIndex].unitCost} onChange={(e) => { this.setResourceStackCost(model, recipeIndex, resourceStackIndex, e); }} />
                                 </Col>
                             </Row>
                         </Row>;
                     })}
                 </Col>
                 <Col className="p-0 m-0 px-1 text-left">
-                    <Row className="p-0 m-0 d-flex">
-                        <Col className="p-0 m-0 mt-2 align-self-center">
-                            <FormControl placeholder="Goal material count" value={model.recipes[recipeIndex].count} onChange={(e) => { this.setCount(model, recipeIndex, e); }} />
+                    <Row className="p-0 m-0 d-flex align-items-center">
+                        <Col className="p-0 m-0 mt-2">
+                            <FormControl size="lg" placeholder="Goal material count" value={model.recipes[recipeIndex].count} onChange={(e) => { this.setCount(model, recipeIndex, e); }} />
                         </Col>
                     </Row>
                 </Col>
                 <Col className="text-left px-1 p-0 m-0">
                     <Row className="p-0 m-0 d-flex">
-                        <Col className="p-0 m-0 mt-2 align-self-center">
-                            <FormControl placeholder="Market price" value={model.recipes[recipeIndex].price} onChange={(e) => { this.setPrice(model, recipeIndex, e); }} />
+                        <Col className="p-0 m-0 mt-2">
+                            <FormControl size="lg" placeholder="Market price" value={model.recipes[recipeIndex].price} onChange={(e) => { this.setPrice(model, recipeIndex, e); }} />
                         </Col>
                     </Row>
                 </Col>
-                <Col className="text-left p-0 m-0 fs-6 d-flex justify-content-center align-items-center">
+                <Col className="text-left p-0 m-0 fs-5">
                     <Row className="p-0 m-0 d-flex">
-                        <Col className="p-0 m-0 align-self-center">
+                        <Col className="p-0 m-0 mt-3 align-self-center">
                             {this.getProfit(model.returnRate, model.recipes[recipeIndex], model.costPer100, model.tax, model.profitRate)}
                         </Col>
                     </Row>
                 </Col>
-                <Col className="text-left p-0 m-0 fs-6 d-flex justify-content-center align-items-center align-content-center">
-                    <Row className="p-0 m-0 align-items-center">
-                        <Col className="p-0 m-0">
+                <Col className="text-left p-0 m-0 fs-5">
+                    <Row className="p-0 m-0 d-flex">
+                        <Col className="p-0 m-0 align-self-center">
                             {this.getActionButtons(model, recipeIndex, view)}
                         </Col>
                     </Row>
@@ -371,10 +389,8 @@ class Refine extends React.Component {
         return <Row className="text-dark m-0 p-0 fs-6" md={10}>
             <Row className="p-0 m-0 d-flex align-self-center">
                 <Row className="p-0 m-0 d-flex text-nowrap align-self-center">
-                    <Col className="p-0 m-0 text-left align-self-center">Name</Col>
-                    <Col className="p-0 m-0 text-left align-self-center">Materials</Col>
+                    <Col className="p-0 m-0 text-left align-self-center">Material</Col>
                     <Col className="p-0 m-0 text-left align-self-center">Buy Price</Col>
-                    <Col className="p-0 m-0 text-left align-self-center">Resources</Col>
                     <Col className="p-0 m-0 text-left align-self-center">Buy Price</Col>
                     <Col className="p-0 m-0 text-left align-self-center">Count</Col>
                     <Col className="p-0 m-0 text-left align-self-center">Sell Price</Col>
@@ -391,7 +407,7 @@ class Refine extends React.Component {
     render() {
         const { model, view } = this.state;
         return <Row className="m-0 p-0">
-            <Row className="text-center text-nowrap text-dark m-0 p-0 pb-2 fs-6">
+            <Row className="text-center text-dark m-0 p-0 pb-2 fs-6">
                 <Col md={10}>
                     <Row className="text-center d-flex align-self-start pb-2" >
                         <Col className="text-center d-flex justify-content-start" >
@@ -401,7 +417,7 @@ class Refine extends React.Component {
                                 placeholder="RefineRecipe"
                                 defaultValue={model.currentRecipe}
                                 dataFactory={this.refineRecipeDataFactory}
-                                size={2} onChangeCustom={this.getRecipe} />
+                                md={5} xxl={2} onChangeCustom={this.getRecipe} />
                             <Button className="btn-block mx-2 btn-sm mt-0" onClick={this.addRecipe}>Add recipe</Button>
                         </Col>
                     </Row>
@@ -434,9 +450,7 @@ class Refine extends React.Component {
                 </Col>
             </Row>
             {this.getList(model, view)}
-            <Row>
-                <RecipeRequirementsModal view={view} handleClose={this.handleClose} />
-            </Row>
+            <RecipeRequirementsModal imageRetriever={this.props.imageRetriever} view={view} handleClose={this.handleClose} />
         </Row>
     }
 }

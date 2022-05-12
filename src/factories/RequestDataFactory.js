@@ -1,14 +1,19 @@
 class RequestDataFactory {
+    constructor(headers, mode){
+        this.headers = headers || {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        };
+        this.mode = mode || 'cors'
+    }
+
     createPost(url) {
         return {
             url: url,
             requestOptions: {
                 method: 'post',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                }
+                mode: this.mode,
+                headers: this.headers
             }
         }
     }
@@ -18,11 +23,8 @@ class RequestDataFactory {
             url: url,
             requestOptions: {
                 method: 'put',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                }
+                mode: this.mode,
+                headers: this.headers
             }
         }
     }
@@ -32,11 +34,8 @@ class RequestDataFactory {
             url: `${url}/${externalId}`,
             requestOptions: {
                 method: 'delete',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                }
+                mode: this.mode,
+                headers: this.headers
             }
         }
     }
@@ -46,12 +45,8 @@ class RequestDataFactory {
             url: url,
             requestOptions: {
                 method: 'get',
-                mode: 'cors',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                }
+                mode: this.mode,
+                headers: this.headers
             }
         }
     }

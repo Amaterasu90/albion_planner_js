@@ -10,6 +10,8 @@ import MaterialType from './views/items/material/MaterialType';
 import Resource from './views/items/resource/Resource';
 import ResourceType from './views/items/resource/ResourceType';
 import Refine from './views/deals/Refine';
+import ImageRetriever from './services/ImageRetriever';
+import ImageRequestDataFactory from './factories/ImageRequestDataFactory';
 
 class AlbionDataApp extends React.Component {
     constructor(props) {
@@ -35,8 +37,30 @@ class AlbionDataApp extends React.Component {
             requestDataFactory);
         this.productRequestDataFactory = new CrudRequestDataFactory("product",
             requestDataFactory);
+        this.imageDataFactory = new ImageRequestDataFactory(requestDataFactory);
+
         this.state = {
-            component: null
+            component: null,
+            images: null
+        }
+    }
+
+    componentDidMount = () => {
+        this.getImages();
+    }
+
+    getImages = () => {
+        if (!this.state.images) {
+            var requestData = this.imageDataFactory.createGet();
+            fetch(requestData.url, requestData.requestOptions)
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        this.setState({ images: result });
+                    },
+                    (error) => {
+                    }
+                )
         }
     }
 
@@ -375,32 +399,32 @@ class AlbionDataApp extends React.Component {
     //     }
     // };
 
-    showComponent = (component) => {
-
+    showComponent = (component, images) => {
+        var imageRetriever = new ImageRetriever("http://127.0.0.1:10000/devstoreaccount1/images", images);
         switch (component) {
             case "refineRecipe":
                 return <Col md={11} className="align-self-center ms-2">
-                    <Recipe />
+                    <Recipe imageRetriever={imageRetriever} />
                 </Col>;
             case "material":
                 return <Col md={11} className="align-self-center ms-2">
-                    <Material />
+                    <Material imageRetriever={imageRetriever} />
                 </Col>;
             case "materialType":
                 return <Col md={11} className="align-self-center ms-2">
-                    <MaterialType />
+                    <MaterialType imageRetriever={imageRetriever} />
                 </Col>;
             case "resource":
                 return <Col md={11} className="align-self-center ms-2">
-                    <Resource />
+                    <Resource imageRetriever={imageRetriever} />
                 </Col>
             case "resourceType":
                 return <Col md={11} className="align-self-center ms-2">
-                    <ResourceType />
+                    <ResourceType imageRetriever={imageRetriever} />
                 </Col>;
             case "refineDeal":
                 return <Col md={11} className="m-0 p-0 ms-2 mt-3">
-                    <Refine />
+                    <Refine imageRetriever={imageRetriever} />
                 </Col>
             default:
                 return <Col md={11} className="align-self-center ms-2">
@@ -410,7 +434,7 @@ class AlbionDataApp extends React.Component {
     }
 
     render() {
-        const { component } = this.state;
+        const { component, images } = this.state;
         return <Container fluid>
             <Row className="flex-nowrap">
                 <Col className="col-auto bg-dark p-0">
@@ -424,7 +448,7 @@ class AlbionDataApp extends React.Component {
                             openRefineDeal={this.openRefineDealSelected} />
                     </div>
                 </Col>
-                {this.showComponent(component)}
+                {this.showComponent(component, images)}
             </Row >
         </Container >
     }

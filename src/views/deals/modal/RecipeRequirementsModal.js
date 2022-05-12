@@ -11,7 +11,7 @@ class RecipeRequirementsModal extends React.Component {
                 <Modal.Title>Refine requirements</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <RecipeRequirements retrunRate={retrunRate} recipe={recipe} />
+                <RecipeRequirements imageRetriever={this.props.imageRetriever} retrunRate={retrunRate} recipe={recipe} />
             </Modal.Body>
         </Modal>
     }
