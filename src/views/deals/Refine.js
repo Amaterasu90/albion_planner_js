@@ -2,12 +2,15 @@ import CrudRequestDataFactory from "../../factories/CrudRequestDataFactory";
 import RequestDataFactory from "../../factories/RequestDataFactory";
 import RelatedAsyncSelect from "../../components/modal/form/RelatedAsyncSelect";
 import React from "react";
-import { Col, Row, Button, FormControl, FormLabel, OverlayTrigger, Tooltip, Form, ToggleButton, ButtonGroup, Image, Container } from "react-bootstrap"
+import { Col, Row, Button, FormControl, Spinner, FormLabel, OverlayTrigger, Tooltip, Form, ToggleButton, ButtonGroup, Image } from "react-bootstrap"
+import AutoScale from 'react-auto-scale';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faClipboardList } from '@fortawesome/fontawesome-free-solid'
+import { faTrash, faClipboardList, faSpinner } from '@fortawesome/fontawesome-free-solid'
 import RecipeRequirementsModal from "./modal/RecipeRequirementsModal";
 import Calculator from "./utils/Calculator";
 import './css/custom.css'
+import TransportCreator from "./utils/InventoryCreator";
+import RecipeRequirements from "./part/RecipeRequirements";
 
 const numberformat = require('swarm-numberformat')
 
@@ -20,7 +23,8 @@ class Refine extends React.Component {
             view: {
                 requirements: {
                     opened: false,
-                    content: null
+                    content: null,
+                    loading: false,
                 }
             },
             model: {
@@ -33,6 +37,7 @@ class Refine extends React.Component {
             }
         }
 
+        this.inventoryCreator = new TransportCreator();
         this.refineRecipeDataFactory = new CrudRequestDataFactory("refine", new RequestDataFactory());
     }
 
@@ -82,35 +87,27 @@ class Refine extends React.Component {
         this.setState({ model: model });
     }
 
-    getDeleteButtons = (model, recipeIndex) => {
-        return model.recipes.length <= 1 ? null :
-            <OverlayTrigger
-                placement="top"
-                delay={{ show: 250, hide: 400 }}
-                overlay={(props) => (
-                    <Tooltip key={"delete-action-tooltip"} id="delete-action-tooltip" {...props}>
-                        Delete
-                    </Tooltip>)}>
-                <ToggleButton variant="danger" size="lg" className="btn-block" onClick={() => { this.removeRecipe(recipeIndex); }}>
-                    <FontAwesomeIcon icon={faTrash} />
-                </ToggleButton>
-            </OverlayTrigger>
-    }
-
 
     handleClose = (view) => {
         var actualView = JSON.parse(JSON.stringify(view));
         actualView.requirements.opened = false;
         actualView.requirements.recipe = null;
-        actualView.requirements.retrunRate = null;
+        actualView.requirements.returnRate = null;
         this.setState({ view: actualView });
     }
 
-    openRequirements = (view, recipe, retrunRate) => {
+    requirementsReady = (view) => {
+        var actualView = JSON.parse(JSON.stringify(view));
+        actualView.requirements.loading = false;
+        this.setState({ view: actualView });
+    }
+
+    openRequirements = (view, recipe, returnRate) => {
         var actualView = JSON.parse(JSON.stringify(view));
         actualView.requirements.opened = true;
+        actualView.requirements.loading = true;
         actualView.requirements.recipe = JSON.parse(JSON.stringify(recipe));
-        actualView.requirements.retrunRate = retrunRate;
+        actualView.requirements.returnRate = returnRate;
         this.setState({ view: actualView });
     }
 
@@ -121,17 +118,37 @@ class Refine extends React.Component {
         </ButtonGroup>
     }
 
+    getDeleteButtons = (model, recipeIndex) => {
+        return model.recipes.length <= 1 ? null :
+            <OverlayTrigger
+                placement="top"
+                delay={{ show: 250, hide: 400 }}
+                overlay={(props) => (
+                    <Tooltip key={"delete-action-tooltip"} id="delete-action-tooltip" {...props}>
+                        Delete
+                    </Tooltip>)}>
+                <Button variant="danger" size="lg" className="btn-block" onClick={() => { this.removeRecipe(recipeIndex); }}>
+                    <FontAwesomeIcon icon={faTrash} />
+                </Button>
+            </OverlayTrigger>
+    }
+
     getRequirementsButtons = (model, recipeIndex, view) => {
         return !model.recipes[recipeIndex].count || model.recipes[recipeIndex].count === 0 ? null : <OverlayTrigger
-            placement="top"
+            placement="left"
             delay={{ show: 250, hide: 400 }}
             overlay={(props) => (
-                <Tooltip key={"requirements-action-tooltip"} id="requirements-action-tooltip" {...props}>
-                    Requirements
+                <Tooltip key={"requirements-action-tooltip"} id="requirements-action-tooltip" {...props} className="mytooltip">
+                    <RecipeRequirements inventoryCreator={this.inventoryCreator}
+                        handleReady={this.requirementsReady}
+                        imageRetriever={this.props.imageRetriever}
+                        returnRate={model.returnRate}
+                        recipe={model.recipes[recipeIndex]}
+                        view={view} />
                 </Tooltip>)}>
-            <ToggleButton variant="outline-info" size="lg" className="btn-block" onClick={() => { this.openRequirements(view, model.recipes[recipeIndex], model.returnRate); }}>
-                <FontAwesomeIcon icon={faClipboardList} />
-            </ToggleButton>
+            <Button size="lg" className="btn-block" onClick={() => { this.openRequirements(view, model.recipes[recipeIndex], model.returnRate); }}>
+                {view.requirements.loading ? <FontAwesomeIcon icon={faSpinner} /> : <FontAwesomeIcon icon={faClipboardList} />}
+            </Button>
         </OverlayTrigger>
     }
 
@@ -177,21 +194,21 @@ class Refine extends React.Component {
         const initialValue = 0;
         var baseCount = Calculator.calculateFinalCount(returnRate, recipe.count);
 
-        var resourcesAffectedByRetrunRate = recipe.resourceStacks.filter((item) => item.resource.type.isAffectedByReturnRate);
-        var materialsAffectedByRetrunRate = recipe.materialStacks.filter((item) => item.material.type.isAffectedByReturnRate);
+        var resourcesAffectedByReturnRate = recipe.resourceStacks.filter((item) => item.resource.type.isAffectedByReturnRate);
+        var materialsAffectedByReturnRate = recipe.materialStacks.filter((item) => item.material.type.isAffectedByReturnRate);
         var costElementsAffectedByReturnRate =
             (
-                resourcesAffectedByRetrunRate.reduce((previousValue, currentValue) => previousValue + currentValue.count * currentValue.unitCost, initialValue)
-                + materialsAffectedByRetrunRate.reduce((previousValue, currentValue) => previousValue + currentValue.count * currentValue.unitCost, initialValue)
+                resourcesAffectedByReturnRate.reduce((previousValue, currentValue) => previousValue + currentValue.count * currentValue.unitCost, initialValue)
+                + materialsAffectedByReturnRate.reduce((previousValue, currentValue) => previousValue + currentValue.count * currentValue.unitCost, initialValue)
             ) * baseCount;
 
-        var resourcesNotAffectedByRetrunRate = recipe.resourceStacks.filter((item) => !item.resource.type.isAffectedByReturnRate);
-        var materialsNotAffectedByRetrunRate = recipe.materialStacks.filter((item) => !item.material.type.isAffectedByReturnRate);
+        var resourcesNotAffectedByReturnRate = recipe.resourceStacks.filter((item) => !item.resource.type.isAffectedByReturnRate);
+        var materialsNotAffectedByReturnRate = recipe.materialStacks.filter((item) => !item.material.type.isAffectedByReturnRate);
 
         var costElementsNotAffectedByReturnRate =
             (
-                resourcesNotAffectedByRetrunRate.reduce((previousValue, currentValue) => previousValue + currentValue.count * currentValue.unitCost, initialValue)
-                + materialsNotAffectedByRetrunRate.reduce((previousValue, currentValue) => previousValue + currentValue.count * currentValue.unitCost, initialValue)
+                resourcesNotAffectedByReturnRate.reduce((previousValue, currentValue) => previousValue + currentValue.count * currentValue.unitCost, initialValue)
+                + materialsNotAffectedByReturnRate.reduce((previousValue, currentValue) => previousValue + currentValue.count * currentValue.unitCost, initialValue)
             )
             * recipe.count;
 
@@ -244,7 +261,7 @@ class Refine extends React.Component {
     setTax = (model, e) => {
         var currentModel = JSON.parse(JSON.stringify(model))
         currentModel.tax = e.currentTarget.value;
-        
+
         this.setState({ model: currentModel });
     }
 
@@ -300,7 +317,7 @@ class Refine extends React.Component {
             return <Row className="fs-6 p-0 pt-2 m-0 d-flex align-items-start" key={`recipe_${recipe.externalId}_${recipeIndex}`}>
                 <Col className="p-0 m-0">
                     <OverlayTrigger
-                        placement="top"
+                        placement="left"
                         delay={{ show: 250, hide: 400 }}
                         overlay={(props) => (
                             <Tooltip key={"material-name-tooltip"} id="material-name-tooltip" {...props}>
@@ -313,9 +330,9 @@ class Refine extends React.Component {
                     {recipe.materialStacks.map((stack, materialStackIndex) => {
                         return <Row className="p-0 m-0 text-nowrap" key={`stack_material_name_${stack.externalId}`}>
                             <Row className="p-0 m-0 d-flex">
-                                <Col className="p-0 m-0 text-left align-self-center">
+                                <Col md="auto" className="p-0 m-0 text-left align-self-center">
                                     <OverlayTrigger
-                                        placement="top"
+                                        placement="left"
                                         delay={{ show: 250, hide: 400 }}
                                         overlay={(props) => (
                                             <Tooltip key={`material-name-tooltip_${materialStackIndex}`} id={`material-name-tooltip_${materialStackIndex}`} {...props}>
@@ -324,7 +341,7 @@ class Refine extends React.Component {
                                         <Image src={this.props.imageRetriever ? this.props.imageRetriever.get("thumbnails/small", stack.material.itemImageIdentifier) : null} style={{ cursor: "pointer" }} onClick={(e) => { console.log(`clicked: ${e}`) }} />
                                     </OverlayTrigger>
                                 </Col>
-                                <Col className="p-0 m-0 text-left align-self-center">
+                                <Col xs sm="6" md="6" xxl="8" className="p-0 m-0 text-left align-self-center">
                                     <FormControl size="lg" placeholder="Price" value={model.recipes[recipeIndex].materialStacks[materialStackIndex].unitCost} onChange={(e) => { this.setMaterialStackCost(model, recipeIndex, materialStackIndex, e); }} />
                                 </Col>
                             </Row>
@@ -335,7 +352,7 @@ class Refine extends React.Component {
                     {recipe.resourceStacks.map((stack, resourceStackIndex) => {
                         return <Row className="p-0 m-0 text-nowrap" key={`stack_resource_name_${stack.externalId}`}>
                             <Row className="p-0 m-0 d-flex">
-                                <Col className="p-0 m-0 text-left align-self-center">
+                                <Col md="auto" className="p-0 m-0 text-left align-self-center">
                                     <OverlayTrigger
                                         placement="top"
                                         delay={{ show: 250, hide: 400 }}
@@ -346,7 +363,7 @@ class Refine extends React.Component {
                                         <Image src={this.props.imageRetriever ? this.props.imageRetriever.get("thumbnails/small", stack.resource.itemImageIdentifier) : null} style={{ cursor: "pointer" }} onClick={(e) => { console.log(`clicked: ${e}`) }} />
                                     </OverlayTrigger>
                                 </Col>
-                                <Col className="p-0 m-0 text-left align-self-center">
+                                <Col xs sm="6" md="6" xxl="8" className="p-0 m-0 text-left align-self-center">
                                     <FormControl size="lg" placeholder="Price" value={model.recipes[recipeIndex].resourceStacks[resourceStackIndex].unitCost} onChange={(e) => { this.setResourceStackCost(model, recipeIndex, resourceStackIndex, e); }} />
                                 </Col>
                             </Row>
@@ -376,7 +393,7 @@ class Refine extends React.Component {
                 </Col>
                 <Col className="text-left p-0 m-0 fs-5">
                     <Row className="p-0 m-0 d-flex">
-                        <Col className="p-0 m-0 align-self-center">
+                        <Col className="p-0 m-0 align-self-left">
                             {this.getActionButtons(model, recipeIndex, view)}
                         </Col>
                     </Row>
@@ -395,7 +412,7 @@ class Refine extends React.Component {
                     <Col className="p-0 m-0 text-left align-self-center">Count</Col>
                     <Col className="p-0 m-0 text-left align-self-center">Sell Price</Col>
                     <Col className="p-0 m-0 text-left align-self-center">Profit</Col>
-                    <Col className="p-0 m-0 text-left align-self-center"></Col>
+                    <Col className="p-0 m-0 text-left align-self-center">Actions</Col>
                 </Row>
                 <Row className="p-0 m-0 d-flex">
                     {this.getListData(model, view)}
@@ -430,7 +447,7 @@ class Refine extends React.Component {
                             <FormLabel className="mx-2 mb-0 align-self-center">Return rate</FormLabel>
                             <FormControl placeholder="Return Rate" value={model.returnRate} onChange={(e) => { this.setReturnRate(model, e); }} />
                         </Col>
-                        <Col xxl={2} md={3} className="d-flex align-self-start text-nowrap">
+                        <Col xxl={3} md={3} className="d-flex align-self-start text-nowrap">
                             <FormLabel className="mx-2 mb-0 align-self-center">Cost per 100 food unit</FormLabel>
                             <FormControl placeholder="Cost per 100 food unit" value={model.costPer100} onChange={(e) => { this.setProductioncostPer100(model, e); }} />
                         </Col>
@@ -450,7 +467,12 @@ class Refine extends React.Component {
                 </Col>
             </Row>
             {this.getList(model, view)}
-            <RecipeRequirementsModal imageRetriever={this.props.imageRetriever} view={view} handleClose={this.handleClose} />
+            <RecipeRequirementsModal
+                inventoryCreator={this.inventoryCreator}
+                handleReady={this.requirementsReady}
+                imageRetriever={this.props.imageRetriever}
+                view={view}
+                handleClose={this.handleClose} />
         </Row>
     }
 }

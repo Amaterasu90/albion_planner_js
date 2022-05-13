@@ -1,5 +1,27 @@
-figcaption {
+.oneSign {
     position: absolute;
     bottom: 0.6rem;
-    margin: 0 2.65rem;
+    padding: 0 2.85rem;
+    text-align: center;
+}
+
+.twoSign {
+    position: absolute;
+    bottom: 0.6rem;
+    padding: 0 2.75rem;
+    text-align: center;
+}
+
+.treeSign {
+    position: absolute;
+    bottom: 0.6rem;
+    padding: 0 2.55rem;
+    text-align: center;
+}
+
+.mytooltip > .tooltip-inner {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
 }
