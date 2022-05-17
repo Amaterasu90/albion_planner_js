@@ -3,7 +3,7 @@ class ImageRequestDataFactory {
         this.requestDataFactory = requestDataFactory;
     }
 
-    createGet() {
+    createListAll() {
         return this.requestDataFactory.createGet(`https://localhost:44348/image/list`);
     }
 }

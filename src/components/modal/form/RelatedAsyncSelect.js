@@ -28,7 +28,7 @@ class RelatedAsyncSelect extends React.Component {
     });
 
     getOptions = (inputValue, callback) => {
-        var requestData = this.props.dataFactory.createGet();
+        var requestData = this.props.dataFactory.createListAll();
         fetch(requestData.url, requestData.requestOptions)
             .then(response => {
                 response.json()

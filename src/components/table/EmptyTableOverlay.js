@@ -33,7 +33,7 @@ class EmptyTableOverlay extends React.Component {
     }
 
     getPaginableItems = (page, sizePerPage) => {
-        var requestData = this.props.requestDataFactory.createGet();
+        var requestData = this.props.requestDataFactory.createListAll();
         fetch(requestData.url, requestData.requestOptions)
             .then(res => res.json())
             .then(

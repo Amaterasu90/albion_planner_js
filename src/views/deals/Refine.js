@@ -1,9 +1,7 @@
 import CrudRequestDataFactory from "../../factories/CrudRequestDataFactory";
 import RequestDataFactory from "../../factories/RequestDataFactory";
-import RelatedAsyncSelect from "../../components/modal/form/RelatedAsyncSelect";
 import React from "react";
-import { Col, Row, Button, FormControl, Spinner, FormLabel, OverlayTrigger, Tooltip, Form, ToggleButton, ButtonGroup, Image } from "react-bootstrap"
-import AutoScale from 'react-auto-scale';
+import { Col, Row, Button, FormControl, FormLabel, OverlayTrigger, Tooltip, Form, ToggleButton, ButtonGroup, Image } from "react-bootstrap"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faClipboardList, faSpinner } from '@fortawesome/fontawesome-free-solid'
 import RecipeRequirementsModal from "./modal/RecipeRequirementsModal";
@@ -11,6 +9,7 @@ import Calculator from "./utils/Calculator";
 import './css/custom.css'
 import TransportCreator from "./utils/InventoryCreator";
 import RecipeRequirements from "./part/RecipeRequirements";
+import RecipeFilter from "./part/RecipeFilter";
 
 const numberformat = require('swarm-numberformat')
 
@@ -33,12 +32,20 @@ class Refine extends React.Component {
                 tax: 0.03,
                 costPer100: 100,
                 profitRate: 10,
-                recipes: []
+                recipes: [],
+                materialTypes: [],
+                currentMaterialType: null,
+                tiers: [],
+                currentTier: null,
+                enhancements: [],
+                currentEnhancement: null
             }
         }
 
         this.inventoryCreator = new TransportCreator();
         this.refineRecipeDataFactory = new CrudRequestDataFactory("refine", new RequestDataFactory());
+        this.materialTypeDataFactory = new CrudRequestDataFactory("material/type", new RequestDataFactory());
+        this.materialDataFactory = new CrudRequestDataFactory("material", new RequestDataFactory());
     }
 
 
@@ -59,22 +66,22 @@ class Refine extends React.Component {
             );
     }
 
-    addRecipe = () => {
-        var model = JSON.parse(JSON.stringify(this.state.model));
-        var recipes = model.recipes;
+    // addRecipe = () => {
+    //     var model = JSON.parse(JSON.stringify(this.state.model));
+    //     var recipes = model.recipes;
 
-        if (!model.currentRecipe) {
-            return;
-        }
+    //     if (!model.currentRecipe) {
+    //         return;
+    //     }
 
-        model.currentRecipe.resourceStacks = model.currentRecipe.resourceStacks.map((item) => { item.unitCost = item.unitCost || ""; return item; });
-        model.currentRecipe.materialStacks = model.currentRecipe.materialStacks.map((item) => { item.unitCost = item.unitCost || ""; return item; });
-        model.currentRecipe.count = model.currentRecipe.count || "";
-        model.currentRecipe.price = model.currentRecipe.price || "";
+    //     model.currentRecipe.resourceStacks = model.currentRecipe.resourceStacks.map((item) => { item.unitCost = item.unitCost || ""; return item; });
+    //     model.currentRecipe.materialStacks = model.currentRecipe.materialStacks.map((item) => { item.unitCost = item.unitCost || ""; return item; });
+    //     model.currentRecipe.count = model.currentRecipe.count || "";
+    //     model.currentRecipe.price = model.currentRecipe.price || "";
 
-        recipes.push(model.currentRecipe);
-        this.setState({ model: model });
-    }
+    //     recipes.push(model.currentRecipe);
+    //     this.setState({ model: model });
+    // }
 
     removeRecipe = (recipeIndex) => {
         var model = JSON.parse(JSON.stringify(this.state.model));
@@ -138,13 +145,17 @@ class Refine extends React.Component {
             placement="left"
             delay={{ show: 250, hide: 400 }}
             overlay={(props) => (
-                <Tooltip key={"requirements-action-tooltip"} id="requirements-action-tooltip" {...props} className="mytooltip">
-                    <RecipeRequirements inventoryCreator={this.inventoryCreator}
-                        handleReady={this.requirementsReady}
-                        imageRetriever={this.props.imageRetriever}
-                        returnRate={model.returnRate}
-                        recipe={model.recipes[recipeIndex]}
-                        view={view} />
+                <Tooltip key={"requirements-action-tooltip"} id="requirements-action-tooltip" {...props} className="mytooltip d-flex align-items-center">
+                    <figure className="position-relative m-0">
+                        <figcaption style={{ "position": "absolute", "top": "-27rem", "left": "-19.5rem"}}>
+                            <RecipeRequirements inventoryCreator={this.inventoryCreator}
+                                handleReady={this.requirementsReady}
+                                imageRetriever={this.props.imageRetriever}
+                                returnRate={model.returnRate}
+                                recipe={model.recipes[recipeIndex]}
+                                view={view} />
+                        </figcaption>
+                    </figure>
                 </Tooltip>)}>
             <Button size="lg" className="btn-block" onClick={() => { this.openRequirements(view, model.recipes[recipeIndex], model.returnRate); }}>
                 {view.requirements.loading ? <FontAwesomeIcon icon={faSpinner} /> : <FontAwesomeIcon icon={faClipboardList} />}
@@ -421,25 +432,95 @@ class Refine extends React.Component {
         </Row>
     }
 
+    componentDidMount = () => {
+
+        this.recieveMaterials(this.state.model);
+    }
+
+    onInitializeMaterials = (all) => {
+        var model = JSON.parse(JSON.stringify(this.state.model));
+        model.currentMaterial = all[0];
+        model.materials = all;
+        this.setState({ model: model });
+    }
+
+    recieveMaterials = (model) => {
+        var requestData = this.materialDataFactory.createSelectList(
+            "externalId", !model.currentMaterialType || model.currentMaterialType.externalId == null ? "" : model.currentMaterialType.externalId,
+            "tier", !model.currentTier || model.currentTier == "all" ? "" : model.currentTier,
+            "enhancement", !model.currentEnhancement || model.currentEnhancement == "all" ? "" : model.currentEnhancement);
+        fetch(requestData.url, requestData.requestOptions)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    var model = JSON.parse(JSON.stringify(this.state.model));
+                    model.currentMaterial = result[0];
+                    model.materials = result;
+                    this.setState({ model: model });
+                },
+                (error) => {
+                }
+            );
+    }
+
+    addRecipe = (recipe) => {
+        var model = JSON.parse(JSON.stringify(this.state.model));
+        var recipes = model.recipes;
+
+        recipe.resourceStacks = recipe.resourceStacks.map((item) => { item.unitCost = item.unitCost || ""; return item; });
+        recipe.materialStacks = recipe.materialStacks.map((item) => { item.unitCost = item.unitCost || ""; return item; });
+        recipe.count = recipe.count || "";
+        recipe.price = recipe.price || "";
+
+        recipes.push(recipe);
+        this.setState({ model: model });
+    }
+
+    selectMaterial = (model, material) => {
+        var model = JSON.parse(JSON.stringify(this.state.model));
+        model.currentMaterial = material;
+        this.setState({ model: model });
+
+        var requestData = this.refineRecipeDataFactory.createListAll("material", material.externalId);
+        fetch(requestData.url, requestData.requestOptions)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    var model = JSON.parse(JSON.stringify(this.state.model));
+                    model.menuCurrentRecipe = result[0];
+                    model.menuRecipes = result;
+                    this.setState({ model: model });
+                },
+                (error) => {
+                }
+            );
+    }
+
+    moveNext = (current) => {
+        var model = JSON.parse(JSON.stringify(this.state.model));
+        model.menuCurrentRecipe = current;
+        this.setState({ model: model });
+    }
+
+    movePrevious = (current) => {
+        var model = JSON.parse(JSON.stringify(this.state.model));
+        model.menuCurrentRecipe = current;
+        this.setState({ model: model });
+    }
+
     render() {
         const { model, view } = this.state;
         return <Row className="m-0 p-0">
-            <Row className="text-center text-dark m-0 p-0 pb-2 fs-6">
-                <Col md={10}>
-                    <Row className="text-center d-flex align-self-start pb-2" >
-                        <Col className="text-center d-flex justify-content-start" >
-                            <FormLabel className="mx-2 mb-0 mt-1 align-self-center">Refined recipe</FormLabel>
-                            <RelatedAsyncSelect
-                                id="refineRecipeId"
-                                placeholder="RefineRecipe"
-                                defaultValue={model.currentRecipe}
-                                dataFactory={this.refineRecipeDataFactory}
-                                md={5} xxl={2} onChangeCustom={this.getRecipe} />
-                            <Button className="btn-block mx-2 btn-sm mt-0" onClick={this.addRecipe}>Add recipe</Button>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
+            <RecipeFilter materialDataFactory={this.materialDataFactory}
+                materialTypeDataFactory={this.materialTypeDataFactory}
+                imageRetriever={this.props.imageRetriever}
+                onSelectMaterial={(currentTier) => this.selectMaterial(model, currentTier)}
+                all={model.menuRecipes}
+                current={model.menuCurrentRecipe}
+                onMoveNext={(current) => this.moveNext(current)}
+                onMovePrevious={(current) => this.movePrevious(current)}
+                onAddRecipe={(recipe) => this.addRecipe(recipe)}
+                onInitialize={(all) => this.onInitializeMaterials(all)} />
             <Row className="text-center text-dark pb-2 m-0 p-0 fs-6">
                 <Col md={10}>
                     <Row className="text-center d-flex align-self-start pb-2" >
@@ -467,13 +548,13 @@ class Refine extends React.Component {
                 </Col>
             </Row>
             {this.getList(model, view)}
-            <RecipeRequirementsModal
+            < RecipeRequirementsModal
                 inventoryCreator={this.inventoryCreator}
                 handleReady={this.requirementsReady}
                 imageRetriever={this.props.imageRetriever}
                 view={view}
                 handleClose={this.handleClose} />
-        </Row>
+        </Row >
     }
 }
 

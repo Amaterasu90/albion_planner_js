@@ -51,7 +51,7 @@ class AlbionDataApp extends React.Component {
 
     getImages = () => {
         if (!this.state.images) {
-            var requestData = this.imageDataFactory.createGet();
+            var requestData = this.imageDataFactory.createListAll();
             fetch(requestData.url, requestData.requestOptions)
                 .then(res => res.json())
                 .then(

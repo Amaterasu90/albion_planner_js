@@ -4,23 +4,35 @@ class CrudRequestDataFactory {
         this.requestDataFactory = requestDataFactory;
     }
 
-    createPost() {
+    createPost = () => {
         return this.requestDataFactory.createPost(`https://localhost:44348/${this.entityName}/create`);
     }
 
-    createPut() {
+    createPut = () => {
         return this.requestDataFactory.createPut(`https://localhost:44348/${this.entityName}/edit`);
     }
 
-    createDelete(externalId) {
+    createDelete = (externalId) => {
         return this.requestDataFactory.createDelete(`https://localhost:44348/${this.entityName}/delete`, externalId);
     }
 
-    createGet() {
-        return this.requestDataFactory.createGet(`https://localhost:44348/${this.entityName}/list`);
+    createListAll = (entity, externalId) => {
+        return !entity || !externalId
+            ? this.requestDataFactory.createGet(`https://localhost:44348/${this.entityName}/list`)
+            : this.requestDataFactory.createGet(`https://localhost:44348/${this.entityName}/list/${entity}/${externalId}`);
     }
 
-    createGetDetails(externalId) {
+    createSelectList = (selectorName, selector, selectorName1, selector1, selectorName2, selector2) => {
+        return this.requestDataFactory.createGet(`https://localhost:44348/${this.entityName}/list/filter?${selectorName}=${selector}&${selectorName1}=${selector1}&${selectorName2}=${selector2}`);
+    }
+
+    createListGroup = (entityName, groupName, fieldName, value, fieldName1, value1) => {
+        return !entityName
+            ? this.requestDataFactory.createGet(`https://localhost:44348/${this.entityName}/list/${groupName}?${fieldName}=${value}&${fieldName1}=${value1}`)
+            : this.requestDataFactory.createGet(`https://localhost:44348/${this.entityName}/list/${groupName}/${entityName}?${fieldName}=${value}&${fieldName1}=${value1}`);
+    }
+
+    createGetDetails = (externalId) => {
         return this.requestDataFactory.createGet(`https://localhost:44348/${this.entityName}/details/${externalId}`);
     }
 }

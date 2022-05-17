@@ -2,7 +2,7 @@ import VisualisationDecorator from "./services/VisualisationDecorator";
 
 class AsyncTableDataProvider {
     getPaginableItems = (context, props) => {
-        var requestData = props.requestDataFactory.createGet();
+        var requestData = props.requestDataFactory.createListAll();
         fetch(requestData.url, requestData.requestOptions)
             .then(res => res.json())
             .then(
