@@ -21,9 +21,9 @@ class RecipeSelector extends React.Component {
     }
 
     getRecipe = (recipe) => {
-        return <Col md="auto" className="m-0 p-0 text-center d-flex justify-content-center" >
-            <Row className="text-center text-dark m-0 p-0 fs-6" style={{ cursor: "pointer" }} onClick={() => this.selectRecipe(recipe)}>
-                {recipe.materialStacks.map((element) => <Col md="auto" className="p-0 d-flex align-items-center">
+        return <Col md={12} className="m-0 p-0 text-center d-flex justify-content-center" >
+            <Row className="text-center text-dark m-0 p-0 fs-6 d-flex align-self-center" style={{ cursor: "pointer" }} onClick={() => this.selectRecipe(recipe)}>
+                {recipe.materialStacks.map((element) => <Col className="p-0 d-flex align-self-center">
                     <figure className="position-relative m-0">
                         <Image src={this.props.imageRetriever ? this.props.imageRetriever.get("thumbnails/small", element.material.itemImageIdentifier) : null} />
                         <figcaption className={`text-warning ${element.count < 10 ? "oneSign" : element.count < 100 ? "twoSign" : "treeSign"}`} style={{ "font-size": "0.55rem" }}>
@@ -31,7 +31,7 @@ class RecipeSelector extends React.Component {
                         </figcaption>
                     </figure>
                 </Col>)}
-                {recipe.resourceStacks.map((element) => <Col md="auto" className="p-0 d-flex align-items-center">
+                {recipe.resourceStacks.map((element) => <Col className="p-0 d-flex align-items-center">
                     <figure className="position-relative m-0">
                         <Image src={this.props.imageRetriever ? this.props.imageRetriever.get("thumbnails/small", element.resource.itemImageIdentifier) : null} />
                         <figcaption className={`text-warning ${element.count < 10 ? "oneSign" : element.count < 100 ? "twoSign" : "treeSign"}`} style={{ "font-size": "0.55rem" }}>
@@ -56,13 +56,13 @@ class RecipeSelector extends React.Component {
     getRecipes = (all, current) => {
         return all
             ? <Row className="text-center text-dark m-0 p-0 pb-2 fs-6 d-flex justify-content-center">
-                <Col className="m-0 p-0 text-center d-flex align-self-center justify-content-end" >
+                <Col md={1} className="m-0 p-0 text-center d-flex align-self-center justify-content-end" >
                     {<Button disabled={all.indexOf(all.find((item) => item.externalId === current.externalId)) === 0} size="sm" className="btn-block" variant="primary" onClick={() => this.movePrevious(all, all.indexOf(all.find((item) => item.externalId === current.externalId)))}>{"<"}</Button>}
                 </Col>
-                <Col md={8} className="m-0 p-0 text-center d-flex justify-content-center" >
+                <Col md={10} className="m-0 p-0 text-center d-flex justify-content-center align-self-center" style={{"width": "192px"}} >
                     {this.getRecipe(current)}
                 </Col>
-                <Col className="m-0 p-0 text-center d-flex align-self-center justify-content-start" >
+                <Col md={1} className="m-0 p-0 text-center d-flex align-self-center justify-content-start" >
                     {<Button disabled={all.indexOf(all.find((item) => item.externalId === current.externalId)) === all.length - 1} size="sm" className="btn-block" variant="primary" onClick={() => this.moveNext(all, all.indexOf(all.find((item) => item.externalId === current.externalId)))}>{">"}</Button>}
                 </Col>
             </Row>
@@ -72,8 +72,8 @@ class RecipeSelector extends React.Component {
     render = () => {
         var { all, current } = this.props;
         return !all || all === 0 ? null : <Row className="text-center text-dark m-0 p-0 pb-2 fs-6 d-flex justify-content-center">
-            <Col md="auto" className="p-0 m-0">
-                <Row className="text-center pb-2" >
+            <Col md={12} className="p-0 m-0 d-flex justify-content-center">
+                <Row className="text-center pb-2 d-flex justify-content-center" >
                     <FormLabel className="mx-2 mb-0 mt-1 align-self-center">Select Recipe</FormLabel>
                     {this.getRecipes(all, current)}
                 </Row>
