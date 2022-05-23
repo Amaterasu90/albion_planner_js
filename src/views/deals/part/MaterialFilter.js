@@ -1,9 +1,9 @@
 import React from "react";
-import { Row, Col, Image, FormLabel, OverlayTrigger, Tooltip, Spinner } from "react-bootstrap";
+import { Row, Col, FormLabel, Spinner } from "react-bootstrap";
 import BaseFilter from "./BaseFilter";
 import RecipeSelector from "./RecipeSelector";
 import MaterialSelector from "./MaterialSelector";
-import { Suspense, lazy } from 'react';
+import { Suspense } from 'react';
 
 const MaterialGrid = React.lazy(() => import('./MaterialGrid'));
 
@@ -34,17 +34,24 @@ class MaterialFilter extends React.Component {
             );
     }
 
+    setFoundedRecipe = (recipes) => {
+        if(recipes.length === 1){
+            this.selectMaterial(recipes[0]);
+        }
+    }
+
     recieveMaterials = (tier, enhancement, materialType) => {
         var requestData = this.props.materialDataFactory.createSelectList(
             "externalId", materialType == null || materialType.externalId == null ? "" : materialType.externalId,
-            "tier", tier == null || tier == "all" ? "" : tier,
-            "enhancement", enhancement == null || enhancement == "all" ? "" : enhancement);
+            "tier", tier == null || tier === "all" ? "" : tier,
+            "enhancement", enhancement == null || enhancement === "all" ? "" : enhancement);
         fetch(requestData.url, requestData.requestOptions)
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({ current: result[0] });
                     this.setState({ all: result });
+                    this.setFoundedRecipe(result, result[0]);
                     this.props.onEndLoading();
                 },
                 (error) => {
@@ -82,12 +89,12 @@ class MaterialFilter extends React.Component {
     groupBy = (arr) => {
         var result = arr.reduce((previousValue, currentValue) => {
 
-            var entry = previousValue.find((item) => item.key == currentValue.enhancement);
+            var entry = previousValue.find((item) => item.key === currentValue.enhancement);
             if (!entry) {
                 previousValue.push({ key: currentValue.enhancement, values: [] });
             }
 
-            previousValue.find((item) => item.key == currentValue.enhancement).values.push(currentValue);
+            previousValue.find((item) => item.key === currentValue.enhancement).values.push(currentValue);
 
             return previousValue;
 

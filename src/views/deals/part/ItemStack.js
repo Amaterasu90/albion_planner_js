@@ -2,10 +2,6 @@ import React from "react";
 import Item from "./Item"
 
 class ItemStack extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render = () => {
         const { imageRetriever, size, path, imageIdentifier, count } = this.props;
         return <figure className="position-relative m-0">

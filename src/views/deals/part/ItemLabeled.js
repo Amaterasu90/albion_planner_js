@@ -1,12 +1,8 @@
 import React from "react";
-import { OverlayTrigger, Tooltip, Col } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Item from "./Item";
 
 class ItemLabeled extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render = () => {
         const { tooltipText, index, imageIdentifier } = this.props;
         return <OverlayTrigger

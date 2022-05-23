@@ -41,7 +41,7 @@ class BaseFilter extends React.Component {
                             }
                         );
 
-                    var requestData = this.props.materialDataFactory.createListGroup("", "enhancements", "externalId", types[0].name === "all" ? "" : types[0].externalId);
+                    requestData = this.props.materialDataFactory.createListGroup("", "enhancements", "externalId", types[0].name === "all" ? "" : types[0].externalId);
                     fetch(requestData.url, requestData.requestOptions)
                         .then(res => res.json())
                         .then(
@@ -78,17 +78,16 @@ class BaseFilter extends React.Component {
                 }
             );
 
-        var requestData = this.props.materialDataFactory.createListGroup("", "enhancements", "externalId", current.name === "all" ? "" : current.externalId, "tier", tier === "all" ? "" : tier);
+        requestData = this.props.materialDataFactory.createListGroup("", "enhancements", "externalId", current.name === "all" ? "" : current.externalId, "tier", tier === "all" ? "" : tier);
         fetch(requestData.url, requestData.requestOptions)
             .then(res => res.json())
             .then(
-                (result) => {
+                (result) => {                    
+                    var enhancements = ["all"];
                     if (result.length > 1) {
-                        var enhancements = ["all"];
                         enhancements.push(...result);
                         this.setState({ enhancements: enhancements });
                     } else {
-                        var enhancements = ["all"];
                         this.setState({ currentEnhancement: enhancements[0] })
                         this.setState({ enhancements: enhancements });
                     }
@@ -108,12 +107,11 @@ class BaseFilter extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
+                    var enhancements = ["all"];
                     if (result.length > 1) {
-                        var enhancements = ["all"];
                         enhancements.push(...result);
                         this.setState({ enhancements: enhancements });
                     } else {
-                        var enhancements = ["all"];
                         this.setState({ currentEnhancement: enhancements[0] })
                         this.setState({ enhancements: enhancements });
                     }
@@ -134,7 +132,7 @@ class BaseFilter extends React.Component {
 
     getMaterialTypes = (all, current, tier) => {
         return all ? all.map((element, index) => {
-            return <Col xs="auto" className="m-0 p-0 text-center d-flex justify-content-start" >
+            return <Col xs="auto" key={`col_materialType_${index}`} className="m-0 p-0 text-center d-flex justify-content-start" >
                 <Button variant={element.externalId === current.externalId ? `danger` : `warning`} key={`materialType_${index}`} className="btn-block mx-1 btn-sm" onClick={() => this.selectMaterialType(element, tier)}>{element.name}</Button>
             </Col >
         }) : "loading data"

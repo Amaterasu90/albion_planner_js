@@ -68,14 +68,14 @@ class MaterialGrid extends React.Component {
     render = () => {
         const { imageRetriever, onSelect } = this.props;
         var { grid } = this.state;
-        return grid ? grid.length !== 0 ? grid.map((line) => {
-            return <Col xs="auto" className="p-0 m-0 d-flex justify-content-start">
+        return grid ? grid.length !== 0 ? grid.map((line, lineNumber) => {
+            return <Col xs="auto" key={`col_material_line_${lineNumber}`} className="p-0 m-0 d-flex justify-content-start">
                 {
                     line.map((item, index) => {
                         return !item
-                            ? <Col xs="auto" className="p-0 d-flex align-items-center" style={{ "width": "32px", "height": "32px" }} />
-                            : <Col xs="auto" className="m-0 p-0 text-center d-flex justify-content-center" >
-                                <MaterialSelector imageRetriever={imageRetriever} model={item} index={index} size="extra-small" path={"thumbnails"} onSelect={() => onSelect(item)} style={{ "cursor": "pointer" }} />
+                            ? <Col xs="auto" key={`col_material_cell_${index}`} className="p-0 d-flex align-items-center" style={{ "width": "32px", "height": "32px" }} />
+                            : <Col xs="auto" key={`col_material_cell_${index}`} className="m-0 p-0 text-center d-flex justify-content-center" >
+                                <MaterialSelector imageRetriever={imageRetriever} model={item} index={index} key={`material_cell_${index}`} size="extra-small" path={"thumbnails"} onSelect={() => onSelect(item)} style={{ "cursor": "pointer" }} />
                             </Col >
 
                     })
