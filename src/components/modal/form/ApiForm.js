@@ -24,7 +24,7 @@ class ApiForm extends React.Component {
                 {fields}
             </Row>
             <Row className="pb-2">
-                <Col md={{ span: 1, offset: 5 }}>
+                <Col xs={{ span: 1, offset: 5 }}>
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>

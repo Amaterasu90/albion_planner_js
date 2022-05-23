@@ -2,6 +2,7 @@ import React from "react";
 import { Row, Col, Tooltip, Image, OverlayTrigger, Tab, Nav } from "react-bootstrap";
 import Calculator from "../utils/Calculator";
 import "./../css/inventory.css"
+import ItemStack from "./ItemStack";
 
 class RecipeRequirements extends React.Component {
 
@@ -23,7 +24,7 @@ class RecipeRequirements extends React.Component {
     }
 
     generateItemStack = (model) => {
-        return <Col md="auto" className="p-0 d-flex align-items-center">
+        return <Col xs="auto" className="p-0 d-flex align-items-center">
             <OverlayTrigger
                 placement="top"
                 delay={{ show: 250, hide: 400 }}
@@ -32,10 +33,9 @@ class RecipeRequirements extends React.Component {
                         {model.name}
                     </Tooltip>)}>
                 <figure className="position-relative m-0">
-                    <Image src={this.props.imageRetriever ? this.props.imageRetriever.get("thumbnails/small", model.imageIdentifier) : null} />
-                    <figcaption className={`text-warning ${model.count < 10 ? "oneSign" : model.count < 100 ? "twoSign" : "treeSign"}`} style={{ "font-size": "0.55rem" }}>
-                        {model.count}
-                    </figcaption>
+                    <Col xs="auto" className="p-0 m-0">
+                        <ItemStack imageRetriever={this.props.imageRetriever} size="small" path={"thumbnails"} imageIdentifier={model.imageIdentifier} count={model.count} />
+                    </Col>
                 </figure>
             </OverlayTrigger>
         </Col>
@@ -117,7 +117,7 @@ class RecipeRequirements extends React.Component {
     }
 
     getMaterialRequirement = (materialStackIndex, itemImageIdentifier, materialName, count) => {
-        return <Col md="auto" className="p-0 d-flex align-items-center">
+        return <Col xs="auto" className="p-0 d-flex align-items-center">
             <OverlayTrigger
                 placement="top"
                 delay={{ show: 250, hide: 400 }}
@@ -163,7 +163,7 @@ class RecipeRequirements extends React.Component {
     }
 
     getResourceRequirement = (resourceStackIndex, itemImageIdentifier, resourceName, count) => {
-        return <Col md="auto" className="p-0 d-flex align-items-center">
+        return <Col xs="auto" className="p-0 d-flex align-items-center">
             <OverlayTrigger
                 placement="top"
                 delay={{ show: 250, hide: 400 }}
@@ -189,7 +189,7 @@ class RecipeRequirements extends React.Component {
         var { recipe } = this.props;
         var { tabsContent, buttons } = this.state;
         return <Row className="fs-6 p-0 m-0 d-flex justify-content-start">
-            <Col md="auto" className="m-0 p-0 d-flex justify-content-center">
+            <Col xs="auto" className="m-0 p-0 d-flex justify-content-center">
                 {this.generateTransportPlans(recipe, tabsContent, buttons)}
             </Col >
         </Row >

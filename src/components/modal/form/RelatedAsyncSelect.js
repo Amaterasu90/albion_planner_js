@@ -73,7 +73,7 @@ class RelatedAsyncSelect extends React.Component {
         }
 
         return <>
-            <Col md={this.props.md} xxl={this.props.xxl}>
+            <Col xs={this.props.md} xxl={this.props.xxl}>
                 {input}
             </Col>
         </>

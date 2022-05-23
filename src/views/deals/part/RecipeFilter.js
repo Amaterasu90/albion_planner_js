@@ -28,14 +28,14 @@ class RecipeFilter extends React.Component {
     render = () => {
         var { imageRetriever, all, current, materialDataFactory, materialTypeDataFactory } = this.props;
         var { loading } = this.state;
-        return <Row className="m-0 p-0 d-flex justify-content-start">
+        return <Row className="m-0 p-0 d-flex justify-content-start align-self-start">
             <Row className={`m-0 p-0 d-flex justify-content-center ${loading ? "" : "visually-hidden"}`}>
                 <Col>
                     <Spinner animation="border" variant="dark" />
                 </Col>
             </Row>
             <Row className={`m-0 p-0 ${loading ? "visually-hidden" : ""}`}>
-                <Row className="m-0 p-0 d-flex justify-content-start" >
+                <Row className="m-0 p-0 d-flex justify-content-start align-self-start" >
                     <MaterialFilter
                         materialDataFactory={materialDataFactory}
                         materialTypeDataFactory={materialTypeDataFactory}

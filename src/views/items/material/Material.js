@@ -166,7 +166,7 @@ class Material extends React.Component {
                         onChange={(value) => { modelEdit.tier = value; this.setState({ modelEdit: modelEdit }); }} />
                 </Row>
                 <Row className="pb-2 d-flex justify-content-center" >
-                    <Col md={11}>
+                    <Col xs={11}>
                         <FormControl
                             id="name"
                             type="text"
@@ -181,12 +181,12 @@ class Material extends React.Component {
                         placeholder="Material Type"
                         dataFactory={this.materialTypeDataFactory}
                         defaultValue={modelEdit.type}
-                        md={11}
+                        xs={11}
                         onChangeCustom={(value) => { modelEdit.type.externalId = value; this.setState({ modelEdit: modelEdit }); }} />
                 </Row>
             </Row>
             <Row className="pb-2">
-                <Col md={{ span: 1, offset: 5 }}>
+                <Col xs={{ span: 1, offset: 5 }}>
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
@@ -237,7 +237,7 @@ class Material extends React.Component {
                                     onChange={(value) => { modelCreate.tier = value; this.setState({ modelCreate: modelCreate }); }} />
                             </Row>
                             <Row className="pb-2 d-flex justify-content-center" >
-                                <Col md={11}>
+                                <Col xs={11}>
                                     <FormControl
                                         id="name"
                                         type="text"
@@ -250,12 +250,12 @@ class Material extends React.Component {
                                     id="materialId"
                                     placeholder="Material Type"
                                     dataFactory={this.materialTypeDataFactory}
-                                    md={11}
+                                    xs={11}
                                     onChangeCustom={(value) => { modelCreate.materialTypeId = value; this.setState({ modelCreate: modelCreate }); }} />
                             </Row>
                         </Row>
                         <Row className="pb-2">
-                            <Col md={{ span: 1, offset: 5 }}>
+                            <Col xs={{ span: 1, offset: 5 }}>
                                 <Button variant="primary" type="submit">
                                     Submit
                                 </Button>

@@ -66,10 +66,10 @@ class MultiInputFormGroup extends React.Component {
     getButtons = (button) => {
         return this.props.disableButtons ? null :
             <Row key={"container_inputs_more"} className="d-flex justify-content-center">
-                <Col md={6}>
+                <Col xs={6}>
                     <Button key={"button_more"} variant="success" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => this.addEntry([...this.props.sub_entries])} >Add</Button>
                 </Col>
-                <Col key={"button_actions_container"} md={6}>
+                <Col key={"button_actions_container"} xs={6}>
                     {button}
                 </Col>
             </Row>;

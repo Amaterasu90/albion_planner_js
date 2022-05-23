@@ -403,31 +403,31 @@ class AlbionDataApp extends React.Component {
         var imageRetriever = new ImageRetriever("http://127.0.0.1:10000/devstoreaccount1/images", images);
         switch (component) {
             case "refineRecipe":
-                return <Col md={11} className="align-self-center ms-2">
+                return <Col xs={11} className="align-self-center ms-2">
                     <Recipe imageRetriever={imageRetriever} />
                 </Col>;
             case "material":
-                return <Col md={11} className="align-self-center ms-2">
+                return <Col xs={11} className="align-self-center ms-2">
                     <Material imageRetriever={imageRetriever} />
                 </Col>;
             case "materialType":
-                return <Col md={11} className="align-self-center ms-2">
+                return <Col xs={11} className="align-self-center ms-2">
                     <MaterialType imageRetriever={imageRetriever} />
                 </Col>;
             case "resource":
-                return <Col md={11} className="align-self-center ms-2">
+                return <Col xs={11} className="align-self-center ms-2">
                     <Resource imageRetriever={imageRetriever} />
                 </Col>
             case "resourceType":
-                return <Col md={11} className="align-self-center ms-2">
+                return <Col xs={11} className="align-self-center ms-2">
                     <ResourceType imageRetriever={imageRetriever} />
                 </Col>;
             case "refineDeal":
-                return <Col md={11} className="m-0 p-0 ms-2 mt-3">
+                return <Col xs={11} className="m-0 p-0 ms-2 mt-3">
                     <Refine imageRetriever={imageRetriever} />
                 </Col>
             default:
-                return <Col md={11} className="align-self-center ms-2">
+                return <Col xs={11} className="align-self-center ms-2">
                     <p className="text-dark">Welcome in Albion Planner</p>
                 </Col>;
         }

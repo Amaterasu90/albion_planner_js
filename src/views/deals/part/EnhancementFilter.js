@@ -12,7 +12,7 @@ class EnhancementFilter extends React.Component {
 
     getEnhancements = (all, current) => {
         return all ? all.map((element, index) => {
-            return <Col md="auto" className="m-0 p-0 text-center d-flex justify-content-start" >
+            return <Col xs="auto" className="m-0 p-0 text-center d-flex justify-content-start" >
                 <Button variant={element === current ? `danger` : `warning`} key={`enhancement_${index}`} className="btn-block mx-1 btn-sm" onClick={() => this.selectEnhancement(element)}>{element}</Button>
             </Col >
         }) : "loading data";
@@ -20,7 +20,7 @@ class EnhancementFilter extends React.Component {
 
     render = () => {
         var { all, current } = this.props;
-        return <Col md="auto">
+        return <Col xs="auto">
             <Row className="text-center d-flex align-self-start pb-2" >
                 {this.getEnhancements(all, current)}
             </Row>

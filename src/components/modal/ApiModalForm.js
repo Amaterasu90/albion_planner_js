@@ -29,7 +29,7 @@ class ApiModalForm extends React.Component {
     }
 
     render() {
-        return <Col md={1} className="d-flex float-left">
+        return <Col xs={1} className="d-flex float-left">
             <Button variant={this.props.disabled ? "secondary" : "success"} onClick={this.handleOpen} disabled={this.props.disabled} className="text-nowrap">
                 {this.props.btnText}
             </Button>

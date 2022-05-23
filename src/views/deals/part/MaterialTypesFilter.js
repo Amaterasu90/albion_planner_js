@@ -34,7 +34,7 @@ class MaterialTypesFilter extends React.Component {
 
     getMaterialTypes = (all, current) => {
         return all ? all.map((element, index) => {
-            return <Col md="auto" className="m-0 p-0 text-center d-flex justify-content-start" >
+            return <Col xs="auto" className="m-0 p-0 text-center d-flex justify-content-start" >
                 <Button variant={element.externalId === current.externalId ? `danger` : `warning`} key={`materialType_${index}`} className="btn-block mx-1 btn-sm" onClick={() => this.selectMaterialType(element)}>{element.name}</Button>
             </Col >
         }) : "loading data"
@@ -42,7 +42,7 @@ class MaterialTypesFilter extends React.Component {
 
     render = () => {
         var { all, current } = this.state;
-        return <Col md="auto">
+        return <Col xs="auto">
             <Row className="text-center d-flex align-self-start pb-2" >
                 {this.getMaterialTypes(all, current)}
             </Row>

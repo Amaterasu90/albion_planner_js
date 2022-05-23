@@ -2,6 +2,10 @@ import React from "react";
 import { Row, Col, Image, FormLabel, OverlayTrigger, Tooltip, Spinner } from "react-bootstrap";
 import BaseFilter from "./BaseFilter";
 import RecipeSelector from "./RecipeSelector";
+import MaterialSelector from "./MaterialSelector";
+import { Suspense, lazy } from 'react';
+
+const MaterialGrid = React.lazy(() => import('./MaterialGrid'));
 
 class MaterialFilter extends React.Component {
     constructor(props) {
@@ -136,58 +140,48 @@ class MaterialFilter extends React.Component {
         return all.find((item) => item.tier === tier && item.enhancement === enhancement && item.type.externalId === type.externalId)
     }
 
-    getMaterials = (all, current, loading) => {
+    getMaterials = (all) => {
         var materials = all ? this.getGrid(all) : null;
-        var result = materials ? materials.map((line) => {
+        return materials ? materials.map((line) => {
             return <Row className="p-0 m-0 d-flex justify-content-center">
                 {line.map((item, index) => {
                     return !item
-                        ? <Col md="auto" className="p-0 d-flex align-items-center" style={{ "width": "32px", "height": "32px" }} />
-                        : <Col md="auto" className="m-0 p-0 text-center d-flex justify-content-center" >
-                            <OverlayTrigger
-                                placement="top"
-                                delay={{ show: 250, hide: 400 }}
-                                overlay={(props) => (
-                                    <Tooltip key={`resource-name-tooltip_${index}`} id={`material-name-tooltip_${index}`} {...props}>
-                                        {`${item.name} ${item.tier}.${item.enhancement}`}
-                                    </Tooltip>)}>
-                                <Image key={`material_image_${index}`} src={this.props.imageRetriever ? this.props.imageRetriever.get("thumbnails/extra-small", item.itemImageIdentifier) : null} style={{ cursor: "pointer" }} onClick={() => this.selectMaterial(item)} />
-                            </OverlayTrigger>
+                        ? <Col xs="auto" className="p-0 d-flex align-items-center" style={{ "width": "32px", "height": "32px" }} />
+                        : <Col xs="auto" className="m-0 p-0 text-center d-flex justify-content-center" >
+                            <MaterialSelector imageRetriever={this.props.imageRetriever} model={item} index={index} size={"extra-small"} path={"thumbnails"} onSelect={() => this.selectMaterial(item)} style={{ "cursor": "pointer" }} />
                         </Col >
                 })}
             </Row>
         }) : null;
-
-        return result;
     }
 
     render = () => {
-        var { all, current, loading } = this.state;
+        var { all, loading } = this.state;
         return <Row className="m-0 p-0 d-flex justify-content-start">
-            <Row className={`m-0 p-0 d-flex justify-content-center`}>
-                <Col xs md={5} xl={5} xxl={2} className="m-0 p-0 d-flex justify-content-start" >
-                    <BaseFilter
-                        key="base_filter"
-                        materialTypeDataFactory={this.props.materialTypeDataFactory}
-                        materialDataFactory={this.props.materialDataFactory}
-                        selectTier={(currentTier) => this.selectTier(currentTier)}
-                        selectEnhancement={(currentEnhancement) => this.selectEnhancement(currentEnhancement)}
-                        onSelect={(currentMaterialType, tier, enhancement) => this.selectMaterialType(currentMaterialType, tier, enhancement)} />
-                </Col>
-                <Col md="auto" xl={12} xxl={5} className="m-0 p-0" >
-                    <Row className={`m-0 p-0 d-flex justify-content-start ${loading ? "" : "visually-hidden"}`}>
-                        <Col>
-                            <Spinner animation="border" variant="dark" />
+            <Row className={`m-0 p-0 d-flex justify-content-start`}>
+                <BaseFilter
+                    key="base_filter"
+                    materialTypeDataFactory={this.props.materialTypeDataFactory}
+                    materialDataFactory={this.props.materialDataFactory}
+                    selectTier={(currentTier) => this.selectTier(currentTier)}
+                    selectEnhancement={(currentEnhancement) => this.selectEnhancement(currentEnhancement)}
+                    onSelect={(currentMaterialType, tier, enhancement) => this.selectMaterialType(currentMaterialType, tier, enhancement)} />
+                <Col xs="auto" className="m-0 p-0 d-flex justify-content-start " >
+                    <Col className={`m-0 p-0 d-flex justify-content-start ${loading ? "" : "visually-hidden"}`}>
+                        <Spinner animation="border" variant="dark" />
+                    </Col>
+                    <Col className={`m-0 p-0 d-flex row justify-content-center ${loading ? "visually-hidden" : ""}`}>
+                        <Col xs={12} className="m-0 p-0">
+                            <FormLabel className="mx-2 mb-0">Select Material</FormLabel>
                         </Col>
-                    </Row>
-                    <Row className={`m-0 p-0 d-flex justify-content-start ${loading ? "visually-hidden" : ""}`}>
-                        <Row className="text-center text-dark m-0 p-0 pb-2 fs-6" >
-                            <FormLabel className="mx-2 mb-0">Select Material To Refine</FormLabel>
-                        </Row>
-                        {this.getMaterials(all, current, loading)}
-                    </Row>
+                        <Col xs="auto" className="m-0 p-0">
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <MaterialGrid imageRetriever={this.props.imageRetriever} items={all} onSelect={(item) => this.selectMaterial(item)} />
+                            </Suspense>
+                        </Col>
+                    </Col>
                 </Col>
-                <Col md="auto" xxl={3} className="m-0 p-0 d-flex justify-content-center">
+                <Col xs="auto" className="m-0 p-0 d-flex justify-content-center align-self-start">
                     <RecipeSelector
                         imageRetriever={this.props.imageRetriever}
                         all={this.props.all}
@@ -196,7 +190,6 @@ class MaterialFilter extends React.Component {
                         movePrevious={(current) => this.props.onMovePrevious(current)}
                         onSelect={(recipe) => this.props.onSelectRecipe(recipe)} />
                 </Col>
-                <Col md="auto" xxl={2} />
             </Row>
         </Row>;
     }

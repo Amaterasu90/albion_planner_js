@@ -141,7 +141,7 @@ class ResourceType extends React.Component {
         return <Form method={this.props.method} onSubmit={this.editSubmit}>
             <Row className="text-center pb-2" >
                 <Row className="pb-2 d-flex justify-content-center" >
-                    <Col md={11}>
+                    <Col xs={11}>
                         <FormControl
                             id="name"
                             type="text"
@@ -151,7 +151,7 @@ class ResourceType extends React.Component {
                     </Col>
                 </Row>
                 <Row className="pb-2 d-flex justify-content-center" >
-                    <Col md={6}>
+                    <Col xs={6}>
                         <Form.Check
                             id="isAffectedByReturnRate"
                             type="checkbox"
@@ -162,7 +162,7 @@ class ResourceType extends React.Component {
                 </Row>
             </Row>
             <Row className="pb-2">
-                <Col md={{ span: 1, offset: 5 }}>
+                <Col xs={{ span: 1, offset: 5 }}>
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
@@ -191,7 +191,7 @@ class ResourceType extends React.Component {
                     <Form method={this.props.method} onSubmit={this.createSubmit}>
                         <Row className="text-center pb-2" >
                             <Row className="pb-2 d-flex justify-content-center" >
-                                <Col md={11}>
+                                <Col xs={11}>
                                     <FormControl
                                         id="name"
                                         type="text"
@@ -199,7 +199,7 @@ class ResourceType extends React.Component {
                                         onChange={(e) => { modelCreate.name = e.target.value; this.setState({ modelCreate: modelCreate }); }} />
                                 </Col>
                             </Row><Row className="pb-2 d-flex justify-content-center" >
-                                <Col md={6}>
+                                <Col xs={6}>
                                     <Form.Check
                                         id="isAffectedByReturnRate"
                                         type="checkbox"
@@ -210,7 +210,7 @@ class ResourceType extends React.Component {
                             </Row>
                         </Row>
                         <Row className="pb-2">
-                            <Col md={{ span: 1, offset: 5 }}>
+                            <Col xs={{ span: 1, offset: 5 }}>
                                 <Button variant="primary" type="submit">
                                     Submit
                                 </Button>

@@ -92,7 +92,7 @@ class CrudComponent extends React.Component {
                             }) => (
                                 <div>
                                     <Row key="table_row">
-                                        <Col md={12} key="table_col_2">
+                                        <Col xs={12} key="table_col_2">
                                             <BootstrapTable
                                                 remote
                                                 condensed={true}
@@ -117,12 +117,12 @@ class CrudComponent extends React.Component {
                                         </Col>
                                     </Row>
                                     <Row key="pagination_row">
-                                        <Col md={10} key="patination_col_1" className="d-flex justify-content-center">
+                                        <Col xs={10} key="patination_col_1" className="d-flex justify-content-center">
                                             <PaginationListStandalone key="pagination_list_standalone"
                                                 {...paginationProps}
                                             />
                                         </Col>
-                                        <Col md={2} key="pagination_col_2" className="d-flex justify-content-end">
+                                        <Col xs={2} key="pagination_col_2" className="d-flex justify-content-end">
                                             <SizePerPageDropdownStandalone btnContextual="btn-light dropdown-toggle" {...paginationProps} />
                                         </Col>
                                     </Row>

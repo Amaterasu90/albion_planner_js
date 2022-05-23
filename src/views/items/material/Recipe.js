@@ -208,7 +208,7 @@ class Recipe extends React.Component {
                         placeholder="Material"
                         defaultValue={modelEdit.material}
                         dataFactory={this.materialDataFactory}
-                        md={11} onChangeCustom={(value) => { modelEdit.materialId = value; this.setState({ modelEdit: modelEdit }); }} />
+                        xs={11} onChangeCustom={(value) => { modelEdit.materialId = value; this.setState({ modelEdit: modelEdit }); }} />
                 </Row>
                 <Row className="pb-2 d-flex justify-content-center">
                     <FormLabel>Material Stacks</FormLabel>
@@ -216,15 +216,15 @@ class Recipe extends React.Component {
                         {
                             modelEdit.materialStacks.map((materialStack, index) =>
                                 <Row className="pb-2">
-                                    <Col md={6}>
+                                    <Col xs={6}>
                                         <RelatedAsyncSelect
                                             id={`MaterialStacks_${index}`}
                                             key={`MaterialStacks_${index}`}
                                             defaultValue={materialStack.material}
                                             placeholder="Material"
-                                            dataFactory={this.materialDataFactory} md={12} onChangeCustom={(value) => { modelEdit.materialStacks[index].material.externalId = value; this.setState({ modelEdit: modelEdit }); }} />
+                                            dataFactory={this.materialDataFactory} xs={12} onChangeCustom={(value) => { modelEdit.materialStacks[index].material.externalId = value; this.setState({ modelEdit: modelEdit }); }} />
                                     </Col>
-                                    <Col md={6}>
+                                    <Col xs={6}>
                                         <FormControl
                                             id={`MaterialStacks_count_${index}`}
                                             key={`MaterialStacks_count${index}`}
@@ -238,14 +238,14 @@ class Recipe extends React.Component {
                         }
 
                         <Row key={`container_inputs_more_recipe_stack`} className="d-flex justify-content-center">
-                            <Col md={6}>
+                            <Col xs={6}>
                                 <Button
                                     key={`button_more_recipe_stack`}
                                     variant="success"
                                     className="btn-lg btn-block"
                                     style={{ "width": "100%" }} onClick={() => { modelEdit.materialStacks.push({ count: null, material: { externalId: null } }); this.setState({ modelEdit: modelEdit }); }} >Add</Button>
                             </Col>
-                            <Col key={"button_actions_container_recipe_stack"} md={6}>
+                            <Col key={"button_actions_container_recipe_stack"} xs={6}>
                                 {modelEdit.materialStacks.length <= 1 ?
                                     <Button
                                         key={`button_secondary_recipe_stack`}
@@ -267,16 +267,16 @@ class Recipe extends React.Component {
                         {
                             modelEdit.resourceStacks.map((resourceStack, index) =>
                                 <Row className="pb-2">
-                                    <Col md={6}>
+                                    <Col xs={6}>
                                         <RelatedAsyncSelect
                                             id={`ResourceStacks_${index}`}
                                             key={`ResourceStacks_${index}`}
                                             placeholder="Resource"
                                             defaultValue={resourceStack.resource}
                                             dataFactory={this.resourceDataFactory}
-                                            md={12} onChangeCustom={(value) => { modelEdit.resourceStacks[index].resource.externalId = value; this.setState({ modelEdit: modelEdit }); }} />
+                                            xs={12} onChangeCustom={(value) => { modelEdit.resourceStacks[index].resource.externalId = value; this.setState({ modelEdit: modelEdit }); }} />
                                     </Col>
-                                    <Col md={6}>
+                                    <Col xs={6}>
                                         <FormControl
                                             id={`ResourceStacks_count_${index}`}
                                             key={`ResourceStacks_count${index}`}
@@ -289,7 +289,7 @@ class Recipe extends React.Component {
                         }
 
                         <Row key={`container_inputs_more`} className="d-flex justify-content-center">
-                            <Col md={6}>
+                            <Col xs={6}>
                                 <Button
                                     key={`button_more`}
                                     variant="success"
@@ -297,7 +297,7 @@ class Recipe extends React.Component {
                                     style={{ "width": "100%" }}
                                     onClick={() => { modelEdit.resourceStacks.push({ count: null, resource: { externalId: null } }); this.setState({ modelEdit: modelEdit }); }} >Add</Button>
                             </Col>
-                            <Col key={"button_actions_container"} md={6}>
+                            <Col key={"button_actions_container"} xs={6}>
                                 {modelEdit.resourceStacks.length <= 1 ?
                                     <Button key={`button_secondary`}
                                         variant="secondary"
@@ -316,7 +316,7 @@ class Recipe extends React.Component {
                 </Row>
             </Row>
             <Row className="pb-2">
-                <Col md={{ span: 1, offset: 5 }}>
+                <Col xs={{ span: 1, offset: 5 }}>
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
@@ -351,17 +351,17 @@ class Recipe extends React.Component {
                                 <FormRange id="tier" type="range" placeholder="Tier" defaultValue={modelCreate.tier} min={0} max={8} step={1} onChange={(value) => { modelCreate.tier = value; this.setState({ modelCreate: modelCreate }); }} />
                             </Row>
                             <Row className="pb-2 d-flex justify-content-center" >
-                                <RelatedAsyncSelect id="materialId" placeholder="Material" dataFactory={this.materialDataFactory} md={11} onChangeCustom={(value) => { modelCreate.materialId = value; this.setState({ modelCreate: modelCreate }); }} />
+                                <RelatedAsyncSelect id="materialId" placeholder="Material" dataFactory={this.materialDataFactory} xs={11} onChangeCustom={(value) => { modelCreate.materialId = value; this.setState({ modelCreate: modelCreate }); }} />
                             </Row>
                             <Row className="pb-2 d-flex justify-content-center">
                                 <>
                                     {
                                         modelCreate.materialStacks.map((materialStack, index) =>
                                             <Row className="pb-2">
-                                                <Col md={6}>
-                                                    <RelatedAsyncSelect id={`MaterialStacks_${index}`} key={`MaterialStacks_${index}`} placeholder="Material" dataFactory={this.materialDataFactory} md={12} onChangeCustom={(value) => { materialStack.materialId = value; this.setState({ modelCreate: modelCreate }); }} />
+                                                <Col xs={6}>
+                                                    <RelatedAsyncSelect id={`MaterialStacks_${index}`} key={`MaterialStacks_${index}`} placeholder="Material" dataFactory={this.materialDataFactory} xs={12} onChangeCustom={(value) => { materialStack.materialId = value; this.setState({ modelCreate: modelCreate }); }} />
                                                 </Col>
-                                                <Col md={6}>
+                                                <Col xs={6}>
                                                     <FormControl id={`MaterialStacks_count_${index}`} key={`MaterialStacks_count${index}`} type="text" placeholder="Count" onChange={(event) => { materialStack.count = event.target.value; this.setState({ modelCreate: modelCreate }); }} />
                                                 </Col>
                                             </Row>
@@ -369,10 +369,10 @@ class Recipe extends React.Component {
                                     }
 
                                     <Row key={`container_inputs_more_recipe_stack`} className="d-flex justify-content-center">
-                                        <Col md={6}>
+                                        <Col xs={6}>
                                             <Button key={`button_more_recipe_stack`} variant="success" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => { modelCreate.materialStacks.push({ count: 0, materialId: "" }); this.setState({ modelCreate: modelCreate }); }} >Add</Button>
                                         </Col>
-                                        <Col key={"button_actions_container_recipe_stack"} md={6}>
+                                        <Col key={"button_actions_container_recipe_stack"} xs={6}>
                                             {modelCreate.materialStacks.length <= 1 ? <Button key={`button_secondary_recipe_stack`} variant="secondary" className="btn-lg btn-block" style={{ "width": "100%" }} disabled>Delete</Button> : <Button key={`button_danger`} variant="danger" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => { modelCreate.materialStacks.pop(); this.setState({ modelCreate: modelCreate }); }}>Delete</Button>}
                                         </Col>
                                     </Row>
@@ -383,10 +383,10 @@ class Recipe extends React.Component {
                                     {
                                         modelCreate.resourceStacks.map((resourceStack, index) =>
                                             <Row className="pb-2">
-                                                <Col md={6}>
-                                                    <RelatedAsyncSelect id={`ResourceStacks_${index}`} key={`ResourceStacks_${index}`} placeholder="Resource" dataFactory={this.resourceDataFactory} md={12} onChangeCustom={(value) => { resourceStack.resourceId = value; this.setState({ modelCreate: modelCreate }); }} />
+                                                <Col xs={6}>
+                                                    <RelatedAsyncSelect id={`ResourceStacks_${index}`} key={`ResourceStacks_${index}`} placeholder="Resource" dataFactory={this.resourceDataFactory} xs={12} onChangeCustom={(value) => { resourceStack.resourceId = value; this.setState({ modelCreate: modelCreate }); }} />
                                                 </Col>
-                                                <Col md={6}>
+                                                <Col xs={6}>
                                                     <FormControl id={`ResourceStacks_count_${index}`} key={`ResourceStacks_count${index}`} type="text" placeholder="Count" onChange={(event) => { resourceStack.count = event.target.value; this.setState({ modelCreate: modelCreate }); this.setState({ modelCreate: modelCreate }); }} />
                                                 </Col>
                                             </Row>
@@ -394,10 +394,10 @@ class Recipe extends React.Component {
                                     }
 
                                     <Row key={`container_inputs_more`} className="d-flex justify-content-center">
-                                        <Col md={6}>
+                                        <Col xs={6}>
                                             <Button key={`button_more`} variant="success" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => { modelCreate.resourceStacks.push({ count: 0, resourceId: "" }); this.setState({ modelCreate: modelCreate }); }} >Add</Button>
                                         </Col>
-                                        <Col key={"button_actions_container"} md={6}>
+                                        <Col key={"button_actions_container"} xs={6}>
                                             {modelCreate.resourceStacks.length <= 1 ? <Button key={`button_secondary`} variant="secondary" className="btn-lg btn-block" style={{ "width": "100%" }} disabled>Delete</Button> : <Button key={`button_danger`} variant="danger" className="btn-lg btn-block" style={{ "width": "100%" }} onClick={() => { modelCreate.resourceStacks.pop(); this.setState({ modelCreate: modelCreate }); }}>Delete</Button>}
                                         </Col>
                                     </Row>
@@ -405,7 +405,7 @@ class Recipe extends React.Component {
                             </Row>
                         </Row>
                         <Row className="pb-2">
-                            <Col md={{ span: 1, offset: 5 }}>
+                            <Col xs={{ span: 1, offset: 5 }}>
                                 <Button variant="primary" type="submit">
                                     Submit
                                 </Button>
