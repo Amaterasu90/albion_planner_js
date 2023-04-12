@@ -37,7 +37,10 @@ class Table extends React.Component {
                                 onChangeCount={this.props.onChangeCount}
                                 onChangePrice={this.props.onChangePrice}
                                 onRemoveRecipe={this.props.onRemoveRecipe}
-                                onOpenRequirements={this.props.onOpenRequirements} />)}
+                                onOpenRequirements={this.props.onOpenRequirements}               
+                                inventoryCreator={this.props.inventoryCreator}
+                                handleReady={this.props.handleReady}
+                                handleClose={this.props.handleClose} />)}
                     {model.recipes.length === 0
                         ? null
                         : <Row className="p-0 m-0 d-flex justify-content-start">

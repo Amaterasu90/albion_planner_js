@@ -1,6 +1,6 @@
 class TableColumnFactory {
     createColumns = (propertyDefinitions) => {
-        return propertyDefinitions.map((definition, index) => { return { dataField: definition.id, text: definition.name, headerStyle: definition.headerStyle, hidden: definition.hidden, key: `${definition.id}_${definition.name}_${index}` } });
+        return propertyDefinitions.map((definition, index) => { return { id: definition.id, name: definition.name, hidden: definition.hidden, style: definition.headerStyle, key: `${definition.id}_${definition.name}_${index}` } });
     }
 }
 

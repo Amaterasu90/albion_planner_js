@@ -25,8 +25,9 @@ class TransportCreator {
         return columns
     }
 
-    tabsIsOverLimit = () => {
-        return this.tabsCount() > 27;
+    tabsIsOverLimit = (returnRate, recipe) => {        
+        const count = this.tabsCount(returnRate, recipe);
+        return count > 10;
     }
 
     tabsCount = (returnRate, recipe) => {

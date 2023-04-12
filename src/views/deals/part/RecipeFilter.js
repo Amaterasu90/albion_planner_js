@@ -40,7 +40,8 @@ class RecipeFilter extends React.Component {
                         materialDataFactory={materialDataFactory}
                         materialTypeDataFactory={materialTypeDataFactory}
                         imageRetriever={imageRetriever}
-                        onSelect={(currentTier) => this.props.onSelectMaterial(currentTier)}
+                        onSelect={(currentTier) => this.props.onSelectRecipe(currentTier)}
+                        onReset={() => this.props.onResetRecipe()}
                         onInitialize={(all) => this.onInitialize(all)}
                         onStartLoading={() => this.onStartLoading()}
                         onEndLoading={() => this.onEndLoading()}

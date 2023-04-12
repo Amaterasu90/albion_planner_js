@@ -1,28 +1,9 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, {
-    PaginationProvider,
-    PaginationListStandalone,
-    SizePerPageDropdownStandalone
-} from 'react-bootstrap-table2-paginator';
-import overlayFactory from 'react-bootstrap-table2-overlay';
-import LoadingOverlay from "react-loading-overlay"
-
-const NoDataIndication = () => (
-    <div className="d-flex justify-content-center text-dark" key={"spinner_container"}>
-        <div className="spinner-border" role="status" key={"spinner"} />
-    </div>
-);
-
-const EmptyTable = () => (
-    <span>No data</span>
-);
+import { Button, Col, Row, ButtonGroup } from "react-bootstrap";
 
 class TableEditDeleteComponent extends React.Component {
     constructor(props) {
         super(props);
-        LoadingOverlay.propTypes = undefined;
 
         let data = [];
         this.state = {
@@ -60,67 +41,88 @@ class TableEditDeleteComponent extends React.Component {
         this.props.provider.getPaginableItems(this, this.props);
     }
 
+    getNextNumberPage = () => {
+        return this.state.page + 1;
+    }
+
+    getTotalPages = () => {
+        return Math.ceil(this.state.items.length / this.state.sizePerPage);
+    }
+
+    isOnEnd = () => {
+        const totalPages = this.getTotalPages();
+        const nextNumber = this.getNextNumberPage();
+        return nextNumber > totalPages;
+    }
+
+    goToNextPage = (e) => {
+        if (!this.isOnEnd()) {
+            this.goToPage((this.getNextNumberPage()));
+        }
+    }
+
+    goToPage = (page) => {
+        this.setState(() => ({ page: page }));
+        this.props.provider.getPaginableItems(this, this.props);
+    }
+
+    getPreviousNumberPage = () => {
+        return this.state.page - 1;
+    }
+
+    isOnStart = () => {
+        const nextNumber = this.getPreviousNumberPage();
+        return nextNumber <= 0;
+    }
+
+    goToPreviousPage = (e) => {
+        if (!this.isOnStart()) {
+            this.goToPage((this.getPreviousNumberPage()));
+        }
+    }
+
     handleOnTableChange = (type, { page, sizePerPage }) => {
         this.setState(() => ({ loading: true, page: page, sizePerPage: sizePerPage }));
         this.props.provider.getPaginableItems(this, this.props);
     }
 
     render() {
-        const { error, isLoaded, items, data, columns } = this.state;
+        const { error, isLoaded, items, data, columns, page } = this.state;
+        const [first, ...range] = Array(this.getTotalPages() + 1).keys();
+        
         if (error) {
             return <div className="fs-6 align-middle text-dark">Błąd: {error.message}</div>;
         } else if (!isLoaded) {
-            return <NoDataIndication key={"data_no_indicator"}/>;
+            return <div className="d-flex justify-content-center text-dark" key={"spinner_container"}>
+                <div className="spinner-border" role="status" key={"spinner"} />
+            </div>;
         } else {
             return <Row>
-                <PaginationProvider pagination={paginationFactory(this.props.optionsFactory.createOptions(items.length))}>
-                    {
-                        ({
-                            paginationProps,
-                            paginationTableProps
-                        }) => (
-                            <div>
-                                <Row key="table_row">
-                                    <Col xs={12} key="table_col_2">
-                                        <BootstrapTable
-                                            key={"table"}
-                                            remote
-                                            condensed={true}
-                                            componentWillUnmount={this.componentUnmount}
-                                            keyField='externalId'
-                                            data={data}
-                                            columns={columns}
-                                            headerClasses="fs-5 align-middle"
-                                            onTableChange={this.handleOnTableChange}
-                                            rowClasses="fs-6 align-middle" {...paginationTableProps}
-                                            noDataIndication={() => <EmptyTable key={"empty_table"}/>}
-                                            loading={this.state.loading}
-                                            overlay={overlayFactory({
-                                                spinner: <NoDataIndication key={"data_no_indicator"}/>,
-                                                styles: {
-                                                    overlay: (base) => (
-                                                        {
-                                                            ...base
-                                                        })
-                                                }
-                                            })} />
-                                    </Col>
-                                </Row>
-                                <Row key="pagination_row">
-                                    <Col xs={10} key="patination_col_1" className="d-flex justify-content-center">
-                                        <PaginationListStandalone key="pagination_list_standalone"
-                                            {...paginationProps}
-                                        />
-                                    </Col>
-                                    <Col xs={2} key="pagination_col_2" className="d-flex justify-content-end">
-                                        <SizePerPageDropdownStandalone btnContextual="btn-light dropdown-toggle" {...paginationProps} />
-                                    </Col>
-                                </Row>
-                            </div>
-                        )
-                    }
-                </PaginationProvider>
-            </Row>
+                <table>
+                    <thead>
+                        <tr>
+                            {columns.filter(column => !column.hidden).map(column => {
+                                return <th style={column.style}>{column.name}</th>
+                            })}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map(row => {
+                            return <tr>{columns.filter(column => !column.hidden).map(column => { return <td style={column.style}>{row[column.id]}</td> })}</tr>
+                        })}
+                    </tbody>
+                </table>
+                {this.getTotalPages() === 1 ?
+                    null : <Row>
+                        <Col md={{ span: 6, offset: 2 }}>
+                            <ButtonGroup>
+                                <Button disabled={this.isOnStart()} onClick={this.goToPreviousPage}>{"<<"}</Button>
+                                {range.map((id) => <Button key={id} onClick={() => this.goToPage(id)} variant={page === id ? "warning" : "secondary"}>{id}</Button>)}
+                                <Button disabled={this.isOnEnd()} onClick={this.goToNextPage}>{">>"}</Button>
+                            </ButtonGroup>
+                        </Col>
+                    </Row>}
+            </Row >
         }
     }
 }

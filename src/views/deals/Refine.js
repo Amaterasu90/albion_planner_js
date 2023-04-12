@@ -1,7 +1,7 @@
 import CrudRequestDataFactory from "../../factories/CrudRequestDataFactory";
 import RequestDataFactory from "../../factories/RequestDataFactory";
 import React from "react";
-import {Row} from "react-bootstrap"
+import { Row } from "react-bootstrap"
 import RecipeRequirementsModal from "./modal/RecipeRequirementsModal";
 import TransportCreator from "./utils/InventoryCreator";
 import RecipeFilter from "./part/RecipeFilter";
@@ -176,12 +176,20 @@ class Refine extends React.Component {
         this.setState({ model: model });
     }
 
-    selectMaterial = (model, material) => {
+    resetRecipe = () => {
+        var actualModel = JSON.parse(JSON.stringify(this.state.model));
+        actualModel.currentMaterial = null
+        actualModel.menuCurrentRecipe = null;
+        actualModel.menuRecipes = null;
+        this.setState({ model: actualModel });
+    }
+
+    selectRecipe = (model, material) => {
         var actualModel = JSON.parse(JSON.stringify(this.state.model));
         actualModel.currentMaterial = material;
         this.setState({ model: actualModel });
-
         var requestData = this.refineRecipeDataFactory.createListAll("material", material.externalId);
+
         fetch(requestData.url, requestData.requestOptions)
             .then(res => res.json())
             .then(
@@ -214,7 +222,8 @@ class Refine extends React.Component {
             <RecipeFilter materialDataFactory={this.materialDataFactory}
                 materialTypeDataFactory={this.materialTypeDataFactory}
                 imageRetriever={this.props.imageRetriever}
-                onSelectMaterial={(currentTier) => this.selectMaterial(model, currentTier)}
+                onResetRecipe={() => this.resetRecipe()}
+                onSelectRecipe={(currentTier) => this.selectRecipe(model, currentTier)}
                 all={model.menuRecipes}
                 current={model.menuCurrentRecipe}
                 onMoveNext={(current) => this.moveNext(current)}
@@ -236,8 +245,11 @@ class Refine extends React.Component {
                 onChangePrice={this.setPrice}
                 onOpenRequirements={this.openRequirements}
                 onRemoveRecipe={this.removeRecipe}
-                imageRetriever={this.props.imageRetriever} />
-            < RecipeRequirementsModal
+                imageRetriever={this.props.imageRetriever}
+                inventoryCreator={this.inventoryCreator}
+                handleReady={this.requirementsReady}
+                handleClose={this.handleClose} />
+            <RecipeRequirementsModal
                 inventoryCreator={this.inventoryCreator}
                 handleReady={this.requirementsReady}
                 imageRetriever={this.props.imageRetriever}

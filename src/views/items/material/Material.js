@@ -15,7 +15,6 @@ import ActionEditDeleteGroup from "../../../components/ActionEditDeleteGroup";
 class Material extends React.Component {
     constructor(props) {
         super(props);
-
         this.defaultModelCreate = {
             enhancement: 0,
             tier: 4,

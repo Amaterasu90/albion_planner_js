@@ -15,8 +15,8 @@ class RecipeRequirements extends React.Component {
 
     generateGrid = (tab) => {
         return tab.grid.map((columnsData) => {
-            var columns = columnsData.map((element) => {
-                return element ? this.generateItemStack(element) : <Col className="p-0 d-flex align-items-center col-md-auto" style={{ "width": "64px", "height": "64px" }} />
+            var columns = columnsData.map((element, index) => {
+                return element ? this.generateItemStack(element) : <Col className="p-0 d-flex align-items-center col-md-auto" key={`col_${index}`} style={{ "width": "64px", "height": "64px" }} />
             });
 
             return <Row className="m-0 p-0 d-flex justify-content-center align-items-start" style={{ "width": "17.5rem" }}>{columns}</Row>
@@ -26,10 +26,11 @@ class RecipeRequirements extends React.Component {
     generateItemStack = (model) => {
         return <Col xs="auto" className="p-0 d-flex align-items-center">
             <OverlayTrigger
+                key={`trigger_${model.index}`}
                 placement="top"
                 delay={{ show: 250, hide: 400 }}
                 overlay={(props) => (
-                    <Tooltip key={`resource-name-tooltip_${model.index}`} id={`resource-name-tooltip_${model.index}`} {...props}>
+                    <Tooltip id={`resource-name-tooltip_${model.index}`} {...props}>
                         {model.name}
                     </Tooltip>)}>
                 <figure className="position-relative m-0">
@@ -49,15 +50,15 @@ class RecipeRequirements extends React.Component {
                 <Nav.Link {...props} onClick={(e) => this.onTabButtonHandler(e, index)} style={active ? {
                     "color": "white",
                     "border": "2px solid #a07b5d",
-                    "border-top-left-radius": "0px",
-                    "border-bottom-right-radius": "0.25rem",
-                    "background-color": "#a07b5d"
+                    "borderTopLeftRadius": "0px",
+                    "borderBottomRightRadius": "0.25rem",
+                    "backgroundColor": "#a07b5d"
                 } : {
                     "color": "#5a3f2c",
                     "border": "2px solid #a07b5d",
-                    "border-top-left-radius": "0px",
-                    "border-bottom-right-radius": "0.25rem",
-                    "background-color": "#cdaf93"
+                    "borderTopLeftRadius": "0px",
+                    "borderBottomRightRadius": "0.25rem",
+                    "backgroundColor": "#cdaf93"
                 }}>{name}</Nav.Link>
             </Nav.Item>
         });
@@ -65,16 +66,18 @@ class RecipeRequirements extends React.Component {
 
     onTabButtonHandler = (e, i) => {
         var buttons = JSON.parse(JSON.stringify(this.state.buttons));
-        buttons.forEach(element => {
+        buttons = buttons.map(element => {
             element.link.active = false;
+            return element
         });
         buttons[i].link.active = true;
 
         this.setState({ buttons: buttons });
 
         var tabsContent = JSON.parse(JSON.stringify(this.state.tabsContent));
-        tabsContent.forEach(element => {
+        tabsContent = tabsContent.map(element => {
             element.active = false;
+            return element;
         });
         tabsContent[i].active = true;
 
@@ -85,7 +88,7 @@ class RecipeRequirements extends React.Component {
         return <figure className="position-relative m-0 p-0">
             <Image src={this.props.imageRetriever ? this.props.imageRetriever.get("view", "inventory") : null} />
             <figcaption id={`inventory`} className="text-warning" >
-                <Row className="m-0 p-0" style={{ "margin-left": "0.6rem" }}>
+                <Row className="m-0 p-0" style={{ "marginLeft": "0.6rem" }}>
                     {this.generateGrid(tabsContent.find((item) => item.active))}
                 </Row>
             </figcaption>

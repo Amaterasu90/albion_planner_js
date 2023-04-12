@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Tooltip, OverlayTrigger, FormControl, Container } from "react-bootstrap";
+import { Row, Col, Tooltip, OverlayTrigger, FormControl, Container, Form } from "react-bootstrap";
 import ProfitInformations from "./ProfitInformations";
 import ItemStack from "./ItemStack";
 import ActionButtons from "./ActionButtons";
@@ -30,6 +30,7 @@ class TableLine extends React.Component {
     render = () => {
         const { recipe, imageRetriever, index, model, view } = this.props;
         const { hovered } = this.state;
+        const isOverLimit = this.props.inventoryCreator.tabsIsOverLimit(model.returnRate, model.recipes[index]);
         return <Row className="p-0 m-0 p-0 m-0 d-flex justify-content-start align-self-center" key={`recipe_${recipe.externalId}_${index}`} style={hovered ? { "backgroundColor": "#bb2d3b" } : { "backgroundColor": "#fff" }}>
             <Col xs="auto" className="p-0 m-0" style={index === 0
                 ? { "border": "1px", "borderLeftStyle": "solid", "borderRightStyle": "solid", "borderBottomStyle": "solid", "borderTopStyle": "solid" }
@@ -122,11 +123,37 @@ class TableLine extends React.Component {
                 ? { "border": "1px", "borderRightStyle": "solid", "borderBottomStyle": "solid", "borderTopStyle": "solid" }
                 : { "border": "1px", "borderRightStyle": "solid", "borderBottomStyle": "solid" }}>
                 <Container className="p-0 m-0 d-flex align-self-start" fluid>
-                    <FormControl
-                        className="p-0 my-2"
-                        size={document.documentElement.clientWidth < 576 || document.documentElement.clientHeight < 400 ? "sm" : "lg"}
-                        placeholder="Goal material count"
-                        value={model.recipes[index].count} onChange={(e) => { this.props.onChangeCount(model, index, e); }} />
+                    {
+                        isOverLimit
+                            ? <OverlayTrigger
+                            placement="right"
+                            delay={{ show: 250, hide: 400 }}
+                            overlay={(props) => (<div
+                                {...props}
+                                style={{
+                                  position: 'absolute',
+                                  backgroundColor: 'rgba(255, 100, 100, 0.85)',
+                                  padding: '10px 10px',
+                                  color: 'white',
+                                  borderRadius: 3,
+                                  ...props.style,
+                                }}
+                              >
+                                This number is to big
+                              </div>)}>
+                            <Form.Control
+                                className="p-0 my-2"
+                                size={document.documentElement.clientWidth < 576 || document.documentElement.clientHeight < 400 ? "sm" : "lg"}
+                                placeholder="Goal material count"
+                                isInvalid={isOverLimit}
+                                value={model.recipes[index].count} onChange={(e) => { this.props.onChangeCount(model, index, e); }} />
+                        </OverlayTrigger>
+                            : <Form.Control
+                            className="p-0 my-2"
+                            size={document.documentElement.clientWidth < 576 || document.documentElement.clientHeight < 400 ? "sm" : "lg"}
+                            placeholder="Goal material count"                                
+                            value={model.recipes[index].count} onChange={(e) => { this.props.onChangeCount(model, index, e); }} />
+                    }
                 </Container>
             </Col>
             <Col className="text-left px-1 p-0 m-0 d-flex align-items-stretch" style={index === 0
@@ -153,7 +180,10 @@ class TableLine extends React.Component {
                     view={view}
                     index={index}
                     onRemoveRecipe={() => this.onRemoveRecipe(index)}
-                    onOpenRequirements={this.props.onOpenRequirements} />
+                    onOpenRequirements={this.props.onOpenRequirements}
+                    inventoryCreator={this.props.inventoryCreator}
+                    handleReady={this.props.handleReady}
+                    handleClose={this.props.handleClose} />
             </Col>
         </Row >
     }

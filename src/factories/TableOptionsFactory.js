@@ -6,7 +6,7 @@ class TableOptionsFactory {
         return {
             custom: true,
             lastPageText: '>>',
-            firsPageText: '<<',
+            firstPageText: '<<',
             withFirstAndLast: true,
             totalSize: count,
             disablePageTitle: false,
@@ -20,8 +20,8 @@ class TableOptionsFactory {
                 text: '15', value: 15
             }],
             
-            sizePerPageRenderer: ({ ...args }) => (<ItemCountSelectorButtons key={"item_count_selector_buttons"} {...args} />),
-            pageButtonRenderer: ({ ...args }) => (<PageNumberButton key={"page_number_button"} {...args} />)
+            sizePerPageRenderer: ({ ...args }) => (<ItemCountSelectorButtons {...args} />),
+            pageButtonRenderer: ({ ...args }) => (<PageNumberButton {...args} />)
         }
     }
 }

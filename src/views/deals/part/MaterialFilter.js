@@ -35,8 +35,11 @@ class MaterialFilter extends React.Component {
     }
 
     setFoundedRecipe = (recipes) => {
+        debugger;
         if(recipes.length === 1){
             this.selectMaterial(recipes[0]);
+        } else {
+            this.resetMaterial();
         }
     }
 
@@ -84,6 +87,11 @@ class MaterialFilter extends React.Component {
     selectMaterial = (current) => {
         this.setState({ current: current });
         this.props.onSelect(current);
+    }
+
+    resetMaterial = (current) => {
+        this.setState({ current: current });
+        this.props.onReset(current);
     }
 
     groupBy = (arr) => {
